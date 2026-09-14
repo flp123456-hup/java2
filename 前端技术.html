@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>前端技术概览</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", sans-serif;
+      background: #f5f7fa;
+      color: #333;
+      line-height: 1.7;
+      padding: 32px 16px 60px;
+    }
+    .wrap { max-width: 860px; margin: 0 auto; }
+    header {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: #fff;
+      border-radius: 16px;
+      padding: 32px 28px;
+      margin-bottom: 24px;
+    }
+    header h1 { font-size: 26px; margin-bottom: 6px; }
+    header p { font-size: 14px; opacity: .9; }
+    section {
+      background: #fff;
+      border-radius: 14px;
+      padding: 22px 24px;
+      margin-bottom: 18px;
+      box-shadow: 0 2px 10px rgba(0,0,0,.04);
+    }
+    h2 {
+      font-size: 18px;
+      color: #4a3f8a;
+      margin-bottom: 12px;
+      padding-left: 10px;
+      border-left: 4px solid #667eea;
+    }
+    h3 { font-size: 15px; margin: 14px 0 6px; color: #444; }
+    p, li { font-size: 14px; color: #444; }
+    ul { padding-left: 20px; margin: 6px 0; }
+    .stack { display: flex; flex-direction: column; gap: 8px; }
+    .stack .row {
+      display: flex; align-items: center; gap: 12px;
+      background: #f3f5fb; border-radius: 10px; padding: 10px 14px;
+    }
+    .stack .tag {
+      flex-shrink: 0; width: 70px; text-align: center;
+      font-size: 13px; font-weight: 600; color: #4a3f8a;
+      background: #e3e7fb; border-radius: 6px; padding: 4px 0;
+    }
+    .stack .row span { font-size: 14px; color: #444; }
+    table { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 13px; }
+    th, td { border: 1px solid #e6e6e6; padding: 9px 10px; text-align: left; }
+    th { background: #f3f5fb; color: #4a3f8a; font-weight: 600; }
+    tr:nth-child(even) td { background: #fafbfe; }
+    code {
+      background: #2d2d3a; color: #e8e8f0;
+      padding: 2px 7px; border-radius: 5px; font-size: 13px;
+      font-family: Consolas, "Courier New", monospace;
+    }
+    .cmd {
+      display: block; background: #2d2d3a; color: #e8e8f0;
+      padding: 10px 14px; border-radius: 8px; margin: 8px 0;
+      font-family: Consolas, "Courier New", monospace; font-size: 13px;
+      overflow-x: auto; white-space: pre;
+    }
+    .step { display: flex; gap: 12px; margin: 12px 0; align-items: flex-start; }
+    .step .num {
+      flex-shrink: 0; width: 26px; height: 26px; border-radius: 50%;
+      background: #667eea; color: #fff; font-size: 13px; font-weight: 600;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .step div { flex: 1; }
+    .note { background: #fff8e6; border-left: 4px solid #ffb01f; padding: 10px 14px; border-radius: 8px; font-size: 13px; color: #6b5400; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>前端技术概览</h1>
+      <p>基础三件套 · 主流框架 · 工程化工具 · 快速上手</p>
+    </header>
+
+    <section>
+      <h2>一、前端技术全景（从下往上递进）</h2>
+      <div class="stack">
+        <div class="row"><div class="tag">基础</div><span><b>HTML</b>（结构）+ <b>CSS</b>（样式）+ <b>JavaScript</b>（交互与逻辑）—— 所有框架最终都运行在这三者之上</span></div>
+        <div class="row"><div class="tag">框架</div><span><b>React / Vue / Angular / Svelte</b> —— 解决如何高效组织 UI 与状态</span></div>
+        <div class="row"><div class="tag">工程化</div><span><b>Vite / Webpack / TypeScript / npm·pnpm</b> —— 解决怎么开发、构建、提速</span></div>
+        <div class="row"><div class="tag">生态</div><span><b>路由 / 状态管理 / UI 组件库 / 请求库</b> —— 解决具体业务场景的复用</span></div>
+      </div>
+    </section>
+
+    <section>
+      <h2>二、当前最常用框架对比</h2>
+      <table>
+        <tr><th>框架</th><th>出品方</th><th>核心特点</th><th>优势</th><th>适合</th></tr>
+        <tr><td><b>React</b></td><td>Meta</td><td>组件化 + 虚拟 DOM，JSX 写 UI</td><td>生态最大、岗位最多</td><td>中大型应用、团队</td></tr>
+        <tr><td><b>Vue</b></td><td>尤雨溪/社区</td><td>模板语法 + 响应式，渐进式</td><td>上手快、中文文档好</td><td>新手、快速开发</td></tr>
+        <tr><td><b>Angular</b></td><td>Google</td><td>TypeScript 原生、全家桶强约束</td><td>架构规范、可维护</td><td>大型企业系统</td></tr>
+        <tr><td><b>Svelte</b></td><td>社区</td><td>编译时框架、无虚拟 DOM</td><td>包最小、运行最快</td><td>轻量/高性能场景</td></tr>
+      </table>
+      <div class="note" style="margin-top:14px;">怎么选：新手/快速出活 → Vue；冲就业/复杂应用 → React；大厂企业系统 → Angular；极致轻量 → Svelte。</div>
+    </section>
+
+    <section>
+      <h2>三、工程化与生态（必须知道）</h2>
+      <h3>构建与开发服务器</h3>
+      <ul>
+        <li><b>Vite</b>：现在默认的构建/开发服务器，启动和热更新秒级，比老牌 Webpack 快很多。</li>
+        <li><b>Webpack</b>：老牌打包工具，配置灵活但偏重，存量项目常见。</li>
+      </ul>
+      <h3>语言与包管理</h3>
+      <ul>
+        <li><b>TypeScript</b>：给 JavaScript 加类型，大项目几乎必备。</li>
+        <li><b>npm / pnpm</b>：装第三方包的包管理器（React、Vue 本身也是「包」）。</li>
+      </ul>
+      <h3>常用生态零件</h3>
+      <ul>
+        <li><b>路由</b>：页面跳转（React Router / Vue Router）。</li>
+        <li><b>状态管理</b>：React 用 Redux/Zustand，Vue 用 Pinia。</li>
+        <li><b>UI 组件库</b>：Ant Design、Element Plus 等。</li>
+        <li><b>请求库</b>：Axios，用于和后端通信。</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>四、快速上手：用 Vite 起一个 React 项目</h2>
+      <div class="step"><div class="num">1</div><div><b>安装 Node.js</b><br>到 nodejs.org 下载 LTS 版，一路下一步（自带 npm）。</div></div>
+      <div class="step"><div class="num">2</div><div><b>创建项目</b><span class="cmd">npm create vite@latest my-app -- --template react</span></div></div>
+      <div class="step"><div class="num">3</div><div><b>安装依赖并启动</b><span class="cmd">cd my-app &amp;&amp; npm install &amp;&amp; npm run dev</span>浏览器打开提示的 <code>http://localhost:5173</code> 即可看到页面。</div></div>
+      <div class="step"><div class="num">4</div><div><b>写代码 / 打包上线</b><br>改 <code>src/App.jsx</code> 就是改页面（热更新实时生效）。打包：<span class="cmd">npm run build</span>生成的 <code>dist/</code> 文件夹就是可部署的网站。</div></div>
+      <div class="note" style="margin-top:14px;">纯 HTML/CSS/JS（如桌面上的 login.html）也能做网站；框架解决的是「页面变复杂、状态变多时，还能高效写、改、维护」的问题。</div>
+    </section>
+  </div>
+</body>
+</html>
