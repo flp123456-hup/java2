@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>喜羊羊登录</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(180deg, #8fd3f4 0%, #b6e3a7 60%, #7ec850 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    /* 草地装饰 */
+    .grass {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 90px;
+      background: #5fb83d;
+      border-top: 6px solid #4ca331;
+      border-radius: 50% 50% 0 0 / 30px 30px 0 0;
+    }
+    .cloud {
+      position: absolute;
+      background: #fff;
+      border-radius: 50%;
+      opacity: .9;
+    }
+    .cloud.c1 { width: 120px; height: 120px; top: 50px; left: 12%; box-shadow: 40px 10px 0 -10px #fff, 80px 0 0 -20px #fff; }
+    .cloud.c2 { width: 90px; height: 90px; top: 90px; right: 15%; box-shadow: 35px 8px 0 -8px #fff, 70px 0 0 -16px #fff; }
+
+    .card {
+      position: relative;
+      z-index: 2;
+      width: 360px;
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 18px 45px rgba(0,0,0,.18);
+      padding: 32px 32px 30px;
+      border: 3px solid #ffd24d;
+    }
+    .sheep {
+      font-size: 56px;
+      text-align: center;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .card h1 {
+      text-align: center;
+      font-size: 26px;
+      color: #3aa655;
+      margin-bottom: 4px;
+      letter-spacing: 1px;
+    }
+    .card .sub {
+      text-align: center;
+      color: #99a;
+      font-size: 13px;
+      margin-bottom: 22px;
+    }
+    .field { margin-bottom: 16px; }
+    .field label {
+      display: block;
+      font-size: 13px;
+      color: #555;
+      margin-bottom: 6px;
+    }
+    .field input {
+      width: 100%;
+      padding: 12px 14px;
+      border: 2px solid #e3e3e3;
+      border-radius: 10px;
+      font-size: 14px;
+      outline: none;
+      transition: border-color .2s;
+    }
+    .field input:focus { border-color: #7ec850; }
+    .field .err {
+      color: #e74c3c;
+      font-size: 12px;
+      margin-top: 5px;
+      display: none;
+    }
+    .btn {
+      width: 100%;
+      padding: 13px;
+      border: none;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #ffd24d, #ffb01f);
+      color: #6b4b00;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: transform .1s, opacity .2s;
+    }
+    .btn:hover { opacity: .93; }
+    .btn:active { transform: scale(.98); }
+    .msg {
+      text-align: center;
+      font-size: 13px;
+      margin-top: 14px;
+      min-height: 18px;
+      color: #3aa655;
+    }
+    .foot {
+      text-align: center;
+      margin-top: 16px;
+      font-size: 12px;
+      color: #aaa;
+    }
+    .foot a { color: #3aa655; text-decoration: none; }
+  </style>
+</head>
+<body>
+  <div class="cloud c1"></div>
+  <div class="cloud c2"></div>
+
+  <div class="card">
+    <div class="sheep">🐑</div>
+    <h1>喜羊羊登录</h1>
+    <div class="sub">青青草原欢迎你，请登录吧！</div>
+    <form id="loginForm" novalidate>
+      <div class="field">
+        <label for="username">用户名</label>
+        <input type="text" id="username" placeholder="请输入用户名" autocomplete="username" />
+        <div class="err" id="usernameErr">请输入用户名</div>
+      </div>
+      <div class="field">
+        <label for="password">密码</label>
+        <input type="password" id="password" placeholder="请输入密码" autocomplete="current-password" />
+        <div class="err" id="passwordErr">密码至少 6 位</div>
+      </div>
+      <button type="submit" class="btn">登 录</button>
+      <div class="msg" id="msg"></div>
+    </form>
+    <div class="foot">还没有账户？<a href="#">去羊村注册</a></div>
+  </div>
+
+  <div class="grass"></div>
+
+  <script>
+    const form = document.getElementById('loginForm');
+    const msg = document.getElementById('msg');
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value;
+      const uErr = document.getElementById('usernameErr');
+      const pErr = document.getElementById('passwordErr');
+      let ok = true;
+
+      if (!username) { uErr.style.display = 'block'; ok = false; }
+      else { uErr.style.display = 'none'; }
+
+      if (password.length < 6) { pErr.style.display = 'block'; ok = false; }
+      else { pErr.style.display = 'none'; }
+
+      if (!ok) { msg.textContent = ''; return; }
+
+      msg.textContent = '🎉 登录成功，欢迎 ' + username + ' 来到羊村！';
+    });
+  </script>
+</body>
+</html>
