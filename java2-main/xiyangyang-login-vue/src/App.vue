@@ -3,8 +3,9 @@
     <div class="cloud c1"></div>
     <div class="cloud c2"></div>
 
-    <LoginCard v-if="mode === 'login'" @switch-register="mode = 'register'" />
-    <RegisterCard v-else @switch-login="mode = 'login'" @register-success="onRegisterSuccess" />
+    <LoginCard v-if="mode === 'login'" @switch-register="mode = 'register'" @login-success="onLoginSuccess" />
+    <RegisterCard v-else-if="mode === 'register'" @switch-login="mode = 'login'" @register-success="onRegisterSuccess" />
+    <HomeView v-else :username="currentUser" @logout="onLogout" />
 
     <div class="grass"></div>
   </div>
@@ -14,11 +15,23 @@
 import { ref } from 'vue'
 import LoginCard from './components/LoginCard.vue'
 import RegisterCard from './components/RegisterCard.vue'
+import HomeView from './components/HomeView.vue'
 
-const mode = ref('login') // 'login' 或 'register'
+const mode = ref('login') // 'login' / 'register' / 'home'
+const currentUser = ref('')
+
+function onLoginSuccess(name) {
+  currentUser.value = name // 记录登录用户名
+  mode.value = 'home'       // 登录成功后跳转到首页
+}
 
 function onRegisterSuccess() {
   mode.value = 'login' // 注册成功后跳回登录页
+}
+
+function onLogout() {
+  currentUser.value = ''
+  mode.value = 'login' // 退出登录回到登录页
 }
 </script>
 

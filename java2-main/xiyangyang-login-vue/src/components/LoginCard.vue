@@ -40,7 +40,7 @@
 <script setup>
 import { ref } from 'vue'
 
-defineEmits(['switch-register'])
+const emit = defineEmits(['switch-register', 'login-success'])
 
 const username = ref('')
 const password = ref('')
@@ -74,6 +74,7 @@ async function onSubmit() {
     if (data.code === 200) {
       isOk.value = true
       msg.value = '🎉 登录成功，欢迎 ' + username.value.trim() + ' 来到羊村！'
+      emit('login-success', username.value.trim()) // 通知父组件跳转首页
     } else {
       isOk.value = false
       msg.value = data.msg || '登录失败'
