@@ -1,6 +1,7 @@
 package com.fenglin.springboottest.controller;
 
 import com.fenglin.springboottest.entity.User;
+import com.fenglin.springboottest.service.LoginRecordService;
 import com.fenglin.springboottest.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -27,6 +28,9 @@ public class UserApiController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private LoginRecordService loginRecordService;
+
     /** 注册 */
     @PostMapping("/register")
     public Map<String, Object> register(@RequestBody User user) {
@@ -49,6 +53,8 @@ public class UserApiController {
         Map<String, Object> result = new HashMap<>();
         User dbUser = userService.login(user.getUsername(), user.getPassword());
         if (dbUser != null) {
+            // 登录成功 → 写入一条登录记录，供后台统计"登录人数/次数"
+            loginRecordService.record(dbUser.getUsername());
             result.put("code", 200);
             result.put("msg", "登录成功");
             result.put("data", dbUser);

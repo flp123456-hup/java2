@@ -1,11 +1,20 @@
 <template>
-  <div class="page">
+  <!-- 首页：全屏星空，不再套用登录页的草地/云朵容器 -->
+  <HomeView v-if="mode === 'home'" :username="currentUser" @logout="onLogout" @open-admin="onOpenAdmin" />
+
+  <!-- 后台管理系统：登录页（仅登录，无注册） -->
+  <AdminLogin v-else-if="mode === 'admin-login'" @admin-login-success="onAdminLoginSuccess" @back="onBackFromAdmin" />
+
+  <!-- 后台管理系统：仪表盘 -->
+  <AdminDashboard v-else-if="mode === 'admin'" @logout="onAdminLogout" />
+
+  <!-- 登录 / 注册：青青草原场景 -->
+  <div class="page" v-else>
     <div class="cloud c1"></div>
     <div class="cloud c2"></div>
 
-    <LoginCard v-if="mode === 'login'" @switch-register="mode = 'register'" @login-success="onLoginSuccess" />
+    <LoginCard v-if="mode === 'login'" @switch-register="mode = 'register'" @login-success="onLoginSuccess" @enter-demo="onEnterDemo" />
     <RegisterCard v-else-if="mode === 'register'" @switch-login="mode = 'login'" @register-success="onRegisterSuccess" />
-    <HomeView v-else :username="currentUser" @logout="onLogout" />
 
     <div class="grass"></div>
   </div>
@@ -16,13 +25,22 @@ import { ref } from 'vue'
 import LoginCard from './components/LoginCard.vue'
 import RegisterCard from './components/RegisterCard.vue'
 import HomeView from './components/HomeView.vue'
+import AdminLogin from './components/AdminLogin.vue'
+import AdminDashboard from './components/AdminDashboard.vue'
 
-const mode = ref('login') // 'login' / 'register' / 'home'
+// 'login' / 'register' / 'home' / 'admin-login' / 'admin'
+const mode = ref('login')
 const currentUser = ref('')
 
 function onLoginSuccess(name) {
   currentUser.value = name // 记录登录用户名
   mode.value = 'home'       // 登录成功后跳转到首页
+}
+
+function onEnterDemo() {
+  // 后端未启动时的体验入口：直接进入首页（游客身份）
+  currentUser.value = '游客'
+  mode.value = 'home'
 }
 
 function onRegisterSuccess() {
@@ -32,6 +50,23 @@ function onRegisterSuccess() {
 function onLogout() {
   currentUser.value = ''
   mode.value = 'login' // 退出登录回到登录页
+}
+
+// ===== 后台管理系统 =====
+function onOpenAdmin() {
+  mode.value = 'admin-login' // 从首页进入后台登录页
+}
+
+function onAdminLoginSuccess() {
+  mode.value = 'admin'        // 后台登录成功进入仪表盘
+}
+
+function onBackFromAdmin() {
+  mode.value = 'home'         // 后台登录页返回首页
+}
+
+function onAdminLogout() {
+  mode.value = 'home'         // 后台退出，回到首页
 }
 </script>
 

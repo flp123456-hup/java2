@@ -31,6 +31,9 @@
 
       <button type="submit" class="btn">登 录</button>
       <div class="msg" :class="{ fail: !isOk }">{{ msg }}</div>
+      <button type="button" class="demo-btn" v-if="showDemo" @click="enterDemo">
+        🚀 先体验首页（无需登录）
+      </button>
     </form>
 
     <div class="foot">还没有账户？<a href="#" @click.prevent="$emit('switch-register')">去羊村注册</a></div>
@@ -40,7 +43,7 @@
 <script setup>
 import { ref } from 'vue'
 
-const emit = defineEmits(['switch-register', 'login-success'])
+const emit = defineEmits(['switch-register', 'login-success', 'enter-demo'])
 
 const username = ref('')
 const password = ref('')
@@ -49,10 +52,12 @@ const passwordErr = ref(false)
 const msg = ref('')
 const isOk = ref(true)
 const loading = ref(false)
+const showDemo = ref(false)
 
 async function onSubmit() {
   usernameErr.value = !username.value.trim()
   passwordErr.value = password.value.length < 1 || password.value.length > 18
+  showDemo.value = false
 
   if (usernameErr.value || passwordErr.value) {
     msg.value = ''
@@ -81,10 +86,15 @@ async function onSubmit() {
     }
   } catch (e) {
     isOk.value = false
-    msg.value = '网络错误：无法连接服务器，请确认后端已启动'
+    showDemo.value = true
+    msg.value = '⚠️ 连不上后端（localhost:8081）。可先体验首页，或确认 Spring Boot 已启动。'
   } finally {
     loading.value = false
   }
+}
+
+function enterDemo() {
+  emit('enter-demo') // 后端未启动时的体验入口
 }
 </script>
 
@@ -197,5 +207,23 @@ async function onSubmit() {
 .foot a {
   color: #3aa655;
   text-decoration: none;
+}
+
+.demo-btn {
+  width: 100%;
+  margin-top: 10px;
+  padding: 11px;
+  border: 2px dashed #7ec850;
+  border-radius: 10px;
+  background: #f3fbf0;
+  color: #3aa655;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background .2s;
+}
+
+.demo-btn:hover {
+  background: #e8f7e2;
 }
 </style>
