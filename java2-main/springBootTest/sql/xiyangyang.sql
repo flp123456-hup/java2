@@ -1,7 +1,7 @@
 /*
  Navicat Premium Dump SQL
 
- Source Server         : test
+ Source Server         : localhost_3306
  Source Server Type    : MySQL
  Source Server Version : 80039 (8.0.39)
  Source Host           : localhost:3306
@@ -11,7 +11,7 @@
  Target Server Version : 80039 (8.0.39)
  File Encoding         : 65001
 
- Date: 28/10/2026 09:53:58
+ Date: 30/10/2026 16:48:24
 */
 
 SET NAMES utf8mb4;
@@ -28,7 +28,7 @@ CREATE TABLE `admin_user`  (
   `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `uk_admin_username`(`username` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '后台管理员表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '后台管理员表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of admin_user
@@ -56,7 +56,7 @@ CREATE TABLE `drama`  (
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_hot`(`hot` ASC) USING BTREE,
   INDEX `idx_score`(`score` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 20 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '电视剧表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 20 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '电视剧表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of drama
@@ -92,12 +92,19 @@ CREATE TABLE `login_record`  (
   `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '录入时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_login_time`(`login_time` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户登录记录表（用于统计登录人数/次数）' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户登录记录表（用于统计登录人数/次数）' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of login_record
 -- ----------------------------
 INSERT INTO `login_record` VALUES (1, 'xx', '2026-10-28 09:18:14', '2026-10-28 09:18:14');
+INSERT INTO `login_record` VALUES (2, 'xx', '2026-10-30 15:58:39', '2026-10-30 15:58:39');
+INSERT INTO `login_record` VALUES (3, 'xx', '2026-10-30 15:58:39', '2026-10-30 15:58:39');
+INSERT INTO `login_record` VALUES (4, 'xx', '2026-10-30 15:59:45', '2026-10-30 15:59:45');
+INSERT INTO `login_record` VALUES (5, 'xiyangyang', '2026-10-30 15:59:45', '2026-10-30 15:59:45');
+INSERT INTO `login_record` VALUES (6, 'xx', '2026-10-30 16:01:03', '2026-10-30 16:01:03');
+INSERT INTO `login_record` VALUES (7, 'xx', '2026-10-30 16:02:00', '2026-10-30 16:02:00');
+INSERT INTO `login_record` VALUES (8, 'xx', '2026-10-30 16:20:58', '2026-10-30 16:20:58');
 
 -- ----------------------------
 -- Table structure for user

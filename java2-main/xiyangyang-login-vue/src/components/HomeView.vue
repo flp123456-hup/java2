@@ -12,6 +12,7 @@
       <div class="logo">🐑 <span>喜羊羊影视</span></div>
 
       <button class="admin-entry" @click="$emit('open-admin')">🛠 后台管理系统</button>
+      <button class="media-entry" @click="$emit('open-media')">🎬 影视中心</button>
 
       <div class="search-wrap" @mouseleave="showHot = false">
         <div class="search-box" :class="{ active: showHot }">
@@ -242,22 +243,15 @@
 import { ref, computed, onMounted } from 'vue'
 
 defineProps({ username: String })
-defineEmits(['logout', 'open-admin'])
+defineEmits(['logout', 'open-admin', 'open-media'])
 
 // 与时俱进的电视剧（Mock 数据，作为兜底；后端可用时会被真实数据覆盖）
 const dramas = ref([
-  { id: 1, title: '星河彼岸', genres: ['科幻', '冒险'], year: 2026, score: 9.2, hot: 9800, episodes: '更新至18集', status: '热播', emoji: '🚀', gradient: 'linear-gradient(135deg,#6a5bff,#b14dff)', desc: '地球资源枯竭，一支少年舰队穿越星河寻找新家园，在宇宙尽头邂逅了会发光的文明。' },
-  { id: 2, title: '长安十二时辰·重启', genres: ['古装', '悬疑'], year: 2025, score: 8.9, hot: 8700, episodes: '已完结', status: '独家', emoji: '🏮', gradient: 'linear-gradient(135deg,#ff7a59,#ff3d77)', desc: '盛世长安暗流涌动，一名死囚在十二时辰内必须破解惊天阴谋，拯救一座城。' },
-  { id: 3, title: '都市夜行人', genres: ['都市', '刑侦'], year: 2026, score: 8.7, hot: 8200, episodes: '更新至24集', status: '热播', emoji: '🌃', gradient: 'linear-gradient(135deg,#1fd1f9,#2a6cff)', desc: '霓虹下的城市从不入睡，一支深夜刑侦小队专破那些白天破不了的案子。' },
-  { id: 4, title: '山海谣', genres: ['仙侠', '奇幻'], year: 2025, score: 9.0, hot: 9100, episodes: '已完结', status: '独家', emoji: '⛰️', gradient: 'linear-gradient(135deg,#43e97b,#38f9d7)', desc: '上古神兽苏醒，少女持山海图踏遍九州，在人与妖的边界寻找属于自己的道。' },
-  { id: 5, title: '心跳信号', genres: ['青春', '爱情'], year: 2026, score: 8.5, hot: 7600, episodes: '更新至12集', status: '热播', emoji: '💓', gradient: 'linear-gradient(135deg,#ff6ec4,#7873f5)', desc: '校园电台的午夜节目把两个陌生人连在一起，每一次心跳都是未说出口的告白。' },
-  { id: 6, title: '大江东去', genres: ['年代', '励志'], year: 2024, score: 9.1, hot: 9500, episodes: '已完结', status: '经典', emoji: '🌊', gradient: 'linear-gradient(135deg,#f6d365,#fda085)', desc: '改革开放浪潮中，一家三代人从摆地摊到做实业，写就一曲大江东去的奋斗长歌。' },
-  { id: 7, title: '机甲纪元', genres: ['科幻', '动作'], year: 2026, score: 8.8, hot: 8900, episodes: '更新至20集', status: '热播', emoji: '🤖', gradient: 'linear-gradient(135deg,#30cfd0,#330867)', desc: '人类与AI共驾机甲迎战外星舰队，每一次出击都是文明存续的赌注。' },
-  { id: 8, title: '人间烟火', genres: ['家庭', '温情'], year: 2025, score: 8.6, hot: 7400, episodes: '已完结', status: '治愈', emoji: '🍲', gradient: 'linear-gradient(135deg,#ffb347,#ffcc33)', desc: '一条老街、一家小馆、几户人家，最平凡的一日三餐里藏着最戳心的温柔。' },
-  { id: 9, title: '暗夜追凶', genres: ['悬疑', '推理'], year: 2026, score: 9.3, hot: 9900, episodes: '更新至16集', status: '热播', emoji: '🔦', gradient: 'linear-gradient(135deg,#0f2027,#2c5364)', desc: '一桩陈年旧案重启，天才侧写师与冷面刑警联手，在谎言森林里追出真凶。' },
-  { id: 10, title: '风起陇西·新章', genres: ['历史', '权谋'], year: 2025, score: 8.9, hot: 8500, episodes: '已完结', status: '独家', emoji: '📜', gradient: 'linear-gradient(135deg,#c79081,#dfa579)', desc: '三国暗战，谍影重重，一名小卒在刀光剑影的权谋棋局中左右着天下大势。' },
-  { id: 11, title: '甜野之恋', genres: ['田园', '治愈'], year: 2026, score: 8.4, hot: 7100, episodes: '更新至10集', status: '热播', emoji: '🌿', gradient: 'linear-gradient(135deg,#a8e063,#56ab2f)', desc: '逃离都市的女孩在山谷开起民宿，与一位沉默的护林员慢炖出甜野味的爱情。' },
-  { id: 12, title: '赛博长安', genres: ['科幻', '古风'], year: 2026, score: 9.0, hot: 9300, episodes: '更新至22集', status: '热播', emoji: '🌐', gradient: 'linear-gradient(135deg,#ee0979,#ff6a00)', desc: '大唐长安装上霓虹与义体，侠客以代码为剑，在赛博盛世的灯海里快意恩仇。' }
+  { id: 1, title: '三生三世十里桃花', genres: ['古装', '仙侠', '爱情'], year: 2017, score: 8.2, hot: 9800, episodes: '58集', status: '经典', emoji: '🌸', gradient: 'linear-gradient(135deg,#ff9a9e,#fad0c4)', desc: '青丘女君白浅与九重天太子夜华历经三世情缘，前世今生纠缠不绝的仙侠爱情故事。' },
+  { id: 2, title: '因为遇见你', genres: ['都市', '励志', '情感'], year: 2017, score: 7.4, hot: 8200, episodes: '46集', status: '热播', emoji: '🧵', gradient: 'linear-gradient(135deg,#a1c4fd,#c2e9fb)', desc: '弃婴张果果被苏州绣艺世家收养，成长为优秀刺绣天才的励志故事。' },
+  { id: 3, title: '嫁金钗', genres: ['古装', '甜宠'], year: 2022, score: 7.0, hot: 7000, episodes: '24集', status: '热播', emoji: '💍', gradient: 'linear-gradient(135deg,#f6d365,#fda085)', desc: '古装甜宠题材剧集（简介请按真实情况补充）。' },
+  { id: 4, title: '沉香如故', genres: ['古装', '仙侠'], year: 2023, score: 7.0, hot: 6900, episodes: '40集', status: '热播', emoji: '🌿', gradient: 'linear-gradient(135deg,#84fab0,#8fd3f4)', desc: '古装仙侠题材剧集（简介请按真实情况补充）。' },
+  { id: 5, title: '香蜜沉沉烬如霜', genres: ['古装', '仙侠', '爱情'], year: 2018, score: 8.0, hot: 9500, episodes: '63集', status: '经典', emoji: '🔥', gradient: 'linear-gradient(135deg,#ff6a88,#ff99ac)', desc: '花神之女锦觅与天帝之子旭凤跨越生死、历经劫难的仙侠虐恋。' }
 ])
 
 const hotSearches = ['暗夜追凶', '赛博长安', '科幻', '热播', '山海谣', '都市夜行人']
@@ -520,6 +514,16 @@ function shootStyle(n) {
   transition: background .2s, transform .1s;
 }
 .admin-entry:hover { background: rgba(255, 110, 196, .3); }
+.media-entry {
+  padding: 7px 16px;
+  border: 1px solid rgba(255,255,255,.35);
+  border-radius: 20px;
+  background: rgba(255,255,255,.12);
+  color: #fff;
+  font-size: 13px;
+  cursor: pointer;
+}
+.media-entry:hover { background: rgba(120, 200, 255, .3); }
 .admin-entry:active { transform: scale(.97); }
 
 .search-wrap { position: relative; flex: 1; max-width: 560px; margin: 0 auto; }

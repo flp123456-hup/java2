@@ -8,6 +8,9 @@
   <!-- 后台管理系统：仪表盘 -->
   <AdminDashboard v-else-if="mode === 'admin'" @logout="onAdminLogout" />
 
+  <!-- 影视中心 -->
+  <MediaCenter v-else-if="mode === 'media'" @close="onMediaClose" />
+
   <!-- 登录 / 注册：青青草原场景 -->
   <div class="page" v-else>
     <div class="cloud c1"></div>
@@ -27,6 +30,7 @@ import RegisterCard from './components/RegisterCard.vue'
 import HomeView from './components/HomeView.vue'
 import AdminLogin from './components/AdminLogin.vue'
 import AdminDashboard from './components/AdminDashboard.vue'
+import MediaCenter from './components/MediaCenter.vue'
 
 // 'login' / 'register' / 'home' / 'admin-login' / 'admin'
 const mode = ref('login')
@@ -55,6 +59,14 @@ function onLogout() {
 // ===== 后台管理系统 =====
 function onOpenAdmin() {
   mode.value = 'admin-login' // 从首页进入后台登录页
+}
+
+function onOpenMedia() {
+  mode.value = 'media'      // 进入影视中心
+}
+
+function onMediaClose() {
+  mode.value = 'home'       // 影视中心返回首页
 }
 
 function onAdminLoginSuccess() {
