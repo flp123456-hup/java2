@@ -8,6 +8,13 @@
 //   3. 演员资料为公开事实信息；不确定阵容的剧已标注"待补充"，请按真实情况填写。
 // ============================================================
 
+// 封面图片以模块方式引入（Vite 会处理路径与打包，开发与生产环境都稳定）
+import coverSansheng from './assets/covers/sanshengsanshi.jpg'
+import coverXiangmi from './assets/covers/xiangmi.jpg'
+import coverChenxiang from './assets/covers/chenxiang.jpg'
+import coverYujian from './assets/covers/yujian.jpg'
+import coverJiajinchai from './assets/covers/jiajinchai.jpg'
+
 // 公开版权示例视频（Big Buck Bunny，Google 公共示例桶，CC 授权）
 const DEMO_VIDEO =
   'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4'
@@ -34,6 +41,7 @@ export const medias = [
     epDuration: EP_DURATION,
     emoji: '🌸',
     gradient: 'linear-gradient(135deg,#ff9a9e,#fad0c4)',
+    cover: coverSansheng,
     desc: '青丘女君白浅与九重天太子夜华历经三世情缘，前世今生纠缠不绝的仙侠爱情故事。',
     // 真实演员公开资料（节选）
     actors: [
@@ -52,6 +60,7 @@ export const medias = [
     epDuration: EP_DURATION,
     emoji: '🧵',
     gradient: 'linear-gradient(135deg,#a1c4fd,#c2e9fb)',
+    cover: coverYujian,
     desc: '弃婴张果果被苏州绣艺世家收养，成长为优秀刺绣天才的励志故事。',
     actors: [
       { name: '孙怡', role: '张果果 / 张雨欣', bio: '中国女演员。1993 年出生于吉林，代表作《因为遇见你》《步步惊心丽》等。' },
@@ -69,6 +78,7 @@ export const medias = [
     epDuration: EP_DURATION,
     emoji: '💍',
     gradient: 'linear-gradient(135deg,#f6d365,#fda085)',
+    cover: coverJiajinchai,
     desc: '（示例条目）古装甜宠题材剧集。演员阵容与简介请按真实情况补充。',
     actors: [
       { name: '待补充', role: '—', bio: '请在此填写真实演员的公开资料。' }
@@ -85,6 +95,7 @@ export const medias = [
     epDuration: EP_DURATION,
     emoji: '🌿',
     gradient: 'linear-gradient(135deg,#84fab0,#8fd3f4)',
+    cover: coverChenxiang,
     desc: '（示例条目）古装仙侠题材剧集。演员阵容与简介请按真实情况补充。',
     actors: [
       { name: '待补充', role: '—', bio: '请在此填写真实演员的公开资料。' }
@@ -101,6 +112,7 @@ export const medias = [
     epDuration: EP_DURATION,
     emoji: '🔥',
     gradient: 'linear-gradient(135deg,#ff6a88,#ff99ac)',
+    cover: coverXiangmi,
     desc: '花神之女锦觅与天帝之子旭凤跨越生死、历经劫难的仙侠虐恋。',
     actors: [
       { name: '杨紫', role: '锦觅', bio: '中国女演员。1992 年出生于长沙，童星出道，代表作《香蜜沉沉烬如霜》《亲爱的，热爱的》等。' },
@@ -162,6 +174,74 @@ export const medias = [
     ],
     videoUrl: DEMO_VIDEO
   },
+  {
+    id: 'k4',
+    category: 'kids',
+    title: '小猪佩奇',
+    year: 2004,
+    genres: ['动画', '少儿', '启蒙'],
+    episodes: 300,
+    epDuration: '约 5 分钟',
+    emoji: '🐷',
+    gradient: 'linear-gradient(135deg,#ffb6c1,#ffdde1)',
+    desc: '粉色小猪佩奇一家温馨有趣的日常，跳泥坑、过生日，陪伴全球小朋友快乐成长。',
+    actors: [
+      { name: '佩奇', role: '主角（小猪）', bio: '活泼爱跳泥坑的小猪女孩，有个弟弟乔治。' },
+      { name: '乔治', role: '弟弟（小猪）', bio: '佩奇的弟弟，最爱抱着恐龙玩具。' }
+    ],
+    videoUrl: DEMO_VIDEO
+  },
+  {
+    id: 'k5',
+    category: 'kids',
+    title: '超级飞侠',
+    year: 2015,
+    genres: ['动画', '少儿', '冒险'],
+    episodes: 200,
+    epDuration: '约 13 分钟',
+    emoji: '✈️',
+    gradient: 'linear-gradient(135deg,#4facfe,#00f2fe)',
+    desc: '会变形的飞机乐迪环游世界送包裹，和伙伴们帮助各地小朋友解决难题，开阔眼界。',
+    actors: [
+      { name: '乐迪', role: '主角（飞机）', bio: '最快的飞机快递员，每次都能把包裹准时送达。' },
+      { name: '小爱', role: '救援直升机', bio: '热心助人的救援直升机，关键时刻伸援手。' }
+    ],
+    videoUrl: DEMO_VIDEO
+  },
+  {
+    id: 'k6',
+    category: 'kids',
+    title: '猪猪侠',
+    year: 2005,
+    genres: ['动画', '少儿', '冒险'],
+    episodes: 500,
+    epDuration: '约 15 分钟',
+    emoji: '🐭',
+    gradient: 'linear-gradient(135deg,#f7971e,#ffd200)',
+    desc: '小猪猪猪侠化身超级英雄，凭借勇气与智慧守护童话世界的正义，寓教于乐。',
+    actors: [
+      { name: '猪猪侠', role: '主角（猪）', bio: '贪吃贪玩却充满正义感的小猪，关键时刻总能挺身而出。' },
+      { name: '菲菲', role: '伙伴（猪）', bio: '聪明伶俐的小猪女孩，猪猪侠的好搭档。' }
+    ],
+    videoUrl: DEMO_VIDEO
+  },
+  {
+    id: 'k7',
+    category: 'kids',
+    title: '海绵宝宝',
+    year: 1999,
+    genres: ['动画', '少儿', '喜剧'],
+    episodes: 260,
+    epDuration: '约 11 分钟',
+    emoji: '🧽',
+    gradient: 'linear-gradient(135deg,#fceabb,#f8b500)',
+    desc: '海底比奇堡里，海绵宝宝和派大星一连串无厘头又温暖的爆笑日常，老少皆宜。',
+    actors: [
+      { name: '海绵宝宝', role: '主角（海绵）', bio: '乐观天真的黄色海绵，最爱抓水母和做蟹黄堡。' },
+      { name: '派大星', role: '好友（海星）', bio: '海绵宝宝最好的朋友，呆萌却常常神助攻。' }
+    ],
+    videoUrl: DEMO_VIDEO
+  },
 
   // ===================== 综艺 =====================
   {
@@ -177,6 +257,90 @@ export const medias = [
     desc: '（示例条目）户外真人秀综艺。嘉宾阵容与简介请按真实情况补充。',
     actors: [
       { name: '待补充', role: '—', bio: '请在此填写真实嘉宾的公开资料。' }
+    ],
+    videoUrl: DEMO_VIDEO
+  },
+  {
+    id: 'v2',
+    category: 'variety',
+    title: '奔跑吧',
+    year: 2014,
+    genres: ['综艺', '真人秀', '竞技'],
+    episodes: 130,
+    epDuration: '约 90 分钟',
+    emoji: '🏃',
+    gradient: 'linear-gradient(135deg,#f857a6,#ff5858)',
+    desc: '国民级户外竞技真人秀，明星分队完成趣味任务，撕名牌名场面频出。',
+    actors: [
+      { name: '李晨', role: '常驻嘉宾', bio: '“大黑牛”，力量担当，撕名牌高手。' },
+      { name: 'Angelababy', role: '常驻嘉宾', bio: '活泼女神，奔跑团早期核心成员。' }
+    ],
+    videoUrl: DEMO_VIDEO
+  },
+  {
+    id: 'v3',
+    category: 'variety',
+    title: '极限挑战',
+    year: 2015,
+    genres: ['综艺', '真人秀', '剧情'],
+    episodes: 100,
+    epDuration: '约 90 分钟',
+    emoji: '🎯',
+    gradient: 'linear-gradient(135deg,#0f2027,#2c5364)',
+    desc: '男人帮在充满反转的剧情任务中斗智斗勇，“这就是命”成经典梗，烧脑又爆笑。',
+    actors: [
+      { name: '黄磊', role: '常驻嘉宾', bio: '“神算子”老狐狸，智商担当。' },
+      { name: '黄渤', role: '常驻嘉宾', bio: '国民影帝，极限男人帮核心。' }
+    ],
+    videoUrl: DEMO_VIDEO
+  },
+  {
+    id: 'v4',
+    category: 'variety',
+    title: '快乐大本营',
+    year: 1997,
+    genres: ['综艺', '访谈', '娱乐'],
+    episodes: 1000,
+    epDuration: '约 100 分钟',
+    emoji: '🎉',
+    gradient: 'linear-gradient(135deg,#ff9a9e,#fecfef)',
+    desc: '陪伴几代人的国民综艺，游戏、访谈、歌舞，周五晚上的快乐源泉。',
+    actors: [
+      { name: '何炅', role: '主持人', bio: '“何老师”，快乐家族灵魂主持。' },
+      { name: '谢娜', role: '主持人', bio: '搞笑担当，气氛组组长。' }
+    ],
+    videoUrl: DEMO_VIDEO
+  },
+  {
+    id: 'v5',
+    category: 'variety',
+    title: '向往的生活',
+    year: 2017,
+    genres: ['综艺', '慢综艺', '生活'],
+    episodes: 80,
+    epDuration: '约 90 分钟',
+    emoji: '🏡',
+    gradient: 'linear-gradient(135deg,#a8e063,#56ab2f)',
+    desc: '蘑菇屋里的慢生活，种菜、做饭、招待客人，用烟火气温暖治愈都市人的疲惫。',
+    actors: [
+      { name: '黄磊', role: '常驻嘉宾', bio: '蘑菇屋“黄小厨”，美食担当。' },
+      { name: '彭昱畅', role: '常驻嘉宾', bio: '活泼懂事的小师弟，干饭主力。' }
+    ],
+    videoUrl: DEMO_VIDEO
+  },
+  {
+    id: 'v6',
+    category: 'variety',
+    title: '歌手',
+    year: 2013,
+    genres: ['综艺', '音乐', '竞演'],
+    episodes: 200,
+    epDuration: '约 120 分钟',
+    emoji: '🎙️',
+    gradient: 'linear-gradient(135deg,#6a11cb,#2575fc)',
+    desc: '顶尖歌手同台竞演的 Live 音乐综艺，用实力唱腔定义华语乐坛现场水准。',
+    actors: [
+      { name: '待补充', role: '—', bio: '每季嘉宾阵容不同，请按真实情况补充。' }
     ],
     videoUrl: DEMO_VIDEO
   }

@@ -16,6 +16,15 @@
       >{{ c.label }}</button>
     </nav>
 
+    <!-- 排序：热度 / 评分 -->
+    <div class="sortbar">
+      <span class="sort-label">排序</span>
+      <select class="sort-sel" v-model="sort" @change="reload">
+        <option value="hot">热度优先</option>
+        <option value="score">评分优先</option>
+      </select>
+    </div>
+
     <!-- 卡片网格 -->
     <main class="grid">
       <article
@@ -25,14 +34,17 @@
         @click="openDetail(m)"
       >
         <div class="cover" :style="{ background: m.gradient }">
-          <span class="emoji">{{ m.emoji }}</span>
+          <img v-if="m.cover" class="cover-img" :src="m.cover" :alt="m.title" />
+          <template v-else>
+            <span class="emoji">{{ m.emoji }}</span>
+            <span class="ph">封面占位图</span>
+          </template>
           <span class="cat">{{ catLabel(m.category) }}</span>
-          <span class="ph">封面占位图</span>
         </div>
         <div class="info">
           <div class="title">{{ m.title }}</div>
           <div class="meta">{{ m.year }} · {{ m.genres.join('/') }}</div>
-          <div class="meta">{{ m.episodes }} 集 · {{ m.epDuration }}</div>
+          <div class="meta">{{ m.episodes }}{{ m.epUnit || ' 集' }} · {{ m.epDuration }}</div>
         </div>
       </article>
     </main>
@@ -43,12 +55,15 @@
         <button class="x" @click="detail = null">✕</button>
 
         <div class="d-cover" :style="{ background: detail.gradient }">
-          <span class="emoji">{{ detail.emoji }}</span>
-          <span class="ph">封面占位图（非真实剧照）</span>
+          <img v-if="detail.cover" class="cover-img" :src="detail.cover" :alt="detail.title" />
+          <template v-else>
+            <span class="emoji">{{ detail.emoji }}</span>
+            <span class="ph">封面占位图（非真实剧照）</span>
+          </template>
         </div>
 
         <h2>{{ detail.title }}</h2>
-        <div class="d-meta">{{ detail.year }} · {{ detail.genres.join(' / ') }} · {{ detail.episodes }} 集 · {{ detail.epDuration }}</div>
+        <div class="d-meta">{{ detail.year }} · {{ detail.genres.join(' / ') }} · {{ detail.episodes }}{{ detail.epUnit || ' 集' }} · {{ detail.epDuration }}</div>
         <p class="d-desc">{{ detail.desc }}</p>
 
         <h3>演员资料</h3>
@@ -69,19 +84,40 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { categories, medias } from '../mediaData.js'
+import { loadAllMedia } from '../mediaApi.js'
 import VideoPlayer from './VideoPlayer.vue'
 
 defineEmits(['close'])
 
 const active = ref('all')
+const sort = ref('hot')
 const detail = ref(null)
 const playing = ref(null)
 
+// 初始为前端 mock 数据（兜底）；电视剧/少儿/综艺优先用后端数据库数据覆盖
+const allMedias = ref(medias)
+
 const list = computed(() =>
-  active.value === 'all' ? medias : medias.filter(m => m.category === active.value)
+  active.value === 'all' ? allMedias.value : allMedias.value.filter(m => m.category === active.value)
 )
+
+// 从后端拉取并覆盖电视剧/少儿/综艺（支持排序）
+async function reload() {
+  try {
+    const fromBackend = await loadAllMedia(sort.value)
+    if (fromBackend.length) {
+      allMedias.value = medias
+        .filter(m => !['drama', 'kids', 'variety'].includes(m.category))
+        .concat(fromBackend)
+    }
+  } catch (e) {
+    console.warn('后端影视数据加载失败，继续使用前端 mock：', e)
+  }
+}
+
+onMounted(reload)
 
 function catLabel(key) {
   return categories.find(c => c.key === key)?.label || key
@@ -136,6 +172,24 @@ function play(m) {
 }
 .tab.on { background: #ff5a5f; color: #fff; border-color: #ff5a5f; }
 
+.sortbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 2px 28px 6px;
+  color: #bbb;
+  font-size: 13px;
+}
+.sort-sel {
+  background: #1a1c2e;
+  color: #eee;
+  border: 1px solid #333;
+  border-radius: 8px;
+  padding: 5px 10px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
@@ -158,6 +212,14 @@ function play(m) {
   justify-content: center;
 }
 .cover .emoji { font-size: 64px; }
+.cover-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+}
 .cover .cat {
   position: absolute;
   top: 10px; left: 10px;
