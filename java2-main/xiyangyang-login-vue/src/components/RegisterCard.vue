@@ -1,8 +1,8 @@
 <template>
   <div class="card">
-    <div class="sheep">🐑</div>
-    <h1>喜羊羊注册</h1>
-    <div class="sub">加入羊村，成为草原的一员！</div>
+    <div class="sheep"><img :src="pandaLogo" alt="熊猫" /></div>
+    <h1>熊猫注册</h1>
+    <div class="sub">加入熊猫园，成为熊猫大家庭的一员！</div>
 
     <form @submit.prevent="onSubmit" novalidate>
       <div class="field">
@@ -81,6 +81,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
+import pandaLogo from '../assets/panda-logo.jpg'
 
 const emit = defineEmits(['register-success', 'switch-login'])
 
@@ -185,7 +186,7 @@ async function onSubmit() {
     const data = await res.json()
     if (data.code === 200) {
       isOk.value = true
-      msg.value = '🎉 注册成功！欢迎 ' + username.value.trim() + ' 加入羊村！'
+      msg.value = '🎉 注册成功！欢迎 ' + username.value.trim() + ' 加入熊猫园！'
       captchaInput.value = ''
       setTimeout(() => {
         emit('register-success', username.value.trim())
@@ -218,10 +219,18 @@ onMounted(refreshCaptcha)
 }
 
 .sheep {
-  font-size: 56px;
   text-align: center;
   line-height: 1;
-  margin-bottom: 4px;
+  margin-bottom: 10px;
+}
+
+.sheep img {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #ffd24d;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, .15);
 }
 
 .card h1 {

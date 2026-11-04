@@ -23,23 +23,9 @@ const EP_DURATION = {
 // 每个分类的 id 前缀（避免不同表 id 撞车）
 const ID_PREFIX = { drama: 'd', kids: 'k', variety: 'v' }
 
-// 封面图片以模块方式引入，并建"后端路径 -> 打包后 URL"的映射，
-// 这样无论数据来自本地 mock 还是后端数据库，封面都能正确加载（开发与生产环境通用）
-import coverSansheng from './assets/covers/sanshengsanshi.jpg'
-import coverXiangmi from './assets/covers/xiangmi.jpg'
-import coverChenxiang from './assets/covers/chenxiang.jpg'
-import coverYujian from './assets/covers/yujian.jpg'
-import coverJiajinchai from './assets/covers/jiajinchai.jpg'
-const COVER_MAP = {
-  '/covers/sanshengsanshi.jpg': coverSansheng,
-  '/covers/xiangmi.jpg': coverXiangmi,
-  '/covers/chenxiang.jpg': coverChenxiang,
-  '/covers/yujian.jpg': coverYujian,
-  '/covers/jiajinchai.jpg': coverJiajinchai
-}
-function resolveCover(path) {
-  return (path && COVER_MAP[path]) || path || ''
-}
+// 封面解析统一走 mediaData.js：优先按后端路径映射，其次按剧名兜底，
+// 这样后端某条数据 cover 为空时也不会退化成纯色占位图
+import { resolveCover } from './mediaData.js'
 
 // 把后端一行记录转换成前端 medias 的一项
 function toMedia(row, category) {
@@ -80,7 +66,7 @@ function toMedia(row, category) {
     epDuration: EP_DURATION[category] || '—',
     emoji: row.emoji,
     gradient: row.gradient,
-    cover: resolveCover(row.cover),
+    cover: resolveCover(row.cover, row.title),
     desc: row.description,
     actors,
     videoUrl: DEMO_VIDEO

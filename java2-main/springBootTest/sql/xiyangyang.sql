@@ -11,7 +11,7 @@
  Target Server Version : 80039 (8.0.39)
  File Encoding         : 65001
 
- Date: 02/11/2026 12:01:04
+ Date: 04/11/2026 09:56:21
 */
 
 SET NAMES utf8mb4;
@@ -62,18 +62,18 @@ CREATE TABLE `drama`  (
 -- ----------------------------
 -- Records of drama
 -- ----------------------------
-INSERT INTO `drama` VALUES (1, '星河彼岸', '科幻,冒险', 2026, 9.2, 9800, '更新至18集', '热播', '🚀', 'linear-gradient(135deg,#6a5bff,#b14dff)', NULL, '地球资源枯竭，一支少年舰队穿越星河寻找新家园，在宇宙尽头邂逅了会发光的文明。', NULL, '2026-10-28 08:50:30');
-INSERT INTO `drama` VALUES (2, '长安十二时辰·重启', '古装,悬疑', 2025, 8.9, 8700, '已完结', '独家', '🏮', 'linear-gradient(135deg,#ff7a59,#ff3d77)', NULL, '盛世长安暗流涌动，一名死囚在十二时辰内必须破解惊天阴谋，拯救一座城。', NULL, '2026-10-28 08:50:30');
-INSERT INTO `drama` VALUES (3, '都市夜行人', '都市,刑侦', 2026, 8.7, 8200, '更新至24集', '热播', '🌃', 'linear-gradient(135deg,#1fd1f9,#2a6cff)', NULL, '霓虹下的城市从不入睡，一支深夜刑侦小队专破那些白天破不了的案子。', NULL, '2026-10-28 08:50:30');
-INSERT INTO `drama` VALUES (4, '山海谣', '仙侠,奇幻', 2025, 9.0, 9100, '已完结', '独家', '⛰️', 'linear-gradient(135deg,#43e97b,#38f9d7)', NULL, '上古神兽苏醒，少女持山海图踏遍九州，在人与妖的边界寻找属于自己的道。', NULL, '2026-10-28 08:50:30');
-INSERT INTO `drama` VALUES (5, '心跳信号', '青春,爱情', 2026, 8.5, 7600, '更新至12集', '热播', '💓', 'linear-gradient(135deg,#ff6ec4,#7873f5)', NULL, '校园电台的午夜节目把两个陌生人连在一起，每一次心跳都是未说出口的告白。', NULL, '2026-10-28 08:50:30');
-INSERT INTO `drama` VALUES (6, '大江东去', '年代,励志', 2024, 9.1, 9500, '已完结', '经典', '🌊', 'linear-gradient(135deg,#f6d365,#fda085)', NULL, '改革开放浪潮中，一家三代人从摆地摊到做实业，写就一曲大江东去的奋斗长歌。', NULL, '2026-10-28 08:50:30');
-INSERT INTO `drama` VALUES (7, '机甲纪元', '科幻,动作', 2026, 8.8, 8900, '更新至20集', '热播', '🤖', 'linear-gradient(135deg,#30cfd0,#330867)', NULL, '人类与AI共驾机甲迎战外星舰队，每一次出击都是文明存续的赌注。', NULL, '2026-10-28 08:50:30');
-INSERT INTO `drama` VALUES (8, '人间烟火', '家庭,温情', 2025, 8.6, 7400, '已完结', '治愈', '🍲', 'linear-gradient(135deg,#ffb347,#ffcc33)', NULL, '一条老街、一家小馆、几户人家，最平凡的一日三餐里藏着最戳心的温柔。', NULL, '2026-10-28 08:50:30');
-INSERT INTO `drama` VALUES (9, '暗夜追凶', '悬疑,推理', 2026, 9.3, 9900, '更新至16集', '热播', '🔦', 'linear-gradient(135deg,#0f2027,#2c5364)', NULL, '一桩陈年旧案重启，天才侧写师与冷面刑警联手，在谎言森林里追出真凶。', NULL, '2026-10-28 08:50:30');
-INSERT INTO `drama` VALUES (10, '风起陇西·新章', '历史,权谋', 2025, 8.9, 8500, '已完结', '独家', '📜', 'linear-gradient(135deg,#c79081,#dfa579)', NULL, '三国暗战，谍影重重，一名小卒在刀光剑影的权谋棋局中左右着天下大势。', NULL, '2026-10-28 08:50:30');
-INSERT INTO `drama` VALUES (11, '甜野之恋', '田园,治愈', 2026, 8.4, 7100, '更新至10集', '热播', '🌿', 'linear-gradient(135deg,#a8e063,#56ab2f)', NULL, '逃离都市的女孩在山谷开起民宿，与一位沉默的护林员慢炖出甜野味的爱情。', NULL, '2026-10-28 08:50:30');
-INSERT INTO `drama` VALUES (12, '赛博长安', '科幻,古风', 2026, 9.0, 9300, '更新至22集', '热播', '🌐', 'linear-gradient(135deg,#ee0979,#ff6a00)', NULL, '大唐长安装上霓虹与义体，侠客以代码为剑，在赛博盛世的灯海里快意恩仇。', NULL, '2026-10-28 08:50:30');
+INSERT INTO `drama` VALUES (1, '白月梵星', '古装,奇幻,爱情', 2025, 9.2, 9800, '40集', '热播', '🌙', 'linear-gradient(135deg,#6a5bff,#b14dff)', NULL, '上神之女白烁与妖王梵樾从针锋相对到并肩作战，携手守护苍生的东方奇幻爱情。', NULL, '2026-10-28 08:50:30');
+INSERT INTO `drama` VALUES (2, '逐玉', '古装,传奇,权谋', 2026, 8.9, 8700, '40集', '独家', '♟️', 'linear-gradient(135deg,#ff7a59,#ff3d77)', NULL, '将门孤女逐玉执玉而归，在权谋倾轧中以智谋改写命运、守护家国的古装传奇。', NULL, '2026-10-28 08:50:30');
+INSERT INTO `drama` VALUES (3, '卿卿日常', '古装,轻喜,爱情', 2022, 8.7, 8200, '40集', '热播', '🏮', 'linear-gradient(135deg,#1fd1f9,#2a6cff)', NULL, '少女李薇与六少主尹峥先婚后爱，新川大家庭鸡飞狗跳又温情满满的轻喜日常。', NULL, '2026-10-28 08:50:30');
+INSERT INTO `drama` VALUES (4, '星汉灿烂', '古装,爱情,成长', 2022, 9.0, 9100, '56集', '独家', '⭐', 'linear-gradient(135deg,#43e97b,#38f9d7)', NULL, '留守少女程少商在缺爱中倔强成长，与少年将军凌不疑双向救赎、共赴家国。', NULL, '2026-10-28 08:50:30');
+INSERT INTO `drama` VALUES (5, '长歌行', '古装,传奇,家国', 2021, 8.5, 7600, '49集', '热播', '🐎', 'linear-gradient(135deg,#ff6ec4,#7873f5)', NULL, '公主李长歌女扮男装流亡草原，在家国与恩仇之间坚守大义、终成传奇。', NULL, '2026-10-28 08:50:30');
+INSERT INTO `drama` VALUES (6, '临江仙', '古装,仙侠,爱情', 2025, 9.1, 9500, '40集', '经典', '🌊', 'linear-gradient(135deg,#f6d365,#fda085)', NULL, '凡人江辞与上仙临江仙两世纠缠，一场跨越身份与生死的仙凡虐恋。', NULL, '2026-10-28 08:50:30');
+INSERT INTO `drama` VALUES (7, '许我耀眼', '都市,爱情,励志', 2025, 8.8, 8900, '32集', '热播', '✨', 'linear-gradient(135deg,#30cfd0,#330867)', NULL, '都市里两个不完美的年轻人相遇，彼此照亮、互相成就，许下耀眼的未来。', NULL, '2026-10-28 08:50:30');
+INSERT INTO `drama` VALUES (8, '花千骨', '古装,仙侠,虐恋', 2015, 8.6, 7400, '50集', '经典', '🌸', 'linear-gradient(135deg,#ffb347,#ffcc33)', NULL, '天煞孤星花千骨拜入长留仙山，与尊上白子画一段虐彻心扉的师徒之恋。', NULL, '2026-10-28 08:50:30');
+INSERT INTO `drama` VALUES (9, '长月烬明', '古装,仙侠,奇幻', 2023, 9.3, 9900, '40集', '热播', '🌘', 'linear-gradient(135deg,#0f2027,#2c5364)', NULL, '上古魔神澹台烬生而无欢，神女黎苏苏逆时救世，救赎与宿命交织的仙侠史诗。', NULL, '2026-10-28 08:50:30');
+INSERT INTO `drama` VALUES (10, '子夜归', '古装,悬疑,权谋', 2026, 8.9, 8500, '40集', '独家', '🕯️', 'linear-gradient(135deg,#c79081,#dfa579)', NULL, '子夜时分迷局重重，少年们在权谋与悬案中抽丝剥茧，寻回真相与本心。', NULL, '2026-10-28 08:50:30');
+INSERT INTO `drama` VALUES (11, '老九门', '民国,悬疑,冒险', 2016, 8.4, 7100, '48集', '热播', '🔑', 'linear-gradient(135deg,#a8e063,#56ab2f)', NULL, '民国长沙九门提督守秘镇邪，张大佛爷率众深入地下，揭开百年悬疑。', NULL, '2026-10-28 08:50:30');
+INSERT INTO `drama` VALUES (12, '且试天下', '古装,武侠,权谋', 2022, 9.0, 9300, '40集', '热播', '⚔️', 'linear-gradient(135deg,#ee0979,#ff6a00)', NULL, '黑丰息与白风夕江湖与庙堂双线博弈，棋逢对手、强强联手共定天下。', NULL, '2026-10-28 08:50:30');
 INSERT INTO `drama` VALUES (13, '三生三世十里桃花', '古装,仙侠,爱情', 2017, 9.2, 9900, '58集', '经典', '🌸', 'linear-gradient(135deg,#ff9ed2,#ff5e9c)', '/covers/sanshengsanshi.jpg', '青丘白浅与九重天太子夜华历经三生三世的爱恨纠缠，最终打破宿命相守。', '[{\"name\":\"杨幂\",\"role\":\"白浅 / 素素 / 司音\",\"emoji\":\"🦊\",\"bio\":\"青丘女君，四海八荒第一绝色，与夜华历经三生三世终成眷属。\"},{\"name\":\"赵又廷\",\"role\":\"夜华 / 墨渊\",\"emoji\":\"🐉\",\"bio\":\"九重天太子，深情隐忍，为白浅甘愿付出一切。\"},{\"name\":\"迪丽热巴\",\"role\":\"白凤九\",\"emoji\":\"🦊\",\"bio\":\"青丘九尾红狐，灵动俏皮，痴情守候东华帝君。\"},{\"name\":\"张智尧\",\"role\":\"折颜\",\"emoji\":\"🍑\",\"bio\":\"开天辟地第一只火凤凰，种十里桃林，善酿酒行医。\"},{\"name\":\"高伟光\",\"role\":\"东华帝君\",\"emoji\":\"👑\",\"bio\":\"上古神祇，曾经的天地共主，气势威严心系六界。\"}]', '2026-10-28 09:43:21');
 INSERT INTO `drama` VALUES (14, '香蜜沉沉烬如霜', '古装,仙侠,爱情', 2018, 9.0, 9700, '63集', '经典', '🔥', 'linear-gradient(135deg,#ff7a59,#ff3d77)', '/covers/xiangmi.jpg', '花神之女锦觅吞下陨丹断情绝爱，与天帝之子旭凤三世轮回的恩怨痴缠。', '[{\"name\":\"杨紫\",\"role\":\"锦觅\",\"emoji\":\"🍑\",\"bio\":\"花神之女，天真烂漫，吞陨丹断情绝爱，最终为爱苏醒。\"},{\"name\":\"邓伦\",\"role\":\"旭凤\",\"emoji\":\"🔥\",\"bio\":\"天帝之子火神，深情专一，为锦觅甘堕魔道。\"},{\"name\":\"罗云熙\",\"role\":\"润玉\",\"emoji\":\"🌙\",\"bio\":\"天帝长子夜神，温润如玉却因爱生恨走入歧途。\"},{\"name\":\"陈钰琪\",\"role\":\"鎏英\",\"emoji\":\"⚔️\",\"bio\":\"魔界公主，英姿飒爽，与奇鸢虐恋动人。\"}]', '2026-10-28 09:43:21');
 INSERT INTO `drama` VALUES (15, '传闻中的陈芊芊', '古装,爱情,喜剧', 2020, 8.0, 9000, '24集', '经典', '🌹', 'linear-gradient(135deg,#ff6ec4,#ff9a3c)', NULL, '七流编剧陈小千穿进自己写的剧本，变成活不过三集的炮灰三公主，逆天改命。', '[{\"name\":\"赵露思\",\"role\":\"陈芊芊 / 陈小千\",\"emoji\":\"🌹\",\"bio\":\"误入自己剧本的三公主，古灵精怪，逆天改命。\"},{\"name\":\"丁禹兮\",\"role\":\"韩烁\",\"emoji\":\"🐯\",\"bio\":\"玄虎城少城主，腹黑深情，与芊芊先婚后爱。\"},{\"name\":\"盛英豪\",\"role\":\"裴恒\",\"emoji\":\"🌿\",\"bio\":\"花垣城司学，温润如玉、深情隐忍。\"},{\"name\":\"周紫馨\",\"role\":\"陈楚楚\",\"emoji\":\"🍃\",\"bio\":\"花垣城二公主，端庄善良却因嫉妒迷失。\"}]', '2026-10-28 09:43:21');
@@ -127,7 +127,7 @@ CREATE TABLE `login_record`  (
   `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '录入时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_login_time`(`login_time` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 20 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户登录记录表（用于统计登录人数/次数）' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 26 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户登录记录表（用于统计登录人数/次数）' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of login_record
@@ -151,6 +151,12 @@ INSERT INTO `login_record` VALUES (16, 'xx', '2026-11-02 11:45:46', '2026-11-02 
 INSERT INTO `login_record` VALUES (17, 'xiyangyang', '2026-11-02 11:47:25', '2026-11-02 11:47:25');
 INSERT INTO `login_record` VALUES (18, 'xx', '2026-11-02 11:51:33', '2026-11-02 11:51:33');
 INSERT INTO `login_record` VALUES (19, 'xx', '2026-11-02 11:53:24', '2026-11-02 11:53:24');
+INSERT INTO `login_record` VALUES (20, 'xx', '2026-11-04 08:34:41', '2026-11-04 08:34:41');
+INSERT INTO `login_record` VALUES (21, 'xx', '2026-11-04 08:46:36', '2026-11-04 08:46:36');
+INSERT INTO `login_record` VALUES (22, 'xx', '2026-11-04 08:53:00', '2026-11-04 08:53:00');
+INSERT INTO `login_record` VALUES (23, 'xx', '2026-11-04 08:59:20', '2026-11-04 08:59:20');
+INSERT INTO `login_record` VALUES (24, 'xx', '2026-11-04 09:08:42', '2026-11-04 09:08:42');
+INSERT INTO `login_record` VALUES (25, 'xx', '2026-11-04 09:49:35', '2026-11-04 09:49:35');
 
 -- ----------------------------
 -- Table structure for user

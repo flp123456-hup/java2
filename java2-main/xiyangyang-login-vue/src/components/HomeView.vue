@@ -9,10 +9,16 @@
 
     <!-- 顶部导航 + 搜索栏 -->
     <header class="topbar">
-      <div class="logo">🐑 <span>喜羊羊影视</span></div>
+      <div class="logo">🐼 <span>熊猫影视</span></div>
 
       <button class="admin-entry" @click="$emit('open-admin')">🛠 后台管理系统</button>
-      <button class="media-entry" @click="$emit('open-media')">🎬 影视中心</button>
+
+      <!-- 功能栏：电视剧 / 少儿 / 综艺 分类入口 -->
+      <div class="func-bar">
+        <button class="fn" @click="$emit('open-media')">📺 电视剧</button>
+        <button class="fn" @click="scrollTo('kids')">🧒 少儿</button>
+        <button class="fn" @click="scrollTo('variety')">🎉 综艺</button>
+      </div>
 
       <div class="search-wrap" @mouseleave="showHot = false">
         <div class="search-box" :class="{ active: showHot }">
@@ -27,17 +33,47 @@
           <button class="go" @click="doSearch">搜索</button>
         </div>
 
-        <!-- 搜索栏下拉：热搜 + 榜单直达 -->
+        <!-- 搜索栏下拉：热搜 + 电视剧排行榜 + 热度榜 -->
         <div class="dropdown" v-show="showHot && !keyword.trim()">
           <div class="dd-title">🔥 大家都在搜</div>
           <div class="hot-tags">
             <span v-for="h in hotSearches" :key="h" @click="pickHot(h)">{{ h }}</span>
           </div>
-          <div class="dd-title">🏆 榜单直达</div>
-          <div class="dd-links">
-            <a @click="scrollTo('rank-score')">📺 电视剧排行榜</a>
-            <a @click="scrollTo('rank-hot')">🔥 热度榜</a>
-            <a @click="scrollTo('all')">🎬 全部电视剧</a>
+
+          <!-- 电视剧排行榜（按评分，前 10） -->
+          <div class="dd-rank">
+            <div class="dd-title">🏆 电视剧排行榜 <small>按观众评分</small></div>
+            <ol class="dd-list">
+              <li
+                v-for="(d, i) in scoreRank"
+                :key="'s' + d.id"
+                :class="{ top: i < 3 }"
+                @click="pickRank(d)"
+              >
+                <span class="dd-no" :class="'no' + (i + 1)">{{ i + 1 }}</span>
+                <span class="dd-emoji">{{ d.emoji }}</span>
+                <span class="dd-name">{{ d.title }}</span>
+                <span class="dd-val">⭐ {{ d.score }}</span>
+              </li>
+            </ol>
+          </div>
+
+          <!-- 热度榜（按实时热度，前 10） -->
+          <div class="dd-rank">
+            <div class="dd-title">🔥 热度榜 <small>按实时热度值</small></div>
+            <ol class="dd-list">
+              <li
+                v-for="(d, i) in hotRank"
+                :key="'h' + d.id"
+                :class="{ top: i < 3 }"
+                @click="pickRank(d)"
+              >
+                <span class="dd-no" :class="'no' + (i + 1)">{{ i + 1 }}</span>
+                <span class="dd-emoji">{{ d.emoji }}</span>
+                <span class="dd-name">{{ d.title }}</span>
+                <span class="dd-val">🔥 {{ d.hot }}</span>
+              </li>
+            </ol>
           </div>
         </div>
       </div>
@@ -65,7 +101,9 @@
             @click="open(d)"
           >
             <div class="badge" v-if="d.status">{{ d.status }}</div>
-            <div class="emoji">{{ d.emoji }}</div>
+            <img v-if="d.cover" class="hc-cover" :src="d.cover" :alt="d.title" />
+            <i v-if="d.cover" class="hc-shade"></i>
+            <div class="emoji" v-if="!d.cover">{{ d.emoji }}</div>
             <div class="hc-title">{{ d.title }}</div>
             <div class="hc-meta">
               <span class="score">⭐ {{ d.score }}</span>
@@ -86,7 +124,10 @@
             :style="{ '--g': d.gradient }"
             @click="open(d)"
           >
-            <div class="poster"><span>{{ d.emoji }}</span></div>
+            <div class="poster">
+              <img v-if="d.cover" class="poster-img" :src="d.cover" :alt="d.title" />
+              <span v-else>{{ d.emoji }}</span>
+            </div>
             <div class="info">
               <div class="name">{{ d.title }}</div>
               <div class="tags">
@@ -102,44 +143,6 @@
         <p class="empty" v-if="!filtered.length">没有找到相关电视剧，换个关键词试试～</p>
       </section>
 
-      <!-- 电视剧排行榜（按评分） -->
-      <section class="section" id="rank-score">
-        <h3>🏆 电视剧排行榜 <small>按观众评分</small></h3>
-        <ol class="rank-list">
-          <li
-            v-for="(d, i) in scoreRank"
-            :key="d.id"
-            :class="{ top: i < 3 }"
-            @click="open(d)"
-          >
-            <span class="no" :class="'no' + (i + 1)">{{ i + 1 }}</span>
-            <span class="r-poster" :style="{ background: d.gradient }">{{ d.emoji }}</span>
-            <span class="r-title">{{ d.title }}</span>
-            <span class="r-genre">{{ d.genres.join(' / ') }}</span>
-            <span class="r-score">⭐ {{ d.score }}</span>
-          </li>
-        </ol>
-      </section>
-
-      <!-- 热度榜（按实时热度） -->
-      <section class="section" id="rank-hot">
-        <h3>🔥 热度榜 <small>按实时热度值</small></h3>
-        <ol class="rank-list hot">
-          <li
-            v-for="(d, i) in hotRank"
-            :key="d.id"
-            :class="{ top: i < 3 }"
-            @click="open(d)"
-          >
-            <span class="no" :class="'no' + (i + 1)">{{ i + 1 }}</span>
-            <span class="r-poster" :style="{ background: d.gradient }">{{ d.emoji }}</span>
-            <span class="r-title">{{ d.title }}</span>
-            <span class="r-genre">{{ d.genres.join(' / ') }}</span>
-            <span class="r-hot">🔥 {{ d.hot }}</span>
-          </li>
-        </ol>
-      </section>
-
       <!-- 全部电视剧 -->
       <section class="section" id="all">
         <h3>🎬 全部电视剧 <small>({{ dramas.length }} 部)</small></h3>
@@ -151,7 +154,10 @@
             :style="{ '--g': d.gradient }"
             @click="open(d)"
           >
-            <div class="poster"><span>{{ d.emoji }}</span></div>
+            <div class="poster">
+              <img v-if="d.cover" class="poster-img" :src="d.cover" :alt="d.title" />
+              <span v-else>{{ d.emoji }}</span>
+            </div>
             <div class="info">
               <div class="name">{{ d.title }}</div>
               <div class="tags">
@@ -165,9 +171,69 @@
           </div>
         </div>
       </section>
+
+      <!-- 少儿专区 -->
+      <section class="section" id="kids">
+        <h3>🧒 少儿专区 <small>动画 · 亲子 · 启蒙（{{ kidsMedia.length }} 部）</small></h3>
+        <div class="grid">
+          <div
+            class="card"
+            v-for="m in kidsMedia"
+            :key="m.id"
+            :style="{ '--g': m.gradient }"
+            @click="open(m)"
+          >
+            <div class="poster">
+              <img v-if="m.cover" class="poster-img" :src="m.cover" :alt="m.title" />
+              <span v-else>{{ m.emoji }}</span>
+            </div>
+            <div class="info">
+              <div class="name">{{ m.title }}</div>
+              <div class="tags">
+                <span v-for="t in m.genres" :key="t">{{ t }}</span>
+              </div>
+              <div class="stat">
+                <span class="score">📅 {{ m.year }}</span>
+                <span class="hot">📺 {{ m.episodes }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="empty" v-if="!kidsMedia.length">少儿内容正在筹备，敬请期待～</p>
+      </section>
+
+      <!-- 综艺专区 -->
+      <section class="section" id="variety">
+        <h3>🎉 综艺专区 <small>真人秀 · 音乐 · 访谈（{{ varietyMedia.length }} 部）</small></h3>
+        <div class="grid">
+          <div
+            class="card"
+            v-for="m in varietyMedia"
+            :key="m.id"
+            :style="{ '--g': m.gradient }"
+            @click="open(m)"
+          >
+            <div class="poster">
+              <img v-if="m.cover" class="poster-img" :src="m.cover" :alt="m.title" />
+              <span v-else>{{ m.emoji }}</span>
+            </div>
+            <div class="info">
+              <div class="name">{{ m.title }}</div>
+              <div class="tags">
+                <span v-for="t in m.genres" :key="t">{{ t }}</span>
+              </div>
+              <div class="stat">
+                <span class="score">📅 {{ m.year }}</span>
+                <span class="hot">📺 {{ m.episodes }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="empty" v-if="!varietyMedia.length">综艺内容正在筹备，敬请期待～</p>
+      </section>
     </main>
 
-    <footer class="foot">🌌 喜羊羊影视 · 与时俱进，陪你追剧到天亮</footer>
+    <footer class="foot">🌌 熊猫影视 · 与时俱进，陪你追剧到天亮</footer>
 
     <!-- 电视剧 播放 / 详情 弹窗 -->
     <div class="mask" v-if="active" @click.self="closeDrama">
@@ -175,7 +241,10 @@
         <button class="close" @click="closeDrama">✕</button>
 
         <div class="pm-head">
-          <div class="pm-poster">{{ active.emoji }}</div>
+          <div class="pm-poster">
+            <img v-if="active.cover" class="pm-cover" :src="active.cover" :alt="active.title" />
+            <span v-else>{{ active.emoji }}</span>
+          </div>
           <div class="pm-title">
             <h2>{{ active.title }}</h2>
             <div class="m-tags">
@@ -183,8 +252,8 @@
               <span class="st">{{ active.status }}</span>
             </div>
             <div class="m-stat">
-              <span>⭐ {{ active.score }}</span>
-              <span>🔥 {{ active.hot }}</span>
+              <span v-if="typeof active.score === 'number'">⭐ {{ active.score }}</span>
+              <span v-if="typeof active.hot === 'number'">🔥 {{ active.hot }}</span>
               <span>📅 {{ active.year }}</span>
               <span>📺 {{ active.episodes }}</span>
             </div>
@@ -241,20 +310,46 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
+import { medias, resolveCover, COVER_BY_TITLE } from '../mediaData.js'
+import { loadKids, loadVariety } from '../mediaApi.js'
 
 defineProps({ username: String })
 defineEmits(['logout', 'open-admin', 'open-media'])
 
 // 与时俱进的电视剧（Mock 数据，作为兜底；后端可用时会被真实数据覆盖）
 const dramas = ref([
-  { id: 1, title: '三生三世十里桃花', genres: ['古装', '仙侠', '爱情'], year: 2017, score: 8.2, hot: 9800, episodes: '58集', status: '经典', emoji: '🌸', gradient: 'linear-gradient(135deg,#ff9a9e,#fad0c4)', desc: '青丘女君白浅与九重天太子夜华历经三世情缘，前世今生纠缠不绝的仙侠爱情故事。' },
-  { id: 2, title: '因为遇见你', genres: ['都市', '励志', '情感'], year: 2017, score: 7.4, hot: 8200, episodes: '46集', status: '热播', emoji: '🧵', gradient: 'linear-gradient(135deg,#a1c4fd,#c2e9fb)', desc: '弃婴张果果被苏州绣艺世家收养，成长为优秀刺绣天才的励志故事。' },
-  { id: 3, title: '嫁金钗', genres: ['古装', '甜宠'], year: 2022, score: 7.0, hot: 7000, episodes: '24集', status: '热播', emoji: '💍', gradient: 'linear-gradient(135deg,#f6d365,#fda085)', desc: '古装甜宠题材剧集（简介请按真实情况补充）。' },
-  { id: 4, title: '沉香如故', genres: ['古装', '仙侠'], year: 2023, score: 7.0, hot: 6900, episodes: '40集', status: '热播', emoji: '🌿', gradient: 'linear-gradient(135deg,#84fab0,#8fd3f4)', desc: '古装仙侠题材剧集（简介请按真实情况补充）。' },
-  { id: 5, title: '香蜜沉沉烬如霜', genres: ['古装', '仙侠', '爱情'], year: 2018, score: 8.0, hot: 9500, episodes: '63集', status: '经典', emoji: '🔥', gradient: 'linear-gradient(135deg,#ff6a88,#ff99ac)', desc: '花神之女锦觅与天帝之子旭凤跨越生死、历经劫难的仙侠虐恋。' }
+  { id: 1, title: '三生三世十里桃花', genres: ['古装', '仙侠', '爱情'], year: 2017, score: 8.2, hot: 9800, episodes: '58集', status: '经典', emoji: '🌸', gradient: 'linear-gradient(135deg,#ff9a9e,#fad0c4)', cover: COVER_BY_TITLE['三生三世十里桃花'], desc: '青丘女君白浅与九重天太子夜华历经三世情缘，前世今生纠缠不绝的仙侠爱情故事。' },
+  { id: 2, title: '因为遇见你', genres: ['都市', '励志', '情感'], year: 2017, score: 7.4, hot: 8200, episodes: '46集', status: '热播', emoji: '🧵', gradient: 'linear-gradient(135deg,#a1c4fd,#c2e9fb)', cover: COVER_BY_TITLE['因为遇见你'], desc: '弃婴张果果被苏州绣艺世家收养，成长为优秀刺绣天才的励志故事。' },
+  { id: 3, title: '嫁金钗', genres: ['古装', '甜宠'], year: 2022, score: 7.0, hot: 7000, episodes: '24集', status: '热播', emoji: '💍', gradient: 'linear-gradient(135deg,#f6d365,#fda085)', cover: COVER_BY_TITLE['嫁金钗'], desc: '古装甜宠题材剧集（简介请按真实情况补充）。' },
+  { id: 4, title: '沉香如故', genres: ['古装', '仙侠'], year: 2023, score: 7.0, hot: 6900, episodes: '40集', status: '热播', emoji: '🌿', gradient: 'linear-gradient(135deg,#84fab0,#8fd3f4)', cover: COVER_BY_TITLE['沉香如故'], desc: '古装仙侠题材剧集（简介请按真实情况补充）。' },
+  { id: 5, title: '香蜜沉沉烬如霜', genres: ['古装', '仙侠', '爱情'], year: 2018, score: 8.0, hot: 9500, episodes: '63集', status: '经典', emoji: '🔥', gradient: 'linear-gradient(135deg,#ff6a88,#ff99ac)', cover: COVER_BY_TITLE['香蜜沉沉烬如霜'], desc: '花神之女锦觅与天帝之子旭凤跨越生死、历经劫难的仙侠虐恋。' },
+  { id: 6, title: '后浪', genres: ['都市', '现实', '励志'], year: 2023, score: 7.8, hot: 9200, episodes: '40集', status: '经典', emoji: '🌊', gradient: 'linear-gradient(135deg,#43cea2,#185a9d)', cover: COVER_BY_TITLE['后浪'], desc: '中医药大学教授任新正辞职创办中医传承班，带领各行业学生传承中医药文化。' }
 ])
 
-const hotSearches = ['暗夜追凶', '赛博长安', '科幻', '热播', '山海谣', '都市夜行人']
+const hotSearches = ['长月烬明', '且试天下', '古装', '热播', '星汉灿烂', '卿卿日常']
+
+// 少儿 / 综艺：初始用 mediaData 演示数据兜底，后端可用时会被真实数据覆盖
+const kidsMedia = ref(medias.filter(m => m.category === 'kids'))
+const varietyMedia = ref(medias.filter(m => m.category === 'variety'))
+
+// 把 mediaData / 后端返回的少儿、综艺条目，规整成首页卡片与弹窗需要的格式
+function toHome(m) {
+  return {
+    id: m.id,
+    title: m.title,
+    genres: Array.isArray(m.genres) ? m.genres : String(m.genres || '').split(',').filter(Boolean),
+    year: m.year,
+    score: m.score ?? '—',
+    hot: m.hot ?? '—',
+    episodes: (m.episodes != null ? m.episodes : '') + (m.epUnit || ''),
+    status: m.status || '',
+    emoji: m.emoji || '🎬',
+    gradient: m.gradient || 'linear-gradient(135deg,#7b8cff,#b14dff)',
+    desc: m.desc || m.description || '',
+    cast: Array.isArray(m.actors) ? m.actors : (m.cast || []),
+    cover: resolveCover(m.cover, m.title)
+  }
+}
 
 const keyword = ref('')
 const showHot = ref(false)
@@ -298,20 +393,30 @@ function normalize(list) {
     emoji: d.emoji,
     gradient: d.gradient,
     desc: d.description,
-    cast: parseCast(d.cast)
+    cast: parseCast(d.cast),
+    cover: resolveCover(d.cover, d.title)
   }))
 }
 
-// 页面加载时优先从后端拉取真实电视剧数据，失败则保留 Mock 兜底
+// 页面加载时优先从后端拉取真实数据，失败则保留 Mock 兜底
 onMounted(async () => {
   try {
-    const res = await fetch('/api/drama/list')
+    const res = await fetch('/api/drama')
     const data = await res.json()
     if (data.code === 200 && Array.isArray(data.data) && data.data.length) {
       dramas.value = normalize(data.data)
     }
   } catch (e) {
     // 后端未启动：维持 Mock 数据，首页照常展示
+  }
+
+  // 少儿 / 综艺：后端可用时拉取真实数据覆盖，失败则保留 mediaData 演示数据
+  try {
+    const [k, v] = await Promise.all([loadKids(), loadVariety()])
+    if (k.length) kidsMedia.value = k.map(toHome)
+    if (v.length) varietyMedia.value = v.map(toHome)
+  } catch (e) {
+    // 后端未启动：维持 mediaData 演示数据，少儿 / 综艺照常展示
   }
 })
 
@@ -325,12 +430,23 @@ function pickHot(h) {
   showHot.value = false
 }
 
-function open(d) {
+// 搜索下拉里点击排行榜条目：直接打开详情并收起下拉
+function pickRank(d) {
+  open(d)
+  showHot.value = false
+}
+
+function open(m) {
   // 规整成带 cast 数组的对象，打开播放 / 详情弹窗
+  // 兼容两种数据：电视剧（cast / score / hot）与少儿 / 综艺（actors，可能无评分）
   active.value = {
-    ...d,
-    genres: Array.isArray(d.genres) ? d.genres : (d.genres || '').split(',').filter(Boolean),
-    cast: (typeof d.cast === 'string') ? parseCast(d.cast) : (d.cast || [])
+    ...m,
+    genres: Array.isArray(m.genres) ? m.genres : (m.genres || '').split(',').filter(Boolean),
+    cast: Array.isArray(m.actors) ? m.actors : (typeof m.cast === 'string' ? parseCast(m.cast) : (m.cast || [])),
+    episodes: (m.episodes != null ? m.episodes : '') + (m.epUnit || ''),
+    score: m.score ?? '—',
+    hot: m.hot ?? '—',
+    cover: m.cover || ''
   }
   tab.value = 'cast'
   isPlaying.value = false
@@ -514,17 +630,23 @@ function shootStyle(n) {
   transition: background .2s, transform .1s;
 }
 .admin-entry:hover { background: rgba(255, 110, 196, .3); }
-.media-entry {
-  padding: 7px 16px;
+.admin-entry:active { transform: scale(.97); }
+
+/* 功能栏：电视剧 / 少儿 / 综艺 分类入口 */
+.func-bar { display: flex; align-items: center; gap: 8px; }
+.fn {
+  padding: 7px 14px;
   border: 1px solid rgba(255,255,255,.35);
   border-radius: 20px;
-  background: rgba(255,255,255,.12);
+  background: rgba(255,255,255,.10);
   color: #fff;
   font-size: 13px;
   cursor: pointer;
+  white-space: nowrap;
+  transition: background .2s, transform .1s;
 }
-.media-entry:hover { background: rgba(120, 200, 255, .3); }
-.admin-entry:active { transform: scale(.97); }
+.fn:hover { background: rgba(123,140,255,.32); }
+.fn:active { transform: scale(.97); }
 
 .search-wrap { position: relative; flex: 1; max-width: 560px; margin: 0 auto; }
 .search-box {
@@ -568,6 +690,8 @@ function shootStyle(n) {
   border-radius: 14px;
   padding: 14px 16px;
   box-shadow: 0 18px 40px rgba(0,0,0,.5);
+  max-height: 72vh;
+  overflow-y: auto;
 }
 .dd-title { font-size: 13px; color: #9aa3c7; margin: 6px 0 8px; }
 .hot-tags { display: flex; flex-wrap: wrap; gap: 8px; }
@@ -588,6 +712,32 @@ function shootStyle(n) {
   padding: 4px 0;
 }
 .dd-links a:hover { color: #fff; }
+
+/* 搜索下拉里的排行榜 */
+.dd-rank { margin-top: 10px; }
+.dd-rank .dd-title { margin-bottom: 6px; }
+.dd-list { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+.dd-list li {
+  display: grid;
+  grid-template-columns: 26px 28px 1fr auto;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 8px;
+  border-radius: 8px;
+  background: rgba(255,255,255,.04);
+  cursor: pointer;
+  transition: background .15s;
+}
+.dd-list li:hover { background: rgba(123,140,255,.18); }
+.dd-list li.top { background: rgba(123,140,255,.12); }
+.dd-no { font-size: 14px; font-weight: 800; text-align: center; color: #9aa3c7; }
+.dd-no.no1 { color: #ffd24d; }
+.dd-no.no2 { color: #d7e1ff; }
+.dd-no.no3 { color: #ff9f5a; }
+.dd-emoji { font-size: 20px; text-align: center; }
+.dd-name { font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.dd-val { font-size: 13px; color: #ffd98a; white-space: nowrap; }
+.dd-list li .dd-val { color: #ff8a8a; } /* 热度榜数值用红色调 */
 
 .user { display: flex; align-items: center; gap: 12px; white-space: nowrap; }
 .user .hi { font-size: 14px; color: #cdd5ff; }
@@ -629,6 +779,18 @@ function shootStyle(n) {
   background: rgba(0,0,0,.45); color: #ffe08a; font-weight: 700;
 }
 .hero-card .emoji { font-size: 46px; margin-bottom: auto; }
+/* Hero 有封面时：图铺满 + 底部压暗，保证剧名/数据可读 */
+.hero-card .hc-cover {
+  position: absolute; inset: 0; z-index: 0;
+  width: 100%; height: 100%; object-fit: cover;
+}
+.hero-card .hc-shade {
+  position: absolute; inset: 0; z-index: 1;
+  background: linear-gradient(180deg, rgba(0,0,0,0) 25%, rgba(5,7,26,.55) 62%, rgba(5,7,26,.92) 100%);
+}
+.hero-card .badge,
+.hero-card .hc-title,
+.hero-card .hc-meta { z-index: 2; }
 .hero-card .hc-title { font-size: 16px; font-weight: 700; text-shadow: 0 2px 8px rgba(0,0,0,.6); }
 .hero-card .hc-meta { display: flex; gap: 12px; font-size: 13px; margin-top: 6px; text-shadow: 0 1px 4px rgba(0,0,0,.7); }
 
@@ -651,10 +813,17 @@ function shootStyle(n) {
   box-shadow: 0 14px 34px rgba(123,140,255,.4);
 }
 .card .poster {
-  height: 120px;
+  position: relative;
+  aspect-ratio: 3 / 4;
   display: flex; align-items: center; justify-content: center;
   font-size: 44px;
   background: var(--g);
+  overflow: hidden;
+}
+.poster-img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
 }
 .card .info { padding: 10px 12px 12px; }
 .card .name { font-size: 15px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -740,7 +909,9 @@ function shootStyle(n) {
   width: 76px; height: 76px; border-radius: 14px; flex: none;
   display: flex; align-items: center; justify-content: center; font-size: 40px;
   background: var(--g);
+  overflow: hidden;
 }
+.pm-cover { width: 100%; height: 100%; object-fit: cover; display: block; }
 .pm-title h2 { font-size: 22px; margin-bottom: 8px; }
 .m-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
 .m-tags span {

@@ -10,10 +10,41 @@
 
 // 封面图片以模块方式引入（Vite 会处理路径与打包，开发与生产环境都稳定）
 import coverSansheng from './assets/covers/sanshengsanshi.jpg'
-import coverXiangmi from './assets/covers/xiangmi.jpg'
+import coverXiangmi from './assets/covers/xiangmi.webp'
 import coverChenxiang from './assets/covers/chenxiang.jpg'
 import coverYujian from './assets/covers/yujian.jpg'
 import coverJiajinchai from './assets/covers/jiajinchai.jpg'
+import coverHoulang from './assets/covers/houlang.jpg'
+
+// 后端数据库里的 cover 字段是 "/covers/xxx.jpg" 这样的路径，
+// 这里建"后端路径 -> 打包后 URL"的映射，开发 / 生产环境都能正确加载
+export const COVER_MAP = {
+  '/covers/sanshengsanshi.jpg': coverSansheng,
+  '/covers/xiangmi.jpg': coverXiangmi,
+  '/covers/xiangmi.webp': coverXiangmi,
+  '/covers/chenxiang.jpg': coverChenxiang,
+  '/covers/yujian.jpg': coverYujian,
+  '/covers/jiajinchai.jpg': coverJiajinchai,
+  '/covers/houlang.jpg': coverHoulang
+}
+
+// 剧名 -> 封面：后端某条数据 cover 为空时，按剧名兜底，
+// 保证"该有封面的剧一定会显示封面"
+export const COVER_BY_TITLE = {
+  '三生三世十里桃花': coverSansheng,
+  '香蜜沉沉烬如霜': coverXiangmi,
+  '沉香如故': coverChenxiang,
+  '沉香如屑·沉香重华': coverChenxiang,
+  '沉香如屑': coverChenxiang,
+  '嫁金钗': coverJiajinchai,
+  '后浪': coverHoulang,
+  '因为遇见你': coverYujian
+}
+
+// 统一解析封面：优先按后端路径映射，其次按剧名兜底
+export function resolveCover(path, title) {
+  return COVER_MAP[path] || (path || '') || COVER_BY_TITLE[title] || ''
+}
 
 // 公开版权示例视频（Big Buck Bunny，Google 公共示例桶，CC 授权）
 const DEMO_VIDEO =
@@ -120,7 +151,27 @@ export const medias = [
     ],
     videoUrl: DEMO_VIDEO
   },
-
+  {
+    id: 'd6',
+    category: 'drama',
+    title: '后浪',
+    year: 2023,
+    genres: ['都市', '现实', '励志'],
+    episodes: 40,
+    epDuration: EP_DURATION,
+    emoji: '🌊',
+    gradient: 'linear-gradient(135deg,#43cea2,#185a9d)',
+    cover: coverHoulang,
+    desc: '中医药大学教授任新正辞职创办中医传承班，带领各行业学生传承中医药文化。',
+    actors: [
+      { name: '吴刚', role: '任新正', bio: '中医药大学教授，辞职创办中医传承班广传中医。' },
+      { name: '赵露思', role: '孙头头', bio: '混不吝的传承班开心果，身世成谜的侠气女孩。' },
+      { name: '罗一舟', role: '任天真', bio: '任新正之子，成长于中医世家，严谨有血性。' },
+      { name: '张萌', role: '杨小红', bio: '精英律师，意外后走进传承班重寻人生。' },
+      { name: '江珊', role: '宋灵兰', bio: '名医，任新正事业的最佳同路人。' }
+    ],
+    videoUrl: DEMO_VIDEO
+  },
   // ===================== 少儿 =====================
   {
     id: 'k1',

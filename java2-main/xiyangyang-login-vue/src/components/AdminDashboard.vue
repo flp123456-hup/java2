@@ -1,7 +1,7 @@
 <template>
   <div class="dashboard">
     <header class="topbar">
-      <div class="brand">🐑 喜羊羊后台管理系统</div>
+      <div class="brand">🐼 熊猫后台管理系统</div>
       <button class="logout" @click="$emit('logout')">退出后台</button>
     </header>
 

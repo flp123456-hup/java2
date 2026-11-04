@@ -1,8 +1,8 @@
 <template>
   <div class="card">
-    <div class="sheep">🐑</div>
-    <h1>喜羊羊登录</h1>
-    <div class="sub">青青草原欢迎你，请登录吧！</div>
+    <div class="sheep"><img :src="pandaLogo" alt="熊猫" /></div>
+    <h1>熊猫登录</h1>
+    <div class="sub">熊猫乐园欢迎你，请登录吧！</div>
 
     <form @submit.prevent="onSubmit" novalidate>
       <div class="field">
@@ -36,12 +36,13 @@
       </button>
     </form>
 
-    <div class="foot">还没有账户？<a href="#" @click.prevent="$emit('switch-register')">去羊村注册</a></div>
+    <div class="foot">还没有账户？<a href="#" @click.prevent="$emit('switch-register')">去熊猫园注册</a></div>
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue'
+import pandaLogo from '../assets/panda-logo.jpg'
 
 const emit = defineEmits(['switch-register', 'login-success', 'enter-demo'])
 
@@ -78,7 +79,7 @@ async function onSubmit() {
     const data = await res.json()
     if (data.code === 200) {
       isOk.value = true
-      msg.value = '🎉 登录成功，欢迎 ' + username.value.trim() + ' 来到羊村！'
+      msg.value = '🎉 登录成功，欢迎 ' + username.value.trim() + ' 来到熊猫园！'
       emit('login-success', username.value.trim()) // 通知父组件跳转首页
     } else {
       isOk.value = false
@@ -111,10 +112,18 @@ function enterDemo() {
 }
 
 .sheep {
-  font-size: 56px;
   text-align: center;
   line-height: 1;
-  margin-bottom: 4px;
+  margin-bottom: 10px;
+}
+
+.sheep img {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #ffd24d;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, .15);
 }
 
 .card h1 {

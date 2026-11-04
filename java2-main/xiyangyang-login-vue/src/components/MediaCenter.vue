@@ -1,7 +1,7 @@
 <template>
   <div class="mc">
     <header class="mc-top">
-      <div class="mc-logo">🎬 喜羊羊影视中心</div>
+      <div class="mc-logo">📺 熊猫影视 · 电视剧</div>
       <button class="mc-back" @click="$emit('close')">← 返回首页</button>
     </header>
 
@@ -91,7 +91,7 @@ import VideoPlayer from './VideoPlayer.vue'
 
 defineEmits(['close'])
 
-const active = ref('all')
+const active = ref('drama')
 const sort = ref('hot')
 const detail = ref(null)
 const playing = ref(null)
