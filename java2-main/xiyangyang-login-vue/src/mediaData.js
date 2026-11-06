@@ -40,6 +40,14 @@ import coverXiyangyang from './assets/covers/xiyangyang.jpg'
 import coverHaimian from './assets/covers/haimianbaobao.jpg'
 import coverZhuzhu from './assets/covers/zhuzhuxia.jpg'
 
+// 综艺封面（6 部）
+import coverXiangwang from './assets/covers/xiangwang.webp'
+import coverKuaile from './assets/covers/kuaile.jpg'
+import coverGeshou from './assets/covers/geshou.jpg'
+import coverBenpao from './assets/covers/benpaoba.jpg'
+import coverJixian from './assets/covers/jixian.jpg'
+import coverXianzaichufa from './assets/covers/xianzaichufa.jpg'
+
 // 后端数据库里的 cover 字段是 "/covers/xxx.jpg" 这样的路径，
 // 这里建"后端路径 -> 打包后 URL"的映射，开发 / 生产环境都能正确加载
 export const COVER_MAP = {
@@ -71,7 +79,14 @@ export const COVER_MAP = {
   '/covers/xiaozhupeiji.jpg': coverPeiqi,
   '/covers/xiyangyang.jpg': coverXiyangyang,
   '/covers/haimianbaobao.jpg': coverHaimian,
-  '/covers/zhuzhuxia.jpg': coverZhuzhu
+  '/covers/zhuzhuxia.jpg': coverZhuzhu,
+  // 综艺 6 部
+  '/covers/xiangwang.webp': coverXiangwang,
+  '/covers/kuaile.jpg': coverKuaile,
+  '/covers/geshou.jpg': coverGeshou,
+  '/covers/benpaoba.jpg': coverBenpao,
+  '/covers/jixian.jpg': coverJixian,
+  '/covers/xianzaichufa.jpg': coverXianzaichufa
 }
 
 // 剧名 -> 封面：后端某条数据 cover 为空时，按剧名兜底，
@@ -106,7 +121,14 @@ export const COVER_BY_TITLE = {
   '小猪佩奇': coverPeiqi,
   '喜羊羊与灰太狼': coverXiyangyang,
   '海绵宝宝': coverHaimian,
-  '猪猪侠': coverZhuzhu
+  '猪猪侠': coverZhuzhu,
+  // 综艺 6 部
+  '向往的生活': coverXiangwang,
+  '快乐大本营': coverKuaile,
+  '歌手': coverGeshou,
+  '奔跑吧': coverBenpao,
+  '极限挑战': coverJixian,
+  '现在就出发': coverXianzaichufa
 }
 
 // 统一解析封面：优先按后端路径映射，其次按剧名兜底
@@ -380,6 +402,7 @@ export const medias = [
     epDuration: '约 90 分钟',
     emoji: '🎤',
     gradient: 'linear-gradient(135deg,#fa709a,#fee140)',
+    cover: coverXianzaichufa,
     desc: '（示例条目）户外真人秀综艺。嘉宾阵容与简介请按真实情况补充。',
     actors: [
       { name: '待补充', role: '—', bio: '请在此填写真实嘉宾的公开资料。' }
@@ -396,6 +419,7 @@ export const medias = [
     epDuration: '约 90 分钟',
     emoji: '🏃',
     gradient: 'linear-gradient(135deg,#f857a6,#ff5858)',
+    cover: coverBenpao,
     desc: '国民级户外竞技真人秀，明星分队完成趣味任务，撕名牌名场面频出。',
     actors: [
       { name: '李晨', role: '常驻嘉宾', bio: '“大黑牛”，力量担当，撕名牌高手。' },
@@ -413,6 +437,7 @@ export const medias = [
     epDuration: '约 90 分钟',
     emoji: '🎯',
     gradient: 'linear-gradient(135deg,#0f2027,#2c5364)',
+    cover: coverJixian,
     desc: '男人帮在充满反转的剧情任务中斗智斗勇，“这就是命”成经典梗，烧脑又爆笑。',
     actors: [
       { name: '黄磊', role: '常驻嘉宾', bio: '“神算子”老狐狸，智商担当。' },
@@ -430,6 +455,7 @@ export const medias = [
     epDuration: '约 100 分钟',
     emoji: '🎉',
     gradient: 'linear-gradient(135deg,#ff9a9e,#fecfef)',
+    cover: coverKuaile,
     desc: '陪伴几代人的国民综艺，游戏、访谈、歌舞，周五晚上的快乐源泉。',
     actors: [
       { name: '何炅', role: '主持人', bio: '“何老师”，快乐家族灵魂主持。' },
@@ -447,6 +473,7 @@ export const medias = [
     epDuration: '约 90 分钟',
     emoji: '🏡',
     gradient: 'linear-gradient(135deg,#a8e063,#56ab2f)',
+    cover: coverXiangwang,
     desc: '蘑菇屋里的慢生活，种菜、做饭、招待客人，用烟火气温暖治愈都市人的疲惫。',
     actors: [
       { name: '黄磊', role: '常驻嘉宾', bio: '蘑菇屋“黄小厨”，美食担当。' },
@@ -464,6 +491,7 @@ export const medias = [
     epDuration: '约 120 分钟',
     emoji: '🎙️',
     gradient: 'linear-gradient(135deg,#6a11cb,#2575fc)',
+    cover: coverGeshou,
     desc: '顶尖歌手同台竞演的 Live 音乐综艺，用实力唱腔定义华语乐坛现场水准。',
     actors: [
       { name: '待补充', role: '—', bio: '每季嘉宾阵容不同，请按真实情况补充。' }
