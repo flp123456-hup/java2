@@ -29,6 +29,7 @@ import coverXinghan from './assets/covers/xinghancanlan.jpg'
 import coverChangyue from './assets/covers/changyuejinming.jpg'
 import coverLaojiumen from './assets/covers/laojiumen.jpg'
 import coverZhuyu from './assets/covers/zhuyu.jpg'
+import coverZiye from './assets/covers/ziyegui.jpg'
 
 // 后端数据库里的 cover 字段是 "/covers/xxx.jpg" 这样的路径，
 // 这里建"后端路径 -> 打包后 URL"的映射，开发 / 生产环境都能正确加载
@@ -52,7 +53,8 @@ export const COVER_MAP = {
   '/covers/xinghancanlan.jpg': coverXinghan,
   '/covers/changyuejinming.jpg': coverChangyue,
   '/covers/laojiumen.jpg': coverLaojiumen,
-  '/covers/zhuyu.jpg': coverZhuyu
+  '/covers/zhuyu.jpg': coverZhuyu,
+  '/covers/ziyegui.jpg': coverZiye
 }
 
 // 剧名 -> 封面：后端某条数据 cover 为空时，按剧名兜底，
@@ -78,7 +80,8 @@ export const COVER_BY_TITLE = {
   '星汉灿烂': coverXinghan,
   '长月烬明': coverChangyue,
   '老九门': coverLaojiumen,
-  '逐玉': coverZhuyu
+  '逐玉': coverZhuyu,
+  '子夜归': coverZiye
 }
 
 // 统一解析封面：优先按后端路径映射，其次按剧名兜底

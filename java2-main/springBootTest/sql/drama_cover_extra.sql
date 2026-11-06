@@ -22,6 +22,7 @@ UPDATE drama SET cover='/covers/xinghancanlan.jpg'   WHERE title='星汉灿烂';
 UPDATE drama SET cover='/covers/changyuejinming.jpg' WHERE title='长月烬明';
 UPDATE drama SET cover='/covers/laojiumen.jpg'       WHERE title='老九门';
 UPDATE drama SET cover='/covers/zhuyu.jpg'           WHERE title='逐玉';
+UPDATE drama SET cover='/covers/ziyegui.jpg'         WHERE title='子夜归';
 
 -- 核对结果
 SELECT id, title, cover FROM drama ORDER BY id;
