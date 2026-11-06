@@ -1,8 +1,8 @@
 // ============================================================
 //  影视中心数据（演示用 Mock 数据）
 //  说明：
-//   1. 剧集封面 cover 目前是占位图（渐变 + emoji），不是真实剧照。
-//      拿到授权封面后，把图片放进 src/assets/covers/ 并填 cover 路径即可。
+//   1. 剧集封面 cover：图片放 src/assets/covers/，由 Vite 打包；
+//      同时在下方 COVER_MAP / COVER_BY_TITLE 里登记，后端只存 "/covers/xxx.jpg" 路径即可。
 //   2. videoUrl 用的是公开版权的示例视频（Big Buck Bunny, Creative Commons），
 //      仅作"能播放"演示。正式上线请替换为你有版权的视频源。
 //   3. 演员资料为公开事实信息；不确定阵容的剧已标注"待补充"，请按真实情况填写。
@@ -16,6 +16,20 @@ import coverYujian from './assets/covers/yujian.jpg'
 import coverJiajinchai from './assets/covers/jiajinchai.jpg'
 import coverHoulang from './assets/covers/houlang.jpg'
 
+// 新增 12 部剧的真实封面（图片放在 src/assets/covers/，由 Vite 打包）
+import coverQieshi from './assets/covers/qieshitianxia.jpg'
+import coverLinjiang from './assets/covers/linjiangxian.webp'
+import coverXuwoyaoyan from './assets/covers/xuwoyaoyan.webp'
+import coverHuaqiangu from './assets/covers/huaqiangu.webp'
+import coverBaiyue from './assets/covers/baiyuefanxing.jpg'
+import coverChanggexing from './assets/covers/changgexing.jpg'
+import coverQingqing from './assets/covers/qingqingrichang.jpg'
+import coverChenqianqian from './assets/covers/chenqianqian.jpg'
+import coverXinghan from './assets/covers/xinghancanlan.jpg'
+import coverChangyue from './assets/covers/changyuejinming.jpg'
+import coverLaojiumen from './assets/covers/laojiumen.jpg'
+import coverZhuyu from './assets/covers/zhuyu.jpg'
+
 // 后端数据库里的 cover 字段是 "/covers/xxx.jpg" 这样的路径，
 // 这里建"后端路径 -> 打包后 URL"的映射，开发 / 生产环境都能正确加载
 export const COVER_MAP = {
@@ -25,7 +39,20 @@ export const COVER_MAP = {
   '/covers/chenxiang.jpg': coverChenxiang,
   '/covers/yujian.jpg': coverYujian,
   '/covers/jiajinchai.jpg': coverJiajinchai,
-  '/covers/houlang.jpg': coverHoulang
+  '/covers/houlang.jpg': coverHoulang,
+  // 新增 12 部剧
+  '/covers/qieshitianxia.jpg': coverQieshi,
+  '/covers/linjiangxian.webp': coverLinjiang,
+  '/covers/xuwoyaoyan.webp': coverXuwoyaoyan,
+  '/covers/huaqiangu.webp': coverHuaqiangu,
+  '/covers/baiyuefanxing.jpg': coverBaiyue,
+  '/covers/changgexing.jpg': coverChanggexing,
+  '/covers/qingqingrichang.jpg': coverQingqing,
+  '/covers/chenqianqian.jpg': coverChenqianqian,
+  '/covers/xinghancanlan.jpg': coverXinghan,
+  '/covers/changyuejinming.jpg': coverChangyue,
+  '/covers/laojiumen.jpg': coverLaojiumen,
+  '/covers/zhuyu.jpg': coverZhuyu
 }
 
 // 剧名 -> 封面：后端某条数据 cover 为空时，按剧名兜底，
@@ -38,7 +65,20 @@ export const COVER_BY_TITLE = {
   '沉香如屑': coverChenxiang,
   '嫁金钗': coverJiajinchai,
   '后浪': coverHoulang,
-  '因为遇见你': coverYujian
+  '因为遇见你': coverYujian,
+  // 新增 12 部剧
+  '且试天下': coverQieshi,
+  '临江仙': coverLinjiang,
+  '许我耀眼': coverXuwoyaoyan,
+  '花千骨': coverHuaqiangu,
+  '白月梵星': coverBaiyue,
+  '长歌行': coverChanggexing,
+  '卿卿日常': coverQingqing,
+  '传闻中的陈芊芊': coverChenqianqian,
+  '星汉灿烂': coverXinghan,
+  '长月烬明': coverChangyue,
+  '老九门': coverLaojiumen,
+  '逐玉': coverZhuyu
 }
 
 // 统一解析封面：优先按后端路径映射，其次按剧名兜底
