@@ -31,6 +31,15 @@ import coverLaojiumen from './assets/covers/laojiumen.jpg'
 import coverZhuyu from './assets/covers/zhuyu.jpg'
 import coverZiye from './assets/covers/ziyegui.jpg'
 
+// 少儿动画封面（7 部）
+import coverXiong from './assets/covers/xiongchumo.png'
+import coverBalala from './assets/covers/balala.jpg'
+import coverFeixia from './assets/covers/chaojifeixia.webp'
+import coverPeiqi from './assets/covers/xiaozhupeiji.jpg'
+import coverXiyangyang from './assets/covers/xiyangyang.jpg'
+import coverHaimian from './assets/covers/haimianbaobao.jpg'
+import coverZhuzhu from './assets/covers/zhuzhuxia.jpg'
+
 // 后端数据库里的 cover 字段是 "/covers/xxx.jpg" 这样的路径，
 // 这里建"后端路径 -> 打包后 URL"的映射，开发 / 生产环境都能正确加载
 export const COVER_MAP = {
@@ -54,7 +63,15 @@ export const COVER_MAP = {
   '/covers/changyuejinming.jpg': coverChangyue,
   '/covers/laojiumen.jpg': coverLaojiumen,
   '/covers/zhuyu.jpg': coverZhuyu,
-  '/covers/ziyegui.jpg': coverZiye
+  '/covers/ziyegui.jpg': coverZiye,
+  // 少儿动画 7 部
+  '/covers/xiongchumo.png': coverXiong,
+  '/covers/balala.jpg': coverBalala,
+  '/covers/chaojifeixia.webp': coverFeixia,
+  '/covers/xiaozhupeiji.jpg': coverPeiqi,
+  '/covers/xiyangyang.jpg': coverXiyangyang,
+  '/covers/haimianbaobao.jpg': coverHaimian,
+  '/covers/zhuzhuxia.jpg': coverZhuzhu
 }
 
 // 剧名 -> 封面：后端某条数据 cover 为空时，按剧名兜底，
@@ -81,7 +98,15 @@ export const COVER_BY_TITLE = {
   '长月烬明': coverChangyue,
   '老九门': coverLaojiumen,
   '逐玉': coverZhuyu,
-  '子夜归': coverZiye
+  '子夜归': coverZiye,
+  // 少儿动画 7 部
+  '熊出没': coverXiong,
+  '巴啦啦小魔仙': coverBalala,
+  '超级飞侠': coverFeixia,
+  '小猪佩奇': coverPeiqi,
+  '喜羊羊与灰太狼': coverXiyangyang,
+  '海绵宝宝': coverHaimian,
+  '猪猪侠': coverZhuzhu
 }
 
 // 统一解析封面：优先按后端路径映射，其次按剧名兜底
@@ -226,6 +251,7 @@ export const medias = [
     epDuration: '约 13 分钟',
     emoji: '🐻',
     gradient: 'linear-gradient(135deg,#43e97b,#38f9d7)',
+    cover: coverXiong,
     desc: '森林里熊大、熊二与光头强之间妙趣横生的护林故事，寓教于乐。',
     actors: [
       { name: '熊大', role: '主角（熊）', bio: '聪明勇敢的狗熊哥哥，带领弟弟熊二保护森林。' },
@@ -244,6 +270,7 @@ export const medias = [
     epDuration: '约 13 分钟',
     emoji: '🐑',
     gradient: 'linear-gradient(135deg,#fddb92,#d1fdff)',
+    cover: coverXiyangyang,
     desc: '青青草原上，喜羊羊等小羊与灰太狼之间永不停歇的欢乐较量。',
     actors: [
       { name: '喜羊羊', role: '主角（羊）', bio: '聪明机智的羊村小英雄，总能想出办法化解危机。' },
@@ -261,6 +288,7 @@ export const medias = [
     epDuration: '约 22 分钟',
     emoji: '✨',
     gradient: 'linear-gradient(135deg,#c471f5,#fa71cd)',
+    cover: coverBalala,
     desc: '平凡女孩美琪、美雪结识魔仙小蓝，开启守护正义的魔法冒险。',
     actors: [
       { name: '小蓝', role: '魔仙', bio: '来自魔仙堡的魔仙，负责引导两位人类女孩学习魔法。' },
@@ -278,6 +306,7 @@ export const medias = [
     epDuration: '约 5 分钟',
     emoji: '🐷',
     gradient: 'linear-gradient(135deg,#ffb6c1,#ffdde1)',
+    cover: coverPeiqi,
     desc: '粉色小猪佩奇一家温馨有趣的日常，跳泥坑、过生日，陪伴全球小朋友快乐成长。',
     actors: [
       { name: '佩奇', role: '主角（小猪）', bio: '活泼爱跳泥坑的小猪女孩，有个弟弟乔治。' },
@@ -295,6 +324,7 @@ export const medias = [
     epDuration: '约 13 分钟',
     emoji: '✈️',
     gradient: 'linear-gradient(135deg,#4facfe,#00f2fe)',
+    cover: coverFeixia,
     desc: '会变形的飞机乐迪环游世界送包裹，和伙伴们帮助各地小朋友解决难题，开阔眼界。',
     actors: [
       { name: '乐迪', role: '主角（飞机）', bio: '最快的飞机快递员，每次都能把包裹准时送达。' },
@@ -312,6 +342,7 @@ export const medias = [
     epDuration: '约 15 分钟',
     emoji: '🐭',
     gradient: 'linear-gradient(135deg,#f7971e,#ffd200)',
+    cover: coverZhuzhu,
     desc: '小猪猪猪侠化身超级英雄，凭借勇气与智慧守护童话世界的正义，寓教于乐。',
     actors: [
       { name: '猪猪侠', role: '主角（猪）', bio: '贪吃贪玩却充满正义感的小猪，关键时刻总能挺身而出。' },
@@ -329,6 +360,7 @@ export const medias = [
     epDuration: '约 11 分钟',
     emoji: '🧽',
     gradient: 'linear-gradient(135deg,#fceabb,#f8b500)',
+    cover: coverHaimian,
     desc: '海底比奇堡里，海绵宝宝和派大星一连串无厘头又温暖的爆笑日常，老少皆宜。',
     actors: [
       { name: '海绵宝宝', role: '主角（海绵）', bio: '乐观天真的黄色海绵，最爱抓水母和做蟹黄堡。' },

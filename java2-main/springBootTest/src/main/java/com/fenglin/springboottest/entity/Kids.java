@@ -47,6 +47,9 @@ public class Kids {
     /** 封面渐变色 CSS */
     private String gradient;
 
+    /** 封面图片路径，如 /covers/xxx.jpg，为空则用渐变占位 */
+    private String cover;
+
     /** 简介 */
     private String description;
 
