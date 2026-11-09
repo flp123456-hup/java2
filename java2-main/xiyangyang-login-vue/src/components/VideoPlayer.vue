@@ -6,7 +6,7 @@
           <span class="pemoji">{{ media.emoji }}</span>
           <div>
             <div class="pname">{{ media.title }}</div>
-            <div class="pmeta">{{ currentEp }} / {{ media.episodes }} 集 · {{ media.epDuration }}</div>
+            <div class="pmeta">{{ currentEp }} / {{ media.episodes }} 集 · {{ media.epDuration }}<span v-if="media.openingSong"> · 🎵 片头曲：{{ media.openingSong }}</span></div>
           </div>
         </div>
         <button class="close" @click="$emit('close')">✕</button>
@@ -34,8 +34,11 @@
         >{{ n }}</button>
       </div>
 
-      <p class="tip">
+      <p class="tip" v-if="!media.openingSong">
         ⚠️ 当前为公开版权演示视频（Big Buck Bunny）。正式上线请替换为你有版权的视频源。
+      </p>
+      <p class="tip ok" v-else>
+        🎬 正在播放片头曲《{{ media.openingSong }}》
       </p>
     </div>
   </div>
@@ -126,4 +129,5 @@ const epButtons = computed(() => {
   font-size: 12px;
   margin: 0;
 }
+.tip.ok { color: #6bd089; }
 </style>

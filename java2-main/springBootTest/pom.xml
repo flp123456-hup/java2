@@ -64,10 +64,11 @@
 			<scope>runtime</scope>
 		</dependency>
 
-		<!-- Lombok：自动生成 getter/setter 等样板代码 -->
+		<!-- Lombok：自动生成 getter/setter 等样板代码（锁定新版本以兼容 JDK 27） -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
+			<version>1.18.48</version>
 			<optional>true</optional>
 		</dependency>
 	</dependencies>
@@ -78,6 +79,22 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 
+			</plugin>
+			<!-- JDK 23+ 默认不再从 classpath 隐式运行注解处理器，
+			     必须显式声明 Lombok 并开启 proc=full，否则 @Data 不生效 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<proc>full</proc>
+					<annotationProcessorPaths>
+						<path>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+							<version>1.18.48</version>
+						</path>
+					</annotationProcessorPaths>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>

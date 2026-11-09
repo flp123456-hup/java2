@@ -99,10 +99,22 @@
             :key="d.id"
             :style="{ background: d.gradient }"
             @click="open(d)"
+            @mouseenter="hoveredId = d.id"
+            @mouseleave="hoveredId = null"
           >
             <div class="badge" v-if="d.status">{{ d.status }}</div>
             <img v-if="d.cover" class="hc-cover" :src="d.cover" :alt="d.title" />
             <i v-if="d.cover" class="hc-shade"></i>
+            <video
+              v-if="hoveredId === d.id && d.videoUrl"
+              class="hover-video"
+              :src="d.videoUrl"
+              autoplay
+              muted
+              loop
+              playsinline
+              preload="metadata"
+            ></video>
             <div class="emoji" v-if="!d.cover">{{ d.emoji }}</div>
             <div class="hc-title">{{ d.title }}</div>
             <div class="hc-meta">
@@ -123,10 +135,22 @@
             :key="d.id"
             :style="{ '--g': d.gradient }"
             @click="open(d)"
+            @mouseenter="hoveredId = d.id"
+            @mouseleave="hoveredId = null"
           >
             <div class="poster">
               <img v-if="d.cover" class="poster-img" :src="d.cover" :alt="d.title" />
               <span v-else>{{ d.emoji }}</span>
+              <video
+                v-if="hoveredId === d.id && d.videoUrl"
+                class="hover-video"
+                :src="d.videoUrl"
+                autoplay
+                muted
+                loop
+                playsinline
+                preload="metadata"
+              ></video>
             </div>
             <div class="info">
               <div class="name">{{ d.title }}</div>
@@ -153,10 +177,22 @@
             :key="d.id"
             :style="{ '--g': d.gradient }"
             @click="open(d)"
+            @mouseenter="hoveredId = d.id"
+            @mouseleave="hoveredId = null"
           >
             <div class="poster">
               <img v-if="d.cover" class="poster-img" :src="d.cover" :alt="d.title" />
               <span v-else>{{ d.emoji }}</span>
+              <video
+                v-if="hoveredId === d.id && d.videoUrl"
+                class="hover-video"
+                :src="d.videoUrl"
+                autoplay
+                muted
+                loop
+                playsinline
+                preload="metadata"
+              ></video>
             </div>
             <div class="info">
               <div class="name">{{ d.title }}</div>
@@ -249,6 +285,7 @@
             <h2>{{ active.title }}</h2>
             <div class="m-tags">
               <span v-for="t in active.genres" :key="t">{{ t }}</span>
+              <span class="st" v-if="active.openingSong">🎵 片头曲：{{ active.openingSong }}</span>
               <span class="st">{{ active.status }}</span>
             </div>
             <div class="m-stat">
@@ -260,16 +297,38 @@
           </div>
         </div>
 
-        <!-- 播放器：点击即播放该剧内容（模拟） -->
+        <!-- 播放器：有片头曲视频时用真实播放器，否则走模拟播放 -->
         <div class="player" :class="{ playing: isPlaying }" :style="{ background: active.gradient }">
-          <div class="play-bg">{{ active.emoji }}</div>
-          <button class="big-play" v-if="!isPlaying" @click="play">▶</button>
-          <div class="play-info" v-if="isPlaying">
-            <div class="now">▶ 正在播放 《{{ active.title }}》 第 {{ currentEp }} 集</div>
-            <div class="bar"><div class="bar-in" :style="{ width: progress + '%' }"></div></div>
-            <div class="time">{{ fmtTime(curSec) }} / {{ fmtTime(totalSec) }}</div>
-          </div>
-          <div class="play-tip" v-if="!isPlaying">点击 ▶ 播放，开始观看《{{ active.title }}》</div>
+          <template v-if="active.videoUrl">
+            <video
+              v-if="isPlaying"
+              :key="currentEp"
+              ref="realVideo"
+              class="real-video"
+              :src="active.videoUrl"
+              controls
+              autoplay
+              @ended="onVideoEnded"
+            ></video>
+            <button
+              v-if="isPlaying"
+              class="enlarge-btn"
+              @click="enlarge"
+              title="放大 / 全屏"
+            >⛶ 放大</button>
+            <button class="big-play" v-else @click="play">▶</button>
+            <div class="play-tip" v-if="!isPlaying">点击 ▶ 播放片头曲《{{ active.openingSong }}》，开始观看《{{ active.title }}》</div>
+          </template>
+          <template v-else>
+            <div class="play-bg">{{ active.emoji }}</div>
+            <button class="big-play" v-if="!isPlaying" @click="play">▶</button>
+            <div class="play-info" v-if="isPlaying">
+              <div class="now">▶ 正在播放 《{{ active.title }}》 第 {{ currentEp }} 集</div>
+              <div class="bar"><div class="bar-in" :style="{ width: progress + '%' }"></div></div>
+              <div class="time">{{ fmtTime(curSec) }} / {{ fmtTime(totalSec) }}</div>
+            </div>
+            <div class="play-tip" v-if="!isPlaying">点击 ▶ 播放，开始观看《{{ active.title }}》</div>
+          </template>
         </div>
 
         <!-- 选集 -->
@@ -310,21 +369,67 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
-import { medias, resolveCover, COVER_BY_TITLE } from '../mediaData.js'
+import { medias, resolveCover, COVER_BY_TITLE, FUPING_OPENINGS } from '../mediaData.js'
 import { loadKids, loadVariety } from '../mediaApi.js'
 
 defineProps({ username: String })
 defineEmits(['logout', 'open-admin', 'open-media'])
 
 // 与时俱进的电视剧（Mock 数据，作为兜底；后端可用时会被真实数据覆盖）
-const dramas = ref([
+const dramasMock = [
   { id: 1, title: '三生三世十里桃花', genres: ['古装', '仙侠', '爱情'], year: 2017, score: 8.2, hot: 9800, episodes: '58集', status: '经典', emoji: '🌸', gradient: 'linear-gradient(135deg,#ff9a9e,#fad0c4)', cover: COVER_BY_TITLE['三生三世十里桃花'], desc: '青丘女君白浅与九重天太子夜华历经三世情缘，前世今生纠缠不绝的仙侠爱情故事。' },
   { id: 2, title: '因为遇见你', genres: ['都市', '励志', '情感'], year: 2017, score: 7.4, hot: 8200, episodes: '46集', status: '热播', emoji: '🧵', gradient: 'linear-gradient(135deg,#a1c4fd,#c2e9fb)', cover: COVER_BY_TITLE['因为遇见你'], desc: '弃婴张果果被苏州绣艺世家收养，成长为优秀刺绣天才的励志故事。' },
-  { id: 3, title: '嫁金钗', genres: ['古装', '甜宠'], year: 2022, score: 7.0, hot: 7000, episodes: '24集', status: '热播', emoji: '💍', gradient: 'linear-gradient(135deg,#f6d365,#fda085)', cover: COVER_BY_TITLE['嫁金钗'], desc: '古装甜宠题材剧集（简介请按真实情况补充）。' },
+  { id: 3, title: '嫁金钗', genres: ['古装', '甜宠'], year: 2022, score: 7.0, hot: 7000, episodes: '30集', status: '热播', emoji: '💍', gradient: 'linear-gradient(135deg,#f6d365,#fda085)', cover: COVER_BY_TITLE['嫁金钗'], desc: '古装甜宠题材剧集（简介请按真实情况补充）。' },
   { id: 4, title: '沉香如故', genres: ['古装', '仙侠'], year: 2023, score: 7.0, hot: 6900, episodes: '40集', status: '热播', emoji: '🌿', gradient: 'linear-gradient(135deg,#84fab0,#8fd3f4)', cover: COVER_BY_TITLE['沉香如故'], desc: '古装仙侠题材剧集（简介请按真实情况补充）。' },
   { id: 5, title: '香蜜沉沉烬如霜', genres: ['古装', '仙侠', '爱情'], year: 2018, score: 8.0, hot: 9500, episodes: '63集', status: '经典', emoji: '🔥', gradient: 'linear-gradient(135deg,#ff6a88,#ff99ac)', cover: COVER_BY_TITLE['香蜜沉沉烬如霜'], desc: '花神之女锦觅与天帝之子旭凤跨越生死、历经劫难的仙侠虐恋。' },
   { id: 6, title: '后浪', genres: ['都市', '现实', '励志'], year: 2023, score: 7.8, hot: 9200, episodes: '40集', status: '经典', emoji: '🌊', gradient: 'linear-gradient(135deg,#43cea2,#185a9d)', cover: COVER_BY_TITLE['后浪'], desc: '中医药大学教授任新正辞职创办中医传承班，带领各行业学生传承中医药文化。' }
-])
+]
+
+// 浮萍片头曲 7 部剧：后端数据库里没有的条目，用这里兜底补齐
+const fupingExtras = [
+  { id: 'fp1', title: '长月烬明', genres: ['古装', '仙侠', '爱情'], year: 2023, score: 9.3, hot: 9900, episodes: 40, status: '热播', emoji: '🌑', gradient: 'linear-gradient(135deg,#5b247a,#1bcedf)', desc: '神魔之子澹台烬与衡阳公主黎苏苏跨越五百年宿命纠缠，在爱恨中寻求解脱的仙侠故事。' },
+  { id: 'fp2', title: '白月梵星', genres: ['古装', '仙侠', '爱情'], year: 2024, score: 8.5, hot: 9600, episodes: 40, status: '热播', emoji: '🌕', gradient: 'linear-gradient(135deg,#fceabb,#f8b500)', desc: '凡人少女白烁与神族梵樾携手净化妖邪、守护苍生的仙侠冒险。' },
+  { id: 'fp3', title: '临江仙', genres: ['古装', '仙侠', '虐恋'], year: 2025, score: 8.6, hot: 9700, episodes: 32, status: '热播', emoji: '🌊', gradient: 'linear-gradient(135deg,#43cea2,#185a9d)', desc: '花如月与白九思从结契到反目，揭秘三界秘辛的仙侠虐恋。' },
+  { id: 'fp4', title: '逐玉', genres: ['古装', '悬疑', '爱情'], year: 2025, score: 8.7, hot: 9400, episodes: 40, status: '热播', emoji: '🪶', gradient: 'linear-gradient(135deg,#ee9ca7,#ffdde1)', desc: '将门孤女与寒门谋士联手查案、逐玉寻真的古装悬疑爱情故事。' }
+]
+
+// 剧名 → 片头视频地址 的硬编码兜底映射（不依赖后端 / mediaData 的字段匹配）
+// 只要剧名在这 7 个里，视频就一定存在，彻底避免"数据来源不同导致视频丢失"
+const OPENING_VIDEO = {
+  '长月烬明': '/videos/changyue.mp4',
+  '白月梵星': '/videos/baiyue.mp4',
+  '香蜜沉沉烬如霜': '/videos/xiangmi.mp4',
+  '三生三世十里桃花': '/videos/sansheng.mp4',
+  '临江仙': '/videos/linjiang.mp4',
+  '嫁金钗': '/videos/jiajin.mp4',
+  '逐玉': '/videos/zhuyu.mp4'
+}
+
+// 按剧名合并浮萍固定数据：演员 / 片头视频 / 集数以 FUPING_OPENINGS 为准
+function mergeFuping(item) {
+  const fp = FUPING_OPENINGS[item.title]
+  const vid = OPENING_VIDEO[item.title]
+  if (!fp && !vid) return item
+  return {
+    ...item,
+    cast: (fp && fp.cast) || item.cast || [],
+    // 视频地址优先用硬编码映射，保证万无一失
+    videoUrl: vid || (fp && fp.videoUrl) || '',
+    openingSong: '浮萍',
+    // 集数优先用条目自带的（后端返回的"40集"格式），缺再用固定数据
+    episodes: item.episodes || (fp && fp.episodes),
+    desc: item.desc || (fp && fp.desc)
+  }
+}
+
+// 初始列表：mock + 浮萍补齐条目，全部过一遍合并（后端可用时会被覆盖后再合并）
+const dramas = ref(
+  [...dramasMock, ...fupingExtras].map(d => ({
+    ...d,
+    cover: d.cover || COVER_BY_TITLE[d.title] || '',
+    cast: []
+  })).map(mergeFuping)
+)
 
 const hotSearches = ['长月烬明', '且试天下', '古装', '热播', '星汉灿烂', '卿卿日常']
 
@@ -381,7 +486,8 @@ function parseCast(str) {
 }
 
 function normalize(list) {
-  return list.map(d => ({
+  // 先规整后端字段，再按剧名合并浮萍固定数据（演员 / 片头视频 / 集数）
+  const items = list.map(d => mergeFuping({
     id: d.id,
     title: d.title,
     genres: Array.isArray(d.genres) ? d.genres : (d.genres || '').split(',').filter(Boolean),
@@ -396,6 +502,14 @@ function normalize(list) {
     cast: parseCast(d.cast),
     cover: resolveCover(d.cover, d.title)
   }))
+  // 后端数据库里缺的浮萍剧，用前端兜底条目补齐，保证 7 部齐全
+  const have = new Set(items.map(i => i.title))
+  fupingExtras.forEach(extra => {
+    if (!have.has(extra.title)) {
+      items.push(mergeFuping({ ...extra, cover: COVER_BY_TITLE[extra.title] || '' }))
+    }
+  })
+  return items
 }
 
 // 页面加载时优先从后端拉取真实数据，失败则保留 Mock 兜底
@@ -475,6 +589,12 @@ function stopTimer() {
   if (timer) { clearInterval(timer); timer = null }
 }
 function play() {
+  // 有真实片头视频：直接交给 <video> 播放，不走模拟计时
+  if (active.value && active.value.videoUrl) {
+    isPlaying.value = true
+    stopTimer()
+    return
+  }
   isPlaying.value = true
   if (curSec.value >= totalSec) curSec.value = 0
   stopTimer()
@@ -494,10 +614,23 @@ function play() {
     }
   }, 1000)
 }
+// 真实视频播完：自动下一集（重新挂载 <video> 触发自动播放），最后一集则停止
+function onVideoEnded() {
+  if (currentEp.value < epCount.value) {
+    currentEp.value += 1
+  } else {
+    isPlaying.value = false
+  }
+}
 function chooseEp(n) {
   currentEp.value = n
   curSec.value = 0
   progress.value = 0
+  if (active.value && active.value.videoUrl) {
+    // :key 随 currentEp 变化会重新挂载 <video>，实现换集重新播放
+    isPlaying.value = true
+    return
+  }
   if (isPlaying.value) play()
 }
 function fmtTime(s) {
@@ -515,6 +648,18 @@ function scrollTo(id) {
   showHot.value = false
   const el = document.getElementById(id)
   if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+}
+
+// ---- 卡片悬停预览：当前悬停的卡片 id（hover 时动态创建 autoplay 视频）----
+const hoveredId = ref(null)
+
+// ---- 弹窗视频放大 / 全屏 ----
+const realVideo = ref(null)
+function enlarge() {
+  const v = realVideo.value
+  if (!v) return
+  const fn = v.requestFullscreen || v.webkitRequestFullscreen || v.msRequestFullscreen
+  if (fn) { try { fn.call(v) } catch (e) {} }
 }
 
 // 生成满天星星
@@ -793,6 +938,11 @@ function shootStyle(n) {
 .hero-card .hc-meta { z-index: 2; }
 .hero-card .hc-title { font-size: 16px; font-weight: 700; text-shadow: 0 2px 8px rgba(0,0,0,.6); }
 .hero-card .hc-meta { display: flex; gap: 12px; font-size: 13px; margin-top: 6px; text-shadow: 0 1px 4px rgba(0,0,0,.7); }
+.hero-card .hover-video {
+  position: absolute; inset: 0; z-index: 1;
+  width: 100%; height: 100%; object-fit: cover;
+  pointer-events: none;
+}
 
 .section { margin-top: 34px; }
 .section h3 { font-size: 19px; margin-bottom: 16px; }
@@ -824,6 +974,11 @@ function shootStyle(n) {
   width: 100%; height: 100%;
   object-fit: cover;
   display: block;
+}
+.card .hover-video {
+  position: absolute; inset: 0; z-index: 2;
+  width: 100%; height: 100%; object-fit: cover;
+  pointer-events: none;
 }
 .card .info { padding: 10px 12px 12px; }
 .card .name { font-size: 15px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -932,6 +1087,21 @@ function shootStyle(n) {
 }
 .player.playing .play-bg { animation: floaty 3s ease-in-out infinite; }
 @keyframes floaty { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+/* 真实片头视频：铺满播放器区域 */
+.real-video {
+  position: absolute; inset: 0; z-index: 2;
+  width: 100%; height: 100%;
+  object-fit: contain;
+  background: #000;
+}
+.enlarge-btn {
+  position: absolute; top: 10px; right: 10px; z-index: 3;
+  border: 1px solid rgba(255,255,255,.6);
+  background: rgba(0,0,0,.45); color: #fff;
+  border-radius: 8px; padding: 6px 12px; font-size: 13px; font-weight: 700;
+  cursor: pointer; backdrop-filter: blur(4px);
+}
+.enlarge-btn:hover { background: rgba(123,140,255,.6); border-color: #fff; }
 .big-play {
   position: relative; z-index: 2; width: 76px; height: 76px; border-radius: 50%;
   border: none; cursor: pointer; font-size: 30px; color: #fff;

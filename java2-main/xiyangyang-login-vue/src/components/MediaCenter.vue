@@ -45,6 +45,7 @@
           <div class="title">{{ m.title }}</div>
           <div class="meta">{{ m.year }} · {{ m.genres.join('/') }}</div>
           <div class="meta">{{ m.episodes }}{{ m.epUnit || ' 集' }} · {{ m.epDuration }}</div>
+          <div class="meta song" v-if="m.openingSong">🎵 片头曲：{{ m.openingSong }}</div>
         </div>
       </article>
     </main>
@@ -64,6 +65,7 @@
 
         <h2>{{ detail.title }}</h2>
         <div class="d-meta">{{ detail.year }} · {{ detail.genres.join(' / ') }} · {{ detail.episodes }}{{ detail.epUnit || ' 集' }} · {{ detail.epDuration }}</div>
+        <div class="d-song" v-if="detail.openingSong">🎵 片头曲：{{ detail.openingSong }}</div>
         <p class="d-desc">{{ detail.desc }}</p>
 
         <h3>演员资料</h3>
@@ -104,13 +106,19 @@ const list = computed(() =>
 )
 
 // 从后端拉取并覆盖电视剧/少儿/综艺（支持排序）
+// 带 openingSong 的「浮萍片头曲」固定条目始终优先（按剧名覆盖后端同名数据）
 async function reload() {
   try {
     const fromBackend = await loadAllMedia(sort.value)
     if (fromBackend.length) {
-      allMedias.value = medias
-        .filter(m => !['drama', 'kids', 'variety'].includes(m.category))
-        .concat(fromBackend)
+      const byTitle = new Map(fromBackend.map(m => [m.title, m]))
+      medias
+        .filter(m => m.openingSong)
+        .forEach(p => byTitle.set(p.title, p))
+      const others = medias.filter(
+        m => !['drama', 'kids', 'variety'].includes(m.category) && !m.openingSong
+      )
+      allMedias.value = [...others, ...byTitle.values()]
     }
   } catch (e) {
     console.warn('后端影视数据加载失败，继续使用前端 mock：', e)
@@ -237,6 +245,7 @@ function play(m) {
 .info { padding: 10px 12px; }
 .title { font-weight: bold; font-size: 15px; }
 .meta { font-size: 12px; color: #9aa; margin-top: 4px; }
+.meta.song { color: #ffd479; font-weight: 600; }
 
 .detail-mask {
   position: fixed;
@@ -278,6 +287,7 @@ function play(m) {
 .detail-box h2 { margin: 16px 0 4px; }
 .d-meta { color: #9aa; font-size: 13px; }
 .d-desc { color: #cfd; line-height: 1.7; font-size: 14px; }
+.d-song { color: #ffd479; font-size: 14px; margin-top: 6px; font-weight: 600; }
 .detail-box h3 { margin: 18px 0 8px; }
 .actors { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 12px; }
 .a-name { font-weight: bold; }

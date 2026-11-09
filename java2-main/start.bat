@@ -64,12 +64,20 @@ echo   [完成] 运行环境齐全 >> "%LOG%"
 rem ============ [1] 定位 MySQL 客户端 + 检查服务 ============
 echo.
 echo [1/5] 定位 MySQL 客户端并检查服务 (端口 3306)...
+rem 0) 若 3306 未监听且存在便携版 MySQL，则自动启动（等待约 15 秒）
+netstat -ano 2>nul | findstr ":3306" | findstr "LISTENING" >nul 2>&1
+if errorlevel 1 if exist "D:\mysql\mysql-8.0.44-winx64\bin\mysqld.exe" (
+  echo   3306 端口未监听，正在启动便携版 MySQL（D:\mysql）...
+  start "MySQL" /min /d "D:\mysql\mysql-8.0.44-winx64" "bin\mysqld.exe" --defaults-file=my.ini --console
+  ping -n 16 127.0.0.1 >nul
+)
 set "MYSQL_EXE="
 rem 1) 先在系统 PATH 里找
 for %%p in (mysql.exe) do set "MYSQL_EXE=%%~$PATH:p"
 rem 2) 常见安装目录兜底
 if not defined MYSQL_EXE (
   for %%d in (
+    "D:\mysql\mysql-8.0.44-winx64\bin\mysql.exe"
     "C:\Program Files\MySQL\MySQL Server 8.0\bin\mysql.exe"
     "C:\Program Files\MySQL\MySQL Server 8.1\bin\mysql.exe"
     "C:\Program Files\MySQL\MySQL Server 8.2\bin\mysql.exe"

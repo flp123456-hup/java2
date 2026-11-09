@@ -169,7 +169,8 @@ export const medias = [
       { name: '杨幂', role: '白浅 / 司音 / 素素', bio: '中国女演员、歌手、制片人。1986 年出生于北京，因《宫锁心玉》走红，代表作《三生三世十里桃花》《亲爱的翻译官》等。' },
       { name: '赵又廷', role: '夜华 / 墨渊', bio: '中国台湾男演员。1984 年出生，代表作《搜索》《三生三世十里桃花》等，与杨幂因本剧结为夫妻。' }
     ],
-    videoUrl: DEMO_VIDEO
+    openingSong: '浮萍',
+    videoUrl: '/videos/sansheng.mp4'
   },
   {
     id: 'd2',
@@ -193,18 +194,20 @@ export const medias = [
     id: 'd3',
     category: 'drama',
     title: '嫁金钗',
-    year: 2022,
+    year: 2025,
     genres: ['古装', '甜宠'],
-    episodes: 24,
+    episodes: 30,
     epDuration: EP_DURATION,
     emoji: '💍',
     gradient: 'linear-gradient(135deg,#f6d365,#fda085)',
     cover: coverJiajinchai,
-    desc: '（示例条目）古装甜宠题材剧集。演员阵容与简介请按真实情况补充。',
+    desc: '古装甜宠题材剧集，少女嫁入金钗世家，在欢喜冤家与家族羁绊中成长。',
     actors: [
-      { name: '待补充', role: '—', bio: '请在此填写真实演员的公开资料。' }
+      { name: '田曦薇', role: '女主', bio: '中国女演员。1997 年出生于重庆，代表作《卿卿日常》《逐玉》《嫁金钗》等。' },
+      { name: '闫桉', role: '男主', bio: '中国男演员。代表作《嫁金钗》等。' }
     ],
-    videoUrl: DEMO_VIDEO
+    openingSong: '浮萍',
+    videoUrl: '/videos/jiajin.mp4'
   },
   {
     id: 'd4',
@@ -239,7 +242,8 @@ export const medias = [
       { name: '杨紫', role: '锦觅', bio: '中国女演员。1992 年出生于长沙，童星出道，代表作《香蜜沉沉烬如霜》《亲爱的，热爱的》等。' },
       { name: '邓伦', role: '旭凤', bio: '中国男演员。1992 年出生于河北，代表作《因为遇见你》《香蜜沉沉烬如霜》等。' }
     ],
-    videoUrl: DEMO_VIDEO
+    openingSong: '浮萍',
+    videoUrl: '/videos/xiangmi.mp4'
   },
   {
     id: 'd6',
@@ -261,6 +265,83 @@ export const medias = [
       { name: '江珊', role: '宋灵兰', bio: '名医，任新正事业的最佳同路人。' }
     ],
     videoUrl: DEMO_VIDEO
+  },
+  // ===================== 浮萍片头曲（用户指定，固定条目） =====================
+  {
+    id: 'd7',
+    category: 'drama',
+    title: '长月烬明',
+    year: 2023,
+    genres: ['古装', '仙侠', '爱情'],
+    episodes: 40,
+    epDuration: EP_DURATION,
+    emoji: '🌑',
+    gradient: 'linear-gradient(135deg,#5b247a,#1bcedf)',
+    cover: coverChangyue,
+    desc: '神魔之子澹台烬与衡阳公主黎苏苏跨越五百年宿命纠缠，在爱恨中寻求解脱的仙侠故事。',
+    actors: [
+      { name: '罗云熙', role: '澹台烬 / 冥夜', bio: '中国男演员、歌手。1988 年出生于成都，代表作《长月烬明》《香蜜沉沉烬如霜》（饰润玉）等。' },
+      { name: '白鹿', role: '黎苏苏 / 桑酒', bio: '中国女演员。1994 年出生于常州，代表作《长月烬明》《白月梵星》《临江仙》等。' }
+    ],
+    openingSong: '浮萍',
+    videoUrl: '/videos/changyue.mp4'
+  },
+  {
+    id: 'd8',
+    category: 'drama',
+    title: '白月梵星',
+    year: 2024,
+    genres: ['古装', '仙侠', '爱情'],
+    episodes: 40,
+    epDuration: EP_DURATION,
+    emoji: '🌕',
+    gradient: 'linear-gradient(135deg,#fceabb,#f8b500)',
+    cover: coverBaiyue,
+    desc: '凡人少女白烁与神族梵樾携手净化妖邪、守护苍生的仙侠冒险。',
+    actors: [
+      { name: '白鹿', role: '白烁', bio: '中国女演员。1994 年出生于常州，代表作《长月烬明》《白月梵星》《临江仙》等。' },
+      { name: '敖瑞鹏', role: '梵樾', bio: '中国男演员。1993 年出生于北京，代表作《白月梵星》《少年歌行》等。' }
+    ],
+    openingSong: '浮萍',
+    videoUrl: '/videos/baiyue.mp4'
+  },
+  {
+    id: 'd9',
+    category: 'drama',
+    title: '临江仙',
+    year: 2025,
+    genres: ['古装', '仙侠', '虐恋'],
+    episodes: 32,
+    epDuration: EP_DURATION,
+    emoji: '🌊',
+    gradient: 'linear-gradient(135deg,#43cea2,#185a9d)',
+    cover: coverLinjiang,
+    desc: '花如月与白九思从结契到反目，揭秘三界秘辛的仙侠虐恋。',
+    actors: [
+      { name: '白鹿', role: '花如月 / 李青月', bio: '中国女演员。1994 年出生于常州，代表作《长月烬明》《白月梵星》《临江仙》等。' },
+      { name: '曾舜晞', role: '白九思', bio: '中国男演员。1996 年出生于广东，代表作《临江仙》《莲花楼》等。' }
+    ],
+    openingSong: '浮萍',
+    videoUrl: '/videos/linjiang.mp4'
+  },
+  {
+    id: 'd10',
+    category: 'drama',
+    title: '逐玉',
+    year: 2025,
+    genres: ['古装', '悬疑', '爱情'],
+    episodes: 40,
+    epDuration: EP_DURATION,
+    emoji: '🪶',
+    gradient: 'linear-gradient(135deg,#ee9ca7,#ffdde1)',
+    cover: coverZhuyu,
+    desc: '将门孤女与寒门谋士联手查案、逐玉寻真的古装悬疑爱情故事。',
+    actors: [
+      { name: '张凌赫', role: '男主', bio: '中国男演员。1997 年出生于无锡，代表作《逐玉》《苍兰诀》等。' },
+      { name: '田曦薇', role: '女主', bio: '中国女演员。1997 年出生于重庆，代表作《逐玉》《卿卿日常》《嫁金钗》等。' }
+    ],
+    openingSong: '浮萍',
+    videoUrl: '/videos/zhuyu.mp4'
   },
   // ===================== 少儿 =====================
   {
@@ -499,3 +580,21 @@ export const medias = [
     videoUrl: DEMO_VIDEO
   }
 ]
+
+// ============================================================
+//  浮萍片头曲固定映射（首页 HomeView 与影视中心 MediaCenter 共用）
+//  后端 /api/drama 返回数据后，按剧名合并：这 7 部剧的
+//  演员阵容、片头视频、集数一律以这里为准，不被后端覆盖。
+// ============================================================
+export const FUPING_OPENINGS = medias
+  .filter(m => m.openingSong === '浮萍')
+  .reduce((map, m) => {
+    map[m.title] = {
+      openingSong: m.openingSong,
+      videoUrl: m.videoUrl,
+      episodes: m.episodes,
+      cast: m.actors,
+      desc: m.desc
+    }
+    return map
+  }, {})
