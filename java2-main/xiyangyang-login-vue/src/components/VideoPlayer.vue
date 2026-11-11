@@ -37,14 +37,14 @@
           >{{ d.text }}</span>
         </div>
 
-        <!-- 悬浮演员头像：点一下跳到演员主页，看 TA 演过的电视剧 -->
+        <!-- 悬浮演员头像：点一下跳到该演员出场的片段；点右侧 › 看 TA 演过的剧 -->
         <div class="cast-bar" v-if="media.actors && media.actors.length">
-          <button
-            v-for="a in media.actors"
+          <div
+            v-for="(a, i) in media.actors"
             :key="a.name"
             class="cast-chip"
-            :title="'查看 ' + a.name + ' 演过的电视剧'"
-            @click="$emit('open-actor', a.name)"
+            :title="'点击跳到 ' + a.name + ' 出场的 ' + actorSegmentStart(a, i) + ' 秒'"
+            @click="seekToActor(a, i)"
           >
             <img
               v-if="actorAvatar(a) && !failed.has(a.name)"
@@ -55,7 +55,8 @@
             />
             <span v-else class="cast-img initials">{{ firstChar(a.name) }}</span>
             <span class="cast-name">{{ a.name }}</span>
-          </button>
+            <span class="cast-go" title="查看 TA 演过的电视剧" @click.stop="$emit('open-actor', a.name)">›</span>
+          </div>
         </div>
       </div>
 
@@ -97,7 +98,7 @@
 
 <script setup>
 import { ref, computed, reactive, watch, onMounted } from 'vue'
-import { resolveActorAvatar } from '../mediaData.js'
+import { resolveActorAvatar, actorSegmentStart } from '../mediaData.js'
 import { fetchDanmaku, postDanmaku } from '../danmakuApi.js'
 
 const props = defineProps({
@@ -169,12 +170,22 @@ function sendDanmaku() {
   dmText.value = ''
 }
 
-// ===================== 演员头像（点击跳演员主页） =====================
+// ===================== 演员头像（点击跳到出场片段） =====================
 function actorAvatar(a) {
   return resolveActorAvatar(a.name, a.avatar)
 }
 function firstChar(name) {
   return (name || '?').slice(0, 1)
+}
+// 点击演员头像：把播放进度跳到该演员出场的秒数（segment.start；没写则按 (index+1)*15 兜底）
+function seekToActor(a, i) {
+  const t = actorSegmentStart(a, i)
+  const v = videoEl.value
+  if (!v) return
+  try {
+    v.currentTime = t
+    if (v.paused) v.play().catch(() => {})
+  } catch (e) { /* 个别浏览器在无法定位时可能抛错，忽略即可 */ }
 }
 function onPlay() { /* 预留：可在这里做播放统计 */ }
 
@@ -303,6 +314,16 @@ onMounted(loadDanmaku)
 }
 .cast-img.initials { line-height: 30px; text-align: center; }
 .cast-name { white-space: nowrap; }
+.cast-go {
+  margin-left: 2px;
+  width: 18px; height: 18px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .18);
+  font-size: 15px; font-weight: bold; line-height: 1;
+  flex: 0 0 auto;
+}
+.cast-go:hover { background: #ffd479; color: #14141c; }
 
 /* 选集 */
 .ep-list {

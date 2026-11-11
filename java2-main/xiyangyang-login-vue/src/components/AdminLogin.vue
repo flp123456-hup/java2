@@ -3,6 +3,7 @@
     <div class="sheep">🛠</div>
     <h1>后台管理登录</h1>
     <div class="sub">仅管理员可进入，普通用户请返回首页</div>
+    <div class="hint">默认管理员账号：admin　密码：admin123</div>
 
     <form @submit.prevent="onSubmit" novalidate>
       <div class="field">
@@ -60,8 +61,8 @@ async function onSubmit() {
 
   loading.value = true
   try {
-    // 后台登录暂时复用后端已有的登录接口（通过 vite 代理转发到 8081）
-    const res = await fetch('/api/user/login', {
+    // 管理员专用登录：校验后端 admin_user 表（默认账号 admin / admin123）
+    const res = await fetch('/api/admin/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -76,7 +77,7 @@ async function onSubmit() {
       emit('admin-login-success')
     } else {
       isOk.value = false
-      msg.value = data.msg || '账号或密码错误'
+      msg.value = data.msg || '管理员账号或密码错误'
     }
   } catch (e) {
     isOk.value = false
@@ -110,6 +111,16 @@ h1 {
   font-size: 13px;
   color: #888;
   margin-bottom: 20px;
+}
+
+.hint {
+  font-size: 12px;
+  color: #5fb83d;
+  background: #f3faec;
+  border: 1px dashed #cfe3bf;
+  border-radius: 8px;
+  padding: 7px 10px;
+  margin-bottom: 16px;
 }
 
 .field {

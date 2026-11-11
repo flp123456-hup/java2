@@ -607,6 +607,28 @@ export const medias = [
   }
 ]
 
+// ============ 演员出场时间点（用于「点击头像跳到她演的部分」）============
+// 给几部有真实片头视频的剧补上演员出场秒数；其余剧沿用 actorSegmentStart 的兜底规则
+// （第几个演员 * 15 秒）。想让某部剧的点击更精准，直接往下面的映射里加 "演员名: 秒数" 即可，
+// 前端 actorSegmentStart() 会优先使用这里写的值。该数据同时也对应后端库里的
+// media_segment 表（见 springBootTest/sql/actor_media_segment.sql）。
+const ACTOR_SEGMENTS = {
+  d1:  { '杨幂': 10, '赵又廷': 25 },
+  d3:  { '田曦薇': 12, '闫桉': 28 },
+  d5:  { '杨紫': 10, '邓伦': 26 },
+  d7:  { '罗云熙': 12, '白鹿': 28 },
+  d8:  { '白鹿': 10, '敖瑞鹏': 26 },
+  d9:  { '白鹿': 10, '曾舜晞': 26 },
+  d10: { '张凌赫': 12, '田曦薇': 28 }
+}
+medias.forEach(m => {
+  const map = ACTOR_SEGMENTS[m.id]
+  if (!map) return
+  ;(m.actors || []).forEach(a => {
+    if (map[a.name] != null) a.segment = { start: map[a.name] }
+  })
+})
+
 // ============================================================
 //  浮萍片头曲固定映射（首页 HomeView 与影视中心 MediaCenter 共用）
 //  后端 /api/drama 返回数据后，按剧名合并：这 7 部剧的

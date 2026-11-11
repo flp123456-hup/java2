@@ -2,7 +2,10 @@
   <div class="mc">
     <header class="mc-top">
       <div class="mc-logo">📺 熊猫影视 · 电视剧</div>
-      <button class="mc-back" @click="$emit('close')">← 返回首页</button>
+      <div class="mc-actions">
+        <button class="mc-short" @click="$emit('open-short-video')">🎬 短视频</button>
+        <button class="mc-back" @click="$emit('close')">← 返回首页</button>
+      </div>
     </header>
 
     <!-- 分类标签 -->
@@ -98,10 +101,11 @@
 import { ref, computed, onMounted } from 'vue'
 import { categories, medias } from '../mediaData.js'
 import { loadAllMedia } from '../mediaApi.js'
+import { addHistory } from '../watchHistory.js'
 import VideoPlayer from './VideoPlayer.vue'
 import ActorPage from './ActorPage.vue'
 
-defineEmits(['close'])
+defineEmits(['close', 'open-short-video'])
 
 const active = ref('drama')
 const sort = ref('hot')
@@ -145,6 +149,15 @@ function openDetail(m) {
   detail.value = m
 }
 function play(m) {
+  // 记录观看历史（首页「观看历史」区块可见）
+  addHistory({
+    id: m.id,
+    title: m.title,
+    category: m.category,
+    cover: m.cover,
+    emoji: m.emoji,
+    ep: 1
+  })
   detail.value = null
   playing.value = m
 }
@@ -185,6 +198,18 @@ function openFromActor(m) {
   cursor: pointer;
 }
 .mc-back:hover { background: #3a3e5c; }
+.mc-actions { display: flex; align-items: center; gap: 10px; }
+.mc-short {
+  background: linear-gradient(135deg, #ff5a5f, #ff8a5f);
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 700;
+}
+.mc-short:hover { filter: brightness(1.08); }
 
 .tabs {
   display: flex;

@@ -88,6 +88,21 @@ export async function loadDrama(sort) {
   const q = sort ? `?sort=${encodeURIComponent(sort)}` : ''
   return fetchList('/api/drama' + q).then(rows => rows.map(r => toMedia(r, 'drama')))
 }
+
+// 按关键词向后端搜索电视剧（剧名 / 类型 / 演员 / 标签）。
+// 成功返回 media 数组；失败（后端未启动 / 接口异常）返回 null，供前端回退到本地过滤。
+export async function searchDramas(keyword) {
+  try {
+    const res = await fetch('/api/drama/search?keyword=' + encodeURIComponent(keyword || ''))
+    const data = await res.json()
+    if (data && data.code === 200 && Array.isArray(data.data)) {
+      return data.data.map(r => toMedia(r, 'drama'))
+    }
+    return null
+  } catch (e) {
+    return null
+  }
+}
 export async function loadKids(sort) {
   const q = sort ? `?sort=${encodeURIComponent(sort)}` : ''
   return fetchList('/api/kids' + q).then(rows => rows.map(r => toMedia(r, 'kids')))

@@ -26,4 +26,21 @@ public class DramaServiceImpl extends ServiceImpl<DramaMapper, Drama> implements
         }
         return this.list(qw);
     }
+
+    @Override
+    public List<Drama> search(String keyword) {
+        // 关键词为空：返回全部（按热度倒序），保证搜索页/下拉有内容
+        if (keyword == null || keyword.trim().isEmpty()) {
+            return listSorted("hot", "desc");
+        }
+        String kw = keyword.trim();
+        QueryWrapper<Drama> qw = new QueryWrapper<>();
+        // 在 剧名 / 类型 / 演员 / 标签 四个字段上做模糊匹配（OR 关系）
+        qw.like("title", kw)
+          .or().like("genres", kw)
+          .or().like("cast", kw)
+          .or().like("status", kw);
+        qw.orderByDesc("hot");
+        return this.list(qw);
+    }
 }

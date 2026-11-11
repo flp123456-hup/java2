@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 /**
  * 用户实体类，对应数据库表 user
  */
@@ -21,4 +23,7 @@ public class User {
 
     /** 密码 */
     private String password;
+
+    /** 注册时间（对应表里的 create_time 列） */
+    private LocalDateTime createTime;
 }

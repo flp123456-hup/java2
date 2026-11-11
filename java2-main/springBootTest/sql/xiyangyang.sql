@@ -3,19 +3,88 @@
 
  Source Server         : localhost_3306
  Source Server Type    : MySQL
- Source Server Version : 80039 (8.0.39)
+ Source Server Version : 80044 (8.0.44)
  Source Host           : localhost:3306
  Source Schema         : xiyangyang
 
  Target Server Type    : MySQL
- Target Server Version : 80039 (8.0.39)
+ Target Server Version : 80044 (8.0.44)
  File Encoding         : 65001
 
- Date: 11/11/2026 09:58:36
+ Date: 11/11/2026 20:37:27
 */
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for actor
+-- ----------------------------
+DROP TABLE IF EXISTS `actor`;
+CREATE TABLE `actor`  (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键，自增',
+  `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '演员/嘉宾姓名',
+  `avatar` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '头像图片路径，如 /actors/杨幂.jpg',
+  `bio` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL COMMENT '简介',
+  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '录入时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `uk_actor_name`(`name` ASC) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 52 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '演员/嘉宾表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of actor
+-- ----------------------------
+INSERT INTO `actor` VALUES (1, '杨幂', '/actors/杨幂.jpg', '青丘女君，与夜华历经三生三世终成眷属。', '2026-11-11 12:07:29');
+INSERT INTO `actor` VALUES (2, '赵又廷', '/actors/赵又廷.jpg', '九重天太子，深情隐忍，为白浅甘愿付出一切。', '2026-11-11 12:07:29');
+INSERT INTO `actor` VALUES (3, '迪丽热巴', '/actors/迪丽热巴.jpg', '青丘九尾红狐，灵动俏皮，痴情守候东华帝君。', '2026-11-11 12:07:29');
+INSERT INTO `actor` VALUES (4, '张智尧', '/actors/张智尧.jpg', '开天辟地第一只火凤凰，种十里桃林，善酿酒行医。', '2026-11-11 12:07:29');
+INSERT INTO `actor` VALUES (5, '高伟光', '/actors/高伟光.jpg', '上古神祇，曾经的天地共主，气势威严心系六界。', '2026-11-11 12:07:29');
+INSERT INTO `actor` VALUES (6, '杨紫', '/actors/杨紫.jpg', '花神之女，天真烂漫，吞陨丹断情绝爱，最终为爱苏醒。', '2026-11-11 12:07:29');
+INSERT INTO `actor` VALUES (7, '邓伦', '/actors/邓伦.jpg', '天帝之子火神，深情专一，为锦觅甘堕魔道。', '2026-11-11 12:07:29');
+INSERT INTO `actor` VALUES (8, '罗云熙', '/actors/罗云熙.jpg', '天帝长子夜神，温润如玉却因爱生恨走入歧途。', '2026-11-11 12:07:29');
+INSERT INTO `actor` VALUES (9, '陈钰琪', '/actors/陈钰琪.jpg', '魔界公主，英姿飒爽，与奇鸢虐恋动人。', '2026-11-11 12:07:29');
+INSERT INTO `actor` VALUES (10, '赵露思', '/actors/赵露思.jpg', '误入自己剧本的三公主，古灵精怪，逆天改命。', '2026-11-11 12:07:29');
+INSERT INTO `actor` VALUES (11, '丁禹兮', '/actors/丁禹兮.jpg', '玄虎城少城主，腹黑深情，与芊芊先婚后爱。', '2026-11-11 12:07:29');
+INSERT INTO `actor` VALUES (12, '盛英豪', '/actors/盛英豪.jpg', '花垣城司学，温润如玉、深情隐忍。', '2026-11-11 12:07:29');
+INSERT INTO `actor` VALUES (13, '周紫馨', '/actors/周紫馨.jpg', '花垣城二公主，端庄善良却因嫉妒迷失。', '2026-11-11 12:07:29');
+INSERT INTO `actor` VALUES (14, '孙怡', '/actors/孙怡.jpg', '同里馄饨店女孩，身负苏绣天赋的千金，励志逆袭。', '2026-11-11 12:07:29');
+INSERT INTO `actor` VALUES (15, '吴优', '/actors/吴优.jpg', '果果的姐妹，留学归来的心机对手。', '2026-11-11 12:07:29');
+INSERT INTO `actor` VALUES (16, '代超', '/actors/代超.jpg', '时创集团二把手，理性冷淡、心思缜密。', '2026-11-11 12:07:29');
+INSERT INTO `actor` VALUES (17, '吴刚', '/actors/吴刚.jpg', '中医药大学教授，辞职创办中医传承班广传中医。', '2026-11-11 12:07:29');
+INSERT INTO `actor` VALUES (18, '罗一舟', '/actors/罗一舟.jpg', '任新正之子，成长于中医世家，严谨有血性。', '2026-11-11 12:07:29');
+INSERT INTO `actor` VALUES (19, '张萌', '/actors/张萌.jpg', '精英律师，意外后走进传承班重寻人生。', '2026-11-11 12:07:29');
+INSERT INTO `actor` VALUES (20, '江珊', '/actors/江珊.jpg', '名医，任新正事业的最佳同路人。', '2026-11-11 12:07:29');
+INSERT INTO `actor` VALUES (21, '成毅', '/actors/成毅.jpg', '守护结界的六界帝君，正直果敢的战神。', '2026-11-11 12:07:29');
+INSERT INTO `actor` VALUES (22, '张睿', '/actors/张睿.jpg', '妖王之子，颜淡挚友，一路相伴同行。', '2026-11-11 12:07:29');
+INSERT INTO `actor` VALUES (23, '孟子义', '/actors/孟子义.jpg', '颜淡双生姐姐，四叶菡萏化形。', '2026-11-11 12:07:29');
+INSERT INTO `actor` VALUES (24, '田曦薇', '/actors/田曦薇.jpg', '承安伯府真千金，市井中坚韧成长，智斗冒牌千金。', '2026-11-11 12:07:29');
+INSERT INTO `actor` VALUES (25, '闫桉', '/actors/闫桉.jpg', '战伤世子，被魏娆真情打动渐生情愫。', '2026-11-11 12:07:29');
+INSERT INTO `actor` VALUES (26, '刘小北', '/actors/刘小北.jpg', '陆家相关角色，剧情张力十足。', '2026-11-11 12:07:29');
+INSERT INTO `actor` VALUES (27, '潘珺雅', '/actors/潘珺雅.jpg', '魏娆侍女，忠心耿耿暗护主。', '2026-11-11 12:07:29');
+INSERT INTO `actor` VALUES (28, '熊大', '/actors/熊大.jpg', '聪明勇敢的狗熊哥哥，带领弟弟熊二保护森林。', '2026-11-11 12:07:29');
+INSERT INTO `actor` VALUES (29, '熊二', '/actors/熊二.jpg', '憨厚贪吃的狗熊弟弟，常与熊大一起对付光头强。', '2026-11-11 12:07:29');
+INSERT INTO `actor` VALUES (30, '光头强', '/actors/光头强.jpg', '想砍树赚钱的伐木工，常与两头熊斗智斗勇。', '2026-11-11 12:07:29');
+INSERT INTO `actor` VALUES (31, '喜羊羊', '/actors/喜羊羊.jpg', '聪明机智的羊村小英雄，总能想出办法化解危机。', '2026-11-11 12:07:29');
+INSERT INTO `actor` VALUES (32, '灰太狼', '/actors/灰太狼.jpg', '执着抓羊的狼，口头禅“我一定会回来的！”，其实很爱家人。', '2026-11-11 12:07:29');
+INSERT INTO `actor` VALUES (33, '小蓝', '/actors/小蓝.jpg', '来自魔仙堡的魔仙，负责引导两位人类女孩学习魔法。', '2026-11-11 12:07:29');
+INSERT INTO `actor` VALUES (34, '美琪 / 美雪', '/actors/美琪 / 美雪.jpg', '一对姐妹，意外获得魔法能量，成为实习小魔仙。', '2026-11-11 12:07:29');
+INSERT INTO `actor` VALUES (35, '佩奇', '/actors/佩奇.jpg', '活泼爱跳泥坑的小猪女孩，有个弟弟乔治。', '2026-11-11 12:07:29');
+INSERT INTO `actor` VALUES (36, '乔治', '/actors/乔治.jpg', '佩奇的弟弟，最爱抱着恐龙玩具。', '2026-11-11 12:07:29');
+INSERT INTO `actor` VALUES (37, '乐迪', '/actors/乐迪.jpg', '最快的飞机快递员，每次都能把包裹准时送达。', '2026-11-11 12:07:29');
+INSERT INTO `actor` VALUES (38, '小爱', '/actors/小爱.jpg', '热心助人的救援直升机，关键时刻伸援手。', '2026-11-11 12:07:29');
+INSERT INTO `actor` VALUES (39, '猪猪侠', '/actors/猪猪侠.jpg', '贪吃贪玩却充满正义感的小猪，关键时刻总能挺身而出。', '2026-11-11 12:07:29');
+INSERT INTO `actor` VALUES (40, '菲菲', '/actors/菲菲.jpg', '聪明伶俐的小猪女孩，猪猪侠的好搭档。', '2026-11-11 12:07:29');
+INSERT INTO `actor` VALUES (41, '海绵宝宝', '/actors/海绵宝宝.jpg', '乐观天真的黄色海绵，最爱抓水母和做蟹黄堡。', '2026-11-11 12:07:29');
+INSERT INTO `actor` VALUES (42, '派大星', '/actors/派大星.jpg', '海绵宝宝最好的朋友，呆萌却常常神助攻。', '2026-11-11 12:07:29');
+INSERT INTO `actor` VALUES (43, '沈腾', '/actors/沈腾.jpg', '国民喜剧演员，自带笑点的“队宠”担当。', '2026-11-11 12:07:29');
+INSERT INTO `actor` VALUES (44, '白敬亭', '/actors/白敬亭.jpg', '青年演员，活力满满的旅行搭子。', '2026-11-11 12:07:29');
+INSERT INTO `actor` VALUES (45, '李晨', '/actors/李晨.jpg', '“大黑牛”，力量担当，撕名牌高手。', '2026-11-11 12:07:29');
+INSERT INTO `actor` VALUES (46, 'Angelababy', '/actors/Angelababy.jpg', '活泼女神，奔跑团早期核心成员。', '2026-11-11 12:07:29');
+INSERT INTO `actor` VALUES (47, '黄磊', '/actors/黄磊.jpg', '“神算子”老狐狸，智商担当。', '2026-11-11 12:07:29');
+INSERT INTO `actor` VALUES (48, '黄渤', '/actors/黄渤.jpg', '国民影帝，极限男人帮核心。', '2026-11-11 12:07:29');
+INSERT INTO `actor` VALUES (49, '何炅', '/actors/何炅.jpg', '“何老师”，快乐家族灵魂主持。', '2026-11-11 12:07:29');
+INSERT INTO `actor` VALUES (50, '谢娜', '/actors/谢娜.jpg', '搞笑担当，气氛组组长。', '2026-11-11 12:07:29');
+INSERT INTO `actor` VALUES (51, '彭昱畅', '/actors/彭昱畅.jpg', '活泼懂事的小师弟，干饭主力。', '2026-11-11 12:07:29');
 
 -- ----------------------------
 -- Table structure for admin_user
@@ -40,16 +109,16 @@ INSERT INTO `admin_user` VALUES (1, 'admin', 'admin123', '2026-10-28 09:02:58');
 -- ----------------------------
 DROP TABLE IF EXISTS `danmaku`;
 CREATE TABLE `danmaku`  (
-  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '涓婚敭',
-  `video_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '瑙嗛?/鍓ч泦鏍囪瘑锛堝墠绔?media.id锛屽? d7 / fp1 / 闀挎湀鐑?槑锛',
-  `episode` int NOT NULL DEFAULT 1 COMMENT '闆嗘暟',
-  `content` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '寮瑰箷鏂囨湰',
-  `color` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '#ffffff' COMMENT '棰滆壊锛圕SS 棰滆壊锛',
-  `play_time` double NULL DEFAULT 0 COMMENT '鍑虹幇鏃堕棿鐐?绉?',
-  `create_time` datetime NULL DEFAULT NULL COMMENT '鍙戦?鏃堕棿',
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `video_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '视频/剧集标识（前端 media.id，如 d7 / fp1 / 长月烬明）',
+  `episode` int NOT NULL DEFAULT 1 COMMENT '集数',
+  `content` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '弹幕文本',
+  `color` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '#ffffff' COMMENT '颜色（CSS 颜色）',
+  `play_time` double NULL DEFAULT 0 COMMENT '出现时间点(秒)',
+  `create_time` datetime NULL DEFAULT NULL COMMENT '发送时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_video_ep`(`video_id` ASC, `episode` ASC) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '寮瑰箷琛' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '弹幕表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of danmaku
@@ -148,7 +217,7 @@ CREATE TABLE `login_record`  (
   `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '录入时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_login_time`(`login_time` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 36 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户登录记录表（用于统计登录人数/次数）' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 71 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户登录记录表（用于统计登录人数/次数）' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of login_record
@@ -180,14 +249,128 @@ INSERT INTO `login_record` VALUES (24, 'xx', '2026-11-04 09:08:42', '2026-11-04 
 INSERT INTO `login_record` VALUES (25, 'xx', '2026-11-04 09:49:35', '2026-11-04 09:49:35');
 INSERT INTO `login_record` VALUES (26, 'xx', '2026-11-06 15:36:43', '2026-11-06 15:36:43');
 INSERT INTO `login_record` VALUES (27, 'xx', '2026-11-06 16:10:22', '2026-11-06 16:10:22');
-INSERT INTO `login_record` VALUES (28, 'xx', '2026-11-11 08:51:27', '2026-11-11 08:51:27');
-INSERT INTO `login_record` VALUES (29, 'xx', '2026-11-11 09:22:56', '2026-11-11 09:22:56');
-INSERT INTO `login_record` VALUES (30, 'xx', '2026-11-11 09:24:14', '2026-11-11 09:24:14');
-INSERT INTO `login_record` VALUES (31, 'xx', '2026-11-11 09:24:59', '2026-11-11 09:24:59');
-INSERT INTO `login_record` VALUES (32, 'xx', '2026-11-11 09:27:23', '2026-11-11 09:27:23');
-INSERT INTO `login_record` VALUES (33, 'xx', '2026-11-11 09:30:48', '2026-11-11 09:30:48');
-INSERT INTO `login_record` VALUES (34, 'xx', '2026-11-11 09:38:09', '2026-11-11 09:38:09');
-INSERT INTO `login_record` VALUES (35, 'xx', '2026-11-11 09:40:43', '2026-11-11 09:40:43');
+INSERT INTO `login_record` VALUES (28, 'xx', '2026-11-09 20:15:18', '2026-11-09 20:15:18');
+INSERT INTO `login_record` VALUES (29, 'xx', '2026-11-09 20:41:14', '2026-11-09 20:41:14');
+INSERT INTO `login_record` VALUES (30, 'xx', '2026-11-09 20:46:06', '2026-11-09 20:46:06');
+INSERT INTO `login_record` VALUES (31, 'xx', '2026-11-09 20:55:26', '2026-11-09 20:55:26');
+INSERT INTO `login_record` VALUES (32, 'xx', '2026-11-09 20:58:21', '2026-11-09 20:58:21');
+INSERT INTO `login_record` VALUES (33, 'xx', '2026-11-09 21:21:06', '2026-11-09 21:21:06');
+INSERT INTO `login_record` VALUES (34, 'xx', '2026-11-10 11:11:41', '2026-11-10 11:11:41');
+INSERT INTO `login_record` VALUES (35, 'xx', '2026-11-10 11:29:07', '2026-11-10 11:29:07');
+INSERT INTO `login_record` VALUES (36, 'xx', '2026-11-10 11:32:06', '2026-11-10 11:32:06');
+INSERT INTO `login_record` VALUES (37, 'xx', '2026-11-10 11:33:00', '2026-11-10 11:33:00');
+INSERT INTO `login_record` VALUES (38, 'xx', '2026-11-10 11:39:59', '2026-11-10 11:39:59');
+INSERT INTO `login_record` VALUES (39, 'xx', '2026-11-10 11:39:59', '2026-11-10 11:39:59');
+INSERT INTO `login_record` VALUES (40, 'xx', '2026-11-10 11:43:38', '2026-11-10 11:43:38');
+INSERT INTO `login_record` VALUES (41, 'xx', '2026-11-11 11:31:55', '2026-11-11 11:31:55');
+INSERT INTO `login_record` VALUES (42, 'xx', '2026-11-11 11:31:55', '2026-11-11 11:31:55');
+INSERT INTO `login_record` VALUES (43, 'xx', '2026-11-11 11:42:39', '2026-11-11 11:42:39');
+INSERT INTO `login_record` VALUES (44, 'xx', '2026-11-11 11:42:39', '2026-11-11 11:42:39');
+INSERT INTO `login_record` VALUES (45, 'xx', '2026-11-11 11:50:38', '2026-11-11 11:50:38');
+INSERT INTO `login_record` VALUES (46, 'xx', '2026-11-11 11:57:18', '2026-11-11 11:57:18');
+INSERT INTO `login_record` VALUES (47, 'xx', '2026-11-11 12:25:56', '2026-11-11 12:25:56');
+INSERT INTO `login_record` VALUES (48, 'xx', '2026-11-11 12:28:47', '2026-11-11 12:28:47');
+INSERT INTO `login_record` VALUES (49, 'xx', '2026-11-11 12:34:06', '2026-11-11 12:34:06');
+INSERT INTO `login_record` VALUES (50, 'xx', '2026-11-11 12:35:53', '2026-11-11 12:35:53');
+INSERT INTO `login_record` VALUES (51, 'xx', '2026-11-11 12:58:43', '2026-11-11 12:58:43');
+INSERT INTO `login_record` VALUES (52, 'xx', '2026-11-11 13:00:26', '2026-11-11 13:00:26');
+INSERT INTO `login_record` VALUES (53, 'xx', '2026-11-11 13:05:54', '2026-11-11 13:05:54');
+INSERT INTO `login_record` VALUES (54, 'xx', '2026-11-11 19:00:45', '2026-11-11 19:00:45');
+INSERT INTO `login_record` VALUES (55, 'xx', '2026-11-11 19:00:45', '2026-11-11 19:00:45');
+INSERT INTO `login_record` VALUES (56, 'xx', '2026-11-11 19:08:33', '2026-11-11 19:08:33');
+INSERT INTO `login_record` VALUES (57, 'xx', '2026-11-11 19:24:53', '2026-11-11 19:24:53');
+INSERT INTO `login_record` VALUES (58, 'xx', '2026-11-11 19:37:04', '2026-11-11 19:37:04');
+INSERT INTO `login_record` VALUES (59, 'xx', '2026-11-11 19:38:50', '2026-11-11 19:38:50');
+INSERT INTO `login_record` VALUES (60, 'xiyangyang', '2026-11-11 19:39:44', '2026-11-11 19:39:44');
+INSERT INTO `login_record` VALUES (61, 'xiyangyang', '2026-11-11 19:40:08', '2026-11-11 19:40:08');
+INSERT INTO `login_record` VALUES (62, 'xiyangyang', '2026-11-11 19:40:39', '2026-11-11 19:40:39');
+INSERT INTO `login_record` VALUES (63, 'xx', '2026-11-11 19:42:56', '2026-11-11 19:42:56');
+INSERT INTO `login_record` VALUES (64, 'xx', '2026-11-11 20:09:59', '2026-11-11 20:09:59');
+INSERT INTO `login_record` VALUES (65, 'xiyangyang', '2026-11-11 20:10:58', '2026-11-11 20:10:58');
+INSERT INTO `login_record` VALUES (66, 'xiyangyang', '2026-11-11 20:11:40', '2026-11-11 20:11:40');
+INSERT INTO `login_record` VALUES (67, 'xiyangyang', '2026-11-11 20:12:29', '2026-11-11 20:12:29');
+INSERT INTO `login_record` VALUES (68, 'xx', '2026-11-11 20:26:44', '2026-11-11 20:26:44');
+INSERT INTO `login_record` VALUES (69, 'xx', '2026-11-11 20:31:42', '2026-11-11 20:31:42');
+INSERT INTO `login_record` VALUES (70, 'xx', '2026-11-11 20:33:26', '2026-11-11 20:33:26');
+
+-- ----------------------------
+-- Table structure for media_segment
+-- ----------------------------
+DROP TABLE IF EXISTS `media_segment`;
+CREATE TABLE `media_segment`  (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '主键，自增',
+  `media_type` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '所属媒体类型：drama(电视剧)/kids(少儿)/variety(综艺)',
+  `media_id` bigint NOT NULL COMMENT '对应 drama/kids/variety 表的 id',
+  `actor_id` bigint NOT NULL COMMENT '对应 actor 表的 id',
+  `role` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '在该作品中的角色',
+  `segment_start` double NULL DEFAULT NULL COMMENT '出场开始时间（秒）',
+  `segment_end` double NULL DEFAULT NULL COMMENT '出场结束时间（秒，可空）',
+  `episode` int NULL DEFAULT NULL COMMENT '出场集数（可空）',
+  `note` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '录入时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_media`(`media_type` ASC, `media_id` ASC) USING BTREE,
+  INDEX `idx_actor`(`actor_id` ASC) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 56 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '演员出场片段表（用于点击头像跳转到其出场位置）' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of media_segment
+-- ----------------------------
+INSERT INTO `media_segment` VALUES (1, 'drama', 13, 1, '白浅 / 素素 / 司音', 10, NULL, NULL, NULL, '2026-11-11 12:07:29');
+INSERT INTO `media_segment` VALUES (2, 'drama', 13, 2, '夜华 / 墨渊', 25, NULL, NULL, NULL, '2026-11-11 12:07:29');
+INSERT INTO `media_segment` VALUES (3, 'drama', 13, 3, '白凤九', 40, NULL, NULL, NULL, '2026-11-11 12:07:29');
+INSERT INTO `media_segment` VALUES (4, 'drama', 13, 4, '折颜', 55, NULL, NULL, NULL, '2026-11-11 12:07:29');
+INSERT INTO `media_segment` VALUES (5, 'drama', 13, 5, '东华帝君', 70, NULL, NULL, NULL, '2026-11-11 12:07:29');
+INSERT INTO `media_segment` VALUES (6, 'drama', 14, 6, '锦觅', 10, NULL, NULL, NULL, '2026-11-11 12:07:29');
+INSERT INTO `media_segment` VALUES (7, 'drama', 14, 7, '旭凤', 25, NULL, NULL, NULL, '2026-11-11 12:07:29');
+INSERT INTO `media_segment` VALUES (8, 'drama', 14, 8, '润玉', 40, NULL, NULL, NULL, '2026-11-11 12:07:29');
+INSERT INTO `media_segment` VALUES (9, 'drama', 14, 9, '鎏英', 55, NULL, NULL, NULL, '2026-11-11 12:07:29');
+INSERT INTO `media_segment` VALUES (10, 'drama', 15, 10, '陈芊芊 / 陈小千', 10, NULL, NULL, NULL, '2026-11-11 12:07:29');
+INSERT INTO `media_segment` VALUES (11, 'drama', 15, 11, '韩烁', 25, NULL, NULL, NULL, '2026-11-11 12:07:29');
+INSERT INTO `media_segment` VALUES (12, 'drama', 15, 12, '裴恒', 40, NULL, NULL, NULL, '2026-11-11 12:07:29');
+INSERT INTO `media_segment` VALUES (13, 'drama', 15, 13, '陈楚楚', 55, NULL, NULL, NULL, '2026-11-11 12:07:29');
+INSERT INTO `media_segment` VALUES (14, 'drama', 16, 14, '张果果', 10, NULL, NULL, NULL, '2026-11-11 12:07:29');
+INSERT INTO `media_segment` VALUES (15, 'drama', 16, 7, '李云恺', 25, NULL, NULL, NULL, '2026-11-11 12:07:29');
+INSERT INTO `media_segment` VALUES (16, 'drama', 16, 15, '张雨欣', 40, NULL, NULL, NULL, '2026-11-11 12:07:29');
+INSERT INTO `media_segment` VALUES (17, 'drama', 16, 16, '李云哲', 55, NULL, NULL, NULL, '2026-11-11 12:07:29');
+INSERT INTO `media_segment` VALUES (18, 'drama', 17, 17, '任新正', 10, NULL, NULL, NULL, '2026-11-11 12:07:29');
+INSERT INTO `media_segment` VALUES (19, 'drama', 17, 10, '孙头头', 25, NULL, NULL, NULL, '2026-11-11 12:07:29');
+INSERT INTO `media_segment` VALUES (20, 'drama', 17, 18, '任天真', 40, NULL, NULL, NULL, '2026-11-11 12:07:29');
+INSERT INTO `media_segment` VALUES (21, 'drama', 17, 19, '杨小红', 55, NULL, NULL, NULL, '2026-11-11 12:07:29');
+INSERT INTO `media_segment` VALUES (22, 'drama', 17, 20, '宋灵兰', 70, NULL, NULL, NULL, '2026-11-11 12:07:29');
+INSERT INTO `media_segment` VALUES (23, 'drama', 18, 6, '颜淡', 10, NULL, NULL, NULL, '2026-11-11 12:07:29');
+INSERT INTO `media_segment` VALUES (24, 'drama', 18, 21, '应渊 / 唐周', 25, NULL, NULL, NULL, '2026-11-11 12:07:29');
+INSERT INTO `media_segment` VALUES (25, 'drama', 18, 22, '余墨', 40, NULL, NULL, NULL, '2026-11-11 12:07:29');
+INSERT INTO `media_segment` VALUES (26, 'drama', 18, 23, '芷昔', 55, NULL, NULL, NULL, '2026-11-11 12:07:29');
+INSERT INTO `media_segment` VALUES (27, 'drama', 19, 24, '魏娆 / 君黛', 10, NULL, NULL, NULL, '2026-11-11 12:07:29');
+INSERT INTO `media_segment` VALUES (28, 'drama', 19, 25, '陆濯', 25, NULL, NULL, NULL, '2026-11-11 12:07:29');
+INSERT INTO `media_segment` VALUES (29, 'drama', 19, 26, '戚仲恺', 40, NULL, NULL, NULL, '2026-11-11 12:07:29');
+INSERT INTO `media_segment` VALUES (30, 'drama', 19, 27, '碧桃', 55, NULL, NULL, NULL, '2026-11-11 12:07:29');
+INSERT INTO `media_segment` VALUES (31, 'kids', 1, 28, '主角（熊）', 8, NULL, NULL, NULL, '2026-11-11 12:07:29');
+INSERT INTO `media_segment` VALUES (32, 'kids', 1, 29, '主角（熊）', 20, NULL, NULL, NULL, '2026-11-11 12:07:29');
+INSERT INTO `media_segment` VALUES (33, 'kids', 1, 30, '伐木工', 32, NULL, NULL, NULL, '2026-11-11 12:07:29');
+INSERT INTO `media_segment` VALUES (34, 'kids', 2, 31, '主角（羊）', 8, NULL, NULL, NULL, '2026-11-11 12:07:29');
+INSERT INTO `media_segment` VALUES (35, 'kids', 2, 32, '反派（狼）', 20, NULL, NULL, NULL, '2026-11-11 12:07:29');
+INSERT INTO `media_segment` VALUES (36, 'kids', 3, 33, '魔仙', 8, NULL, NULL, NULL, '2026-11-11 12:07:29');
+INSERT INTO `media_segment` VALUES (37, 'kids', 3, 34, '主角（人类）', 20, NULL, NULL, NULL, '2026-11-11 12:07:29');
+INSERT INTO `media_segment` VALUES (38, 'kids', 4, 35, '主角（小猪）', 8, NULL, NULL, NULL, '2026-11-11 12:07:29');
+INSERT INTO `media_segment` VALUES (39, 'kids', 4, 36, '弟弟（小猪）', 20, NULL, NULL, NULL, '2026-11-11 12:07:29');
+INSERT INTO `media_segment` VALUES (40, 'kids', 5, 37, '主角（飞机）', 8, NULL, NULL, NULL, '2026-11-11 12:07:29');
+INSERT INTO `media_segment` VALUES (41, 'kids', 5, 38, '救援直升机', 20, NULL, NULL, NULL, '2026-11-11 12:07:29');
+INSERT INTO `media_segment` VALUES (42, 'kids', 6, 39, '主角（猪）', 8, NULL, NULL, NULL, '2026-11-11 12:07:29');
+INSERT INTO `media_segment` VALUES (43, 'kids', 6, 40, '伙伴（猪）', 20, NULL, NULL, NULL, '2026-11-11 12:07:29');
+INSERT INTO `media_segment` VALUES (44, 'kids', 7, 41, '主角（海绵）', 8, NULL, NULL, NULL, '2026-11-11 12:07:29');
+INSERT INTO `media_segment` VALUES (45, 'kids', 7, 42, '好友（海星）', 20, NULL, NULL, NULL, '2026-11-11 12:07:29');
+INSERT INTO `media_segment` VALUES (46, 'variety', 1, 43, '常驻嘉宾', 10, NULL, NULL, NULL, '2026-11-11 12:07:29');
+INSERT INTO `media_segment` VALUES (47, 'variety', 1, 44, '常驻嘉宾', 25, NULL, NULL, NULL, '2026-11-11 12:07:29');
+INSERT INTO `media_segment` VALUES (48, 'variety', 2, 45, '常驻嘉宾', 10, NULL, NULL, NULL, '2026-11-11 12:07:29');
+INSERT INTO `media_segment` VALUES (49, 'variety', 2, 46, '常驻嘉宾', 25, NULL, NULL, NULL, '2026-11-11 12:07:29');
+INSERT INTO `media_segment` VALUES (50, 'variety', 3, 47, '常驻嘉宾', 10, NULL, NULL, NULL, '2026-11-11 12:07:29');
+INSERT INTO `media_segment` VALUES (51, 'variety', 3, 48, '常驻嘉宾', 25, NULL, NULL, NULL, '2026-11-11 12:07:29');
+INSERT INTO `media_segment` VALUES (52, 'variety', 4, 49, '主持人', 10, NULL, NULL, NULL, '2026-11-11 12:07:29');
+INSERT INTO `media_segment` VALUES (53, 'variety', 4, 50, '主持人', 25, NULL, NULL, NULL, '2026-11-11 12:07:29');
+INSERT INTO `media_segment` VALUES (54, 'variety', 5, 47, '常驻嘉宾', 10, NULL, NULL, NULL, '2026-11-11 12:07:29');
+INSERT INTO `media_segment` VALUES (55, 'variety', 5, 51, '常驻嘉宾', 25, NULL, NULL, NULL, '2026-11-11 12:07:29');
 
 -- ----------------------------
 -- Table structure for user

@@ -19,6 +19,7 @@ import java.util.Map;
  *
  * 接口列表：
  *   GET /api/drama?sort=hot|score&order=asc|desc   获取电视剧列表（按热度/评分排序，默认热度倒序）
+ *   GET /api/drama/search?keyword=xxx              按关键词模糊搜索电视剧（剧名/类型/演员/标签）
  *   GET /api/drama/{id}                            根据 id 获取单部
  */
 @RestController
@@ -48,6 +49,16 @@ public class DramaController {
         result.put("code", 200);
         result.put("msg", "success");
         result.put("data", dramaService.getById(id));
+        return result;
+    }
+
+    /** 按关键词模糊搜索电视剧（剧名/类型/演员/标签），keyword 为空时返回全部 */
+    @GetMapping("/search")
+    public Map<String, Object> search(@RequestParam(required = false) String keyword) {
+        Map<String, Object> result = new HashMap<>();
+        result.put("code", 200);
+        result.put("msg", "success");
+        result.put("data", dramaService.search(keyword));
         return result;
     }
 }
