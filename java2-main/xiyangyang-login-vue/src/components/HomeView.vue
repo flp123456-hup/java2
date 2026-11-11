@@ -329,6 +329,32 @@
             </div>
             <div class="play-tip" v-if="!isPlaying">点击 ▶ 播放，开始观看《{{ active.title }}》</div>
           </template>
+
+          <!-- 弹幕飘屏层（pointer-events:none，不挡原生控件） -->
+          <div class="dm-layer" v-show="dmOn && active">
+            <span
+              v-for="d in danmakus"
+              :key="d.id"
+              class="dm"
+              :style="{ top: d.top + '%', color: d.color, animationDuration: d.dur + 's' }"
+              @animationend="removeDanmaku(d.id)"
+            >{{ d.text }}</span>
+          </div>
+        </div>
+
+        <!-- 弹幕发送条 -->
+        <div class="dm-bar" v-if="active">
+          <label class="dm-toggle" :class="{ on: dmOn }">
+            <input type="checkbox" v-model="dmOn" /> 弹幕
+          </label>
+          <input
+            class="dm-input"
+            v-model="dmText"
+            maxlength="40"
+            placeholder="发条弹幕飘过屏幕…（回车发送）"
+            @keyup.enter="sendDanmaku"
+          />
+          <button class="dm-send" @click="sendDanmaku">发送</button>
         </div>
 
         <!-- 选集 -->
@@ -350,27 +376,52 @@
         </div>
 
         <div class="tab-body">
-          <div class="cast-list" v-if="tab === 'cast'">
-            <div class="actor" v-for="(a, i) in (active.cast || [])" :key="i">
-              <div class="a-emoji">{{ a.emoji }}</div>
-              <div class="a-info">
-                <div class="a-name">{{ a.name }} <span class="a-role">饰 {{ a.role }}</span></div>
-                <div class="a-bio">{{ a.bio }}</div>
-              </div>
+        <div class="cast-list" v-if="tab === 'cast'">
+          <div class="actor" v-for="(a, i) in (active.cast || [])" :key="i">
+            <img
+              v-if="actorAvatar(a.name) && !actorFail[a.name]"
+              class="a-avatar"
+              :src="actorAvatar(a.name)"
+              :alt="a.name"
+              :title="'查看 ' + a.name + ' 演过的电视剧'"
+              @error="actorFail[a.name] = true"
+              @click="openActor(a.name)"
+            />
+            <div
+              v-else
+              class="a-emoji clickable"
+              :title="'查看 ' + a.name + ' 演过的电视剧'"
+              @click="openActor(a.name)"
+            >{{ (a.name || '?').slice(0, 1) }}</div>
+            <div class="a-info">
+              <div class="a-name clickable" :title="'查看 ' + a.name + ' 演过的电视剧'" @click="openActor(a.name)">{{ a.name }} <span class="a-role">饰 {{ a.role }}</span></div>
+              <div class="a-bio">{{ a.bio }}</div>
             </div>
-            <p class="empty" v-if="!(active.cast || []).length">暂无演员资料</p>
           </div>
+          <p class="empty" v-if="!(active.cast || []).length">暂无演员资料</p>
+        </div>
           <p class="m-desc" v-else>{{ active.desc }}</p>
         </div>
       </div>
     </div>
+
+    <!-- 演员主页：点演员头像 / 名字跳转到 TA 演过的电视剧 -->
+    <ActorPage
+      v-if="actorName"
+      :actor-name="actorName"
+      :medias="dramas"
+      @close="closeActor"
+      @open-media="openFromActor"
+    />
   </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
-import { medias, resolveCover, COVER_BY_TITLE, FUPING_OPENINGS } from '../mediaData.js'
+import { ref, computed, onMounted, reactive, watch } from 'vue'
+import { medias, resolveCover, COVER_BY_TITLE, FUPING_OPENINGS, resolveActorAvatar } from '../mediaData.js'
 import { loadKids, loadVariety } from '../mediaApi.js'
+import { fetchDanmaku, postDanmaku } from '../danmakuApi.js'
+import ActorPage from './ActorPage.vue'
 
 defineProps({ username: String })
 defineEmits(['logout', 'open-admin', 'open-media'])
@@ -459,6 +510,25 @@ function toHome(m) {
 const keyword = ref('')
 const showHot = ref(false)
 const active = ref(null)
+
+// ===================== 演员头像 / 跳转演员主页 =====================
+const actorName = ref(null)
+const actorFail = reactive({})
+function actorAvatar(name) {
+  return resolveActorAvatar(name)
+}
+// 点演员头像 / 名字 → 打开演员主页，看 TA 演过的电视剧
+function openActor(name) {
+  actorName.value = name
+}
+function closeActor() {
+  actorName.value = null
+}
+// 从演员主页点某部剧：关掉演员页，打开该剧详情
+function openFromActor(m) {
+  actorName.value = null
+  open(m)
+}
 
 const featured = computed(() => [...dramas.value].sort((a, b) => b.hot - a.hot).slice(0, 5))
 const scoreRank = computed(() => [...dramas.value].sort((a, b) => b.score - a.score).slice(0, 10))
@@ -568,6 +638,7 @@ function open(m) {
   curSec.value = 0
   progress.value = 0
   stopTimer()
+  loadDanmaku()
 }
 
 function closeDrama() {
@@ -661,6 +732,64 @@ function enlarge() {
   const fn = v.requestFullscreen || v.webkitRequestFullscreen || v.msRequestFullscreen
   if (fn) { try { fn.call(v) } catch (e) {} }
 }
+
+// ===================== 弹幕 =====================
+const dmOn = ref(true)
+const dmText = ref('')
+const danmakus = ref([])          // 当前在飞的弹幕
+const actorFailSet = reactive(new Set())
+let dmSeq = 0
+let lane = 0
+const DM_COLORS = ['#fff', '#ffd479', '#ff8a8a', '#8ad6ff', '#a6f0a6', '#ffb3f0']
+
+function dmKey() {
+  return 'dm:' + (active.value ? active.value.id : 'x') + ':' + currentEp.value
+}
+// 拉取弹幕：后端优先；后端不可用自动回退本地 localStorage
+async function loadDanmaku() {
+  danmakus.value = []
+  const id = active.value ? String(active.value.id) : 'x'
+  const fromBackend = await fetchDanmaku(id, currentEp.value)
+  if (fromBackend && fromBackend.length) {
+    fromBackend.slice(-40).forEach(item => pushDanmaku(item.text, item.color, true))
+    return
+  }
+  try {
+    const arr = JSON.parse(localStorage.getItem(dmKey()) || '[]')
+    arr.slice(-40).forEach(item => pushDanmaku(item.text, item.color, true))
+  } catch (e) { /* ignore */ }
+}
+function saveDanmaku(text, color) {
+  try {
+    const arr = JSON.parse(localStorage.getItem(dmKey()) || '[]')
+    arr.push({ text, color })
+    localStorage.setItem(dmKey(), JSON.stringify(arr.slice(-200)))
+  } catch (e) { /* ignore */ }
+}
+function pushDanmaku(text, color, replay) {
+  if (!text) return
+  const id = ++dmSeq
+  const top = 4 + (lane % 8) * 7        // 8 条泳道，避免全叠一起
+  lane++
+  const dur = replay ? 7 + Math.random() * 4 : 8
+  danmakus.value.push({ id, text, color, top, dur })
+}
+function removeDanmaku(id) {
+  const i = danmakus.value.findIndex(d => d.id === id)
+  if (i >= 0) danmakus.value.splice(i, 1)
+}
+function sendDanmaku() {
+  const text = (dmText.value || '').trim()
+  if (!text) return
+  const color = DM_COLORS[Math.floor(Math.random() * DM_COLORS.length)]
+  pushDanmaku(text, color, false)
+  saveDanmaku(text, color) // 本地即时保存（后端未启动时也能保留）
+  postDanmaku(String(active.value ? active.value.id : 'x'), currentEp.value, text, color, 0) // 同步到后端（多人共享）
+  dmText.value = ''
+}
+
+// 切换选集时重载该集弹幕
+watch(currentEp, loadDanmaku)
 
 // 生成满天星星
 const stars = Array.from({ length: 150 }, (_, i) => {
@@ -1137,12 +1266,46 @@ function shootStyle(n) {
 
 .cast-list { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .actor { display: flex; gap: 12px; background: rgba(255,255,255,.04); border: 1px solid rgba(150,160,255,.16); border-radius: 12px; padding: 12px; }
+.a-avatar {
+  width: 48px; height: 48px; flex: none;
+  border-radius: 12px; object-fit: cover; object-position: center top;
+  cursor: pointer; border: 2px solid rgba(255,110,196,.6);
+}
 .a-emoji { font-size: 34px; flex: none; width: 48px; height: 48px; border-radius: 12px; background: rgba(123,140,255,.14); display: flex; align-items: center; justify-content: center; }
 .a-name { font-size: 15px; font-weight: 700; }
+.clickable { cursor: pointer; transition: color .15s; }
+.clickable:hover { color: #ff9ad4; text-decoration: underline; }
 .a-role { font-size: 12px; color: #ffd98a; font-weight: 400; margin-left: 6px; }
 .a-bio { font-size: 13px; color: #c6cdf5; line-height: 1.6; margin-top: 4px; }
 .m-desc { font-size: 14px; line-height: 1.8; color: #d6dcff; }
 .empty { color: #9aa3c7; text-align: center; padding: 20px; }
+
+/* 弹幕飘屏层（与播放器共用同一块区域，用容器查询单位 cqw 从右飞到左） */
+.dm-layer {
+  position: absolute; inset: 0; overflow: hidden;
+  pointer-events: none; z-index: 6; container-type: inline-size;
+}
+.dm {
+  position: absolute; left: 0; white-space: nowrap;
+  font-size: 16px; font-weight: 700;
+  text-shadow: 0 1px 3px rgba(0,0,0,.9);
+  transform: translateX(100cqw);
+  animation-name: dm-move; animation-timing-function: linear; animation-fill-mode: forwards;
+  will-change: transform;
+}
+@keyframes dm-move { to { transform: translateX(-100%); } }
+
+/* 弹幕发送条 */
+.dm-bar { display: flex; align-items: center; gap: 10px; margin: 4px 0 16px; }
+.dm-toggle { font-size: 13px; color: #cdd5ff; display: flex; align-items: center; gap: 5px; cursor: pointer; user-select: none; }
+.dm-toggle.on { color: #ffd479; }
+.dm-input {
+  flex: 1; background: rgba(255,255,255,.06); border: 1px solid rgba(150,160,255,.3);
+  color: #fff; border-radius: 8px; padding: 9px 12px; font-size: 14px; outline: none;
+}
+.dm-input:focus { border-color: #7b8cff; }
+.dm-send { background: linear-gradient(135deg,#7b8cff,#b14dff); color: #fff; border: none; border-radius: 8px; padding: 9px 18px; cursor: pointer; font-size: 14px; font-weight: 700; }
+.dm-send:hover { filter: brightness(1.08); }
 
 @media (max-width: 620px) {
   .cast-list { grid-template-columns: 1fr; }

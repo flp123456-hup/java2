@@ -1,7 +1,7 @@
 /*
  Navicat Premium Dump SQL
 
- Source Server         : test
+ Source Server         : localhost_3306
  Source Server Type    : MySQL
  Source Server Version : 80039 (8.0.39)
  Source Host           : localhost:3306
@@ -11,7 +11,7 @@
  Target Server Version : 80039 (8.0.39)
  File Encoding         : 65001
 
- Date: 06/11/2026 16:45:44
+ Date: 11/11/2026 09:58:36
 */
 
 SET NAMES utf8mb4;
@@ -34,6 +34,26 @@ CREATE TABLE `admin_user`  (
 -- Records of admin_user
 -- ----------------------------
 INSERT INTO `admin_user` VALUES (1, 'admin', 'admin123', '2026-10-28 09:02:58');
+
+-- ----------------------------
+-- Table structure for danmaku
+-- ----------------------------
+DROP TABLE IF EXISTS `danmaku`;
+CREATE TABLE `danmaku`  (
+  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '涓婚敭',
+  `video_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '瑙嗛?/鍓ч泦鏍囪瘑锛堝墠绔?media.id锛屽? d7 / fp1 / 闀挎湀鐑?槑锛',
+  `episode` int NOT NULL DEFAULT 1 COMMENT '闆嗘暟',
+  `content` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '' COMMENT '寮瑰箷鏂囨湰',
+  `color` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '#ffffff' COMMENT '棰滆壊锛圕SS 棰滆壊锛',
+  `play_time` double NULL DEFAULT 0 COMMENT '鍑虹幇鏃堕棿鐐?绉?',
+  `create_time` datetime NULL DEFAULT NULL COMMENT '鍙戦?鏃堕棿',
+  PRIMARY KEY (`id`) USING BTREE,
+  INDEX `idx_video_ep`(`video_id` ASC, `episode` ASC) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '寮瑰箷琛' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of danmaku
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for drama
@@ -128,7 +148,7 @@ CREATE TABLE `login_record`  (
   `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '录入时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_login_time`(`login_time` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 28 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户登录记录表（用于统计登录人数/次数）' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 36 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户登录记录表（用于统计登录人数/次数）' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of login_record
@@ -160,6 +180,14 @@ INSERT INTO `login_record` VALUES (24, 'xx', '2026-11-04 09:08:42', '2026-11-04 
 INSERT INTO `login_record` VALUES (25, 'xx', '2026-11-04 09:49:35', '2026-11-04 09:49:35');
 INSERT INTO `login_record` VALUES (26, 'xx', '2026-11-06 15:36:43', '2026-11-06 15:36:43');
 INSERT INTO `login_record` VALUES (27, 'xx', '2026-11-06 16:10:22', '2026-11-06 16:10:22');
+INSERT INTO `login_record` VALUES (28, 'xx', '2026-11-11 08:51:27', '2026-11-11 08:51:27');
+INSERT INTO `login_record` VALUES (29, 'xx', '2026-11-11 09:22:56', '2026-11-11 09:22:56');
+INSERT INTO `login_record` VALUES (30, 'xx', '2026-11-11 09:24:14', '2026-11-11 09:24:14');
+INSERT INTO `login_record` VALUES (31, 'xx', '2026-11-11 09:24:59', '2026-11-11 09:24:59');
+INSERT INTO `login_record` VALUES (32, 'xx', '2026-11-11 09:27:23', '2026-11-11 09:27:23');
+INSERT INTO `login_record` VALUES (33, 'xx', '2026-11-11 09:30:48', '2026-11-11 09:30:48');
+INSERT INTO `login_record` VALUES (34, 'xx', '2026-11-11 09:38:09', '2026-11-11 09:38:09');
+INSERT INTO `login_record` VALUES (35, 'xx', '2026-11-11 09:40:43', '2026-11-11 09:40:43');
 
 -- ----------------------------
 -- Table structure for user

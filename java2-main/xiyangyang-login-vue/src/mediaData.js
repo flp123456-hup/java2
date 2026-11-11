@@ -136,6 +136,32 @@ export function resolveCover(path, title) {
   return COVER_MAP[path] || (path || '') || COVER_BY_TITLE[title] || ''
 }
 
+// ============================================================
+//  演员头像解析（弹幕播放器用）
+//  规则（优先级从高到低）：
+//    1. 演员对象里显式写的 avatar 字段（例如 '/actors/yangmi.jpg' 或 import 的 URL）
+//    2. 自动按演员名匹配 public/actors/<姓名>.jpg
+//       —— 你只要把照片命名为「演员名.jpg」丢进 public/actors/ 即可，零代码改动
+//    3. 都没有 → 返回空串，播放器会自动用「名字首字」生成彩色圆头像兜底
+//  注意：public/ 下的文件由 Vite 直接以根路径对外提供，无需 import。
+// ============================================================
+export function resolveActorAvatar(name, explicit) {
+  if (explicit) return explicit
+  if (name && name !== '待补充') {
+    return '/actors/' + encodeURIComponent(name) + '.jpg'
+  }
+  return ''
+}
+
+// 演员出场时间点（秒）。数据中可写 actor.segment = { start: 120 } 表示第 120 秒出场；
+// 没写则按「第几个演员 * 15 秒」兜底，方便先看效果，后续替换成真实时间点即可。
+export function actorSegmentStart(actor, index) {
+  if (actor && actor.segment && typeof actor.segment.start === 'number') {
+    return actor.segment.start
+  }
+  return (index + 1) * 15
+}
+
 // 公开版权示例视频（Big Buck Bunny，Google 公共示例桶，CC 授权）
 const DEMO_VIDEO =
   'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4'

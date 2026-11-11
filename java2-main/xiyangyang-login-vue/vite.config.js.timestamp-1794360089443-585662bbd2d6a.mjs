@@ -1,0 +1,21 @@
+// vite.config.js
+import { defineConfig } from "file:///D:/workSpace/java2/java2-main/xiyangyang-login-vue/node_modules/vite/dist/node/index.js";
+import vue from "file:///D:/workSpace/java2/java2-main/xiyangyang-login-vue/node_modules/@vitejs/plugin-vue/dist/index.mjs";
+var vite_config_default = defineConfig({
+  plugins: [vue()],
+  server: {
+    port: 5173,
+    open: true,
+    // 代理：前端请求 /api/** 时转发给 Spring Boot 后端（端口 8081）
+    proxy: {
+      "/api": {
+        target: "http://localhost:8081",
+        changeOrigin: true
+      }
+    }
+  }
+});
+export {
+  vite_config_default as default
+};
+//# sourceMappingURL=data:application/json;base64,ewogICJ2ZXJzaW9uIjogMywKICAic291cmNlcyI6IFsidml0ZS5jb25maWcuanMiXSwKICAic291cmNlc0NvbnRlbnQiOiBbImNvbnN0IF9fdml0ZV9pbmplY3RlZF9vcmlnaW5hbF9kaXJuYW1lID0gXCJEOlxcXFx3b3JrU3BhY2VcXFxcamF2YTJcXFxcamF2YTItbWFpblxcXFx4aXlhbmd5YW5nLWxvZ2luLXZ1ZVwiO2NvbnN0IF9fdml0ZV9pbmplY3RlZF9vcmlnaW5hbF9maWxlbmFtZSA9IFwiRDpcXFxcd29ya1NwYWNlXFxcXGphdmEyXFxcXGphdmEyLW1haW5cXFxceGl5YW5neWFuZy1sb2dpbi12dWVcXFxcdml0ZS5jb25maWcuanNcIjtjb25zdCBfX3ZpdGVfaW5qZWN0ZWRfb3JpZ2luYWxfaW1wb3J0X21ldGFfdXJsID0gXCJmaWxlOi8vL0Q6L3dvcmtTcGFjZS9qYXZhMi9qYXZhMi1tYWluL3hpeWFuZ3lhbmctbG9naW4tdnVlL3ZpdGUuY29uZmlnLmpzXCI7aW1wb3J0IHsgZGVmaW5lQ29uZmlnIH0gZnJvbSAndml0ZSdcclxuaW1wb3J0IHZ1ZSBmcm9tICdAdml0ZWpzL3BsdWdpbi12dWUnXHJcblxyXG5leHBvcnQgZGVmYXVsdCBkZWZpbmVDb25maWcoe1xyXG4gIHBsdWdpbnM6IFt2dWUoKV0sXHJcbiAgc2VydmVyOiB7XHJcbiAgICBwb3J0OiA1MTczLFxyXG4gICAgb3BlbjogdHJ1ZSxcclxuICAgIC8vIFx1NEVFM1x1NzQwNlx1RkYxQVx1NTI0RFx1N0FFRlx1OEJGN1x1NkM0MiAvYXBpLyoqIFx1NjVGNlx1OEY2Q1x1NTNEMVx1N0VEOSBTcHJpbmcgQm9vdCBcdTU0MEVcdTdBRUZcdUZGMDhcdTdBRUZcdTUzRTMgODA4MVx1RkYwOVxyXG4gICAgcHJveHk6IHtcclxuICAgICAgJy9hcGknOiB7XHJcbiAgICAgICAgdGFyZ2V0OiAnaHR0cDovL2xvY2FsaG9zdDo4MDgxJyxcclxuICAgICAgICBjaGFuZ2VPcmlnaW46IHRydWVcclxuICAgICAgfVxyXG4gICAgfVxyXG4gIH1cclxufSlcclxuIl0sCiAgIm1hcHBpbmdzIjogIjtBQUFrVixTQUFTLG9CQUFvQjtBQUMvVyxPQUFPLFNBQVM7QUFFaEIsSUFBTyxzQkFBUSxhQUFhO0FBQUEsRUFDMUIsU0FBUyxDQUFDLElBQUksQ0FBQztBQUFBLEVBQ2YsUUFBUTtBQUFBLElBQ04sTUFBTTtBQUFBLElBQ04sTUFBTTtBQUFBO0FBQUEsSUFFTixPQUFPO0FBQUEsTUFDTCxRQUFRO0FBQUEsUUFDTixRQUFRO0FBQUEsUUFDUixjQUFjO0FBQUEsTUFDaEI7QUFBQSxJQUNGO0FBQUEsRUFDRjtBQUNGLENBQUM7IiwKICAibmFtZXMiOiBbXQp9Cg==

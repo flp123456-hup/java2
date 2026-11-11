@@ -68,10 +68,10 @@
         <div class="d-song" v-if="detail.openingSong">🎵 片头曲：{{ detail.openingSong }}</div>
         <p class="d-desc">{{ detail.desc }}</p>
 
-        <h3>演员资料</h3>
+        <h3>演员资料 <small>点演员名查看 TA 演过的电视剧</small></h3>
         <ul class="actors">
           <li v-for="a in detail.actors" :key="a.name">
-            <div class="a-name">{{ a.name }} <span class="a-role">饰 {{ a.role }}</span></div>
+            <div class="a-name clickable" @click="openActor(a.name)">{{ a.name }} <span class="a-role">饰 {{ a.role }}</span></div>
             <div class="a-bio">{{ a.bio }}</div>
           </li>
         </ul>
@@ -81,7 +81,16 @@
     </div>
 
     <!-- 播放器 -->
-    <VideoPlayer v-if="playing" :media="playing" @close="playing = null" />
+    <VideoPlayer v-if="playing" :media="playing" @close="playing = null" @open-actor="openActor" />
+
+    <!-- 演员主页：看 TA 演过的所有电视剧 -->
+    <ActorPage
+      v-if="actorName"
+      :actor-name="actorName"
+      :medias="allMedias"
+      @close="actorName = null"
+      @open-media="openFromActor"
+    />
   </div>
 </template>
 
@@ -90,6 +99,7 @@ import { ref, computed, onMounted } from 'vue'
 import { categories, medias } from '../mediaData.js'
 import { loadAllMedia } from '../mediaApi.js'
 import VideoPlayer from './VideoPlayer.vue'
+import ActorPage from './ActorPage.vue'
 
 defineEmits(['close'])
 
@@ -97,6 +107,7 @@ const active = ref('drama')
 const sort = ref('hot')
 const detail = ref(null)
 const playing = ref(null)
+const actorName = ref(null)
 
 // 初始为前端 mock 数据（兜底）；电视剧/少儿/综艺优先用后端数据库数据覆盖
 const allMedias = ref(medias)
@@ -136,6 +147,17 @@ function openDetail(m) {
 function play(m) {
   detail.value = null
   playing.value = m
+}
+
+// 打开演员主页（播放器头像 / 详情页演员名都会走到这里）
+function openActor(name) {
+  detail.value = null
+  actorName.value = name
+}
+// 从演员主页点某部剧：关掉演员页，打开该剧详情
+function openFromActor(m) {
+  actorName.value = null
+  openDetail(m)
 }
 </script>
 
@@ -291,6 +313,9 @@ function play(m) {
 .detail-box h3 { margin: 18px 0 8px; }
 .actors { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 12px; }
 .a-name { font-weight: bold; }
+.a-name.clickable { cursor: pointer; }
+.a-name.clickable:hover { color: #ff8a8e; text-decoration: underline; }
+.detail-box h3 small { color: #8892a8; font-size: 12px; font-weight: normal; margin-left: 8px; }
 .a-role { color: #ffb86c; font-weight: normal; font-size: 13px; margin-left: 6px; }
 .a-bio { color: #bcd; font-size: 13px; line-height: 1.6; margin-top: 4px; }
 .play {
