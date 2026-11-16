@@ -2,7 +2,7 @@
   <div class="sv">
     <!-- 顶部栏：返回 + 标题 -->
     <header class="sv-top">
-      <button class="back" @click="$emit('close')">← 返回电视剧</button>
+      <button class="back" @click="$emit('close')">← {{ backText }}</button>
       <div class="sv-title">🎬 短视频</div>
       <div class="spacer"></div>
     </header>
@@ -21,10 +21,9 @@
           playsinline
           webkit-playsinline
           preload="metadata"
-          loop
           muted
-          :poster="''"
           @click="togglePlay(i)"
+          @ended="onEnded(i)"
         ></video>
 
         <!-- 点击播放/暂停时显示的大播放图标 -->
@@ -70,14 +69,48 @@ import { ref, onMounted, onBeforeUnmount, nextTick } from 'vue'
 
 defineEmits(['close'])
 
-// 5 个短视频（位于 public/videos，构建后以 /videos/xxx.mp4 访问）
-const videos = ref([
-  { src: '/videos/short1.mp4', title: '高燃名场面 · 第 1 弹', author: '熊猫影视剪辑', desc: '追剧停不下来，名场面一次看个够～', likes: '1.2w', comments: 328, liked: false },
-  { src: '/videos/short2.mp4', title: '催泪瞬间 · 第 2 弹', author: '熊猫影视剪辑', desc: '纸巾备好，这波太上头了！', likes: '8765', comments: 211, liked: false },
-  { src: '/videos/short3.mp4', title: '甜虐交织 · 第 3 弹', author: '熊猫影视剪辑', desc: '糖里藏刀，磕到了又破防了。', likes: '2.3w', comments: 540, liked: false },
-  { src: '/videos/short4.mp4', title: '反转不断 · 第 4 弹', author: '熊猫影视剪辑', desc: '猜得到开头猜不到结尾。', likes: '6543', comments: 187, liked: false },
-  { src: '/videos/short5.mp4', title: '大结局前瞻 · 第 5 弹', author: '熊猫影视剪辑', desc: '结局究竟如何？先睹为快！', likes: '1.5w', comments: 402, liked: false }
-])
+// 返回按钮文字（App.vue 根据来源页传：返回首页 / 返回电视剧）
+defineProps({
+  backText: { type: String, default: '返回' }
+})
+
+// 本地兜底数据：后端 /api/videos 不可用时用这 5 条
+// 视频文件在 public/videos，构建后以 /videos/xxx.mp4 访问
+const localVideos = [
+  { src: '/videos/video1.mp4', title: '精彩视频 · 第 1 期', author: '熊猫影视', desc: '上下滑动观看更多精彩视频～', likes: 12000, comments: 328 },
+  { src: '/videos/video2.mp4', title: '精彩视频 · 第 2 期', author: '熊猫影视', desc: '好内容根本停不下来！', likes: 8765, comments: 211 },
+  { src: '/videos/video3.mp4', title: '精彩视频 · 第 3 期', author: '熊猫影视', desc: '每一帧都不想快进。', likes: 23000, comments: 540 },
+  { src: '/videos/video4.mp4', title: '精彩视频 · 第 4 期', author: '熊猫影视', desc: '看到最后有惊喜！', likes: 6543, comments: 187 },
+  { src: '/videos/video5.mp4', title: '精彩视频 · 第 5 期', author: '熊猫影视', desc: '喜欢就点个赞再走～', likes: 15000, comments: 402 }
+]
+
+const videos = ref([])
+
+// 数字显示成 1.2w 这种格式
+function fmt(n) {
+  n = Number(n) || 0
+  return n >= 10000 ? (n / 10000).toFixed(1).replace(/\.0$/, '') + 'w' : String(n)
+}
+
+// 从后端拉视频列表（GET /api/videos，经 vite 代理到 Spring Boot 8081），失败回退本地 5 条
+async function loadVideos() {
+  try {
+    const res = await fetch('/api/videos')
+    const data = await res.json()
+    if (data && data.code === 200 && Array.isArray(data.data) && data.data.length) {
+      return data.data.map(r => ({
+        src: r.videoUrl || '',
+        title: r.title || '精彩视频',
+        author: r.author || '熊猫影视',
+        desc: r.description || '',
+        likes: fmt(r.likes),
+        comments: r.comments || 0,
+        liked: false
+      }))
+    }
+  } catch (e) { /* 后端没启动，用兜底数据 */ }
+  return localVideos.map(v => ({ ...v, likes: fmt(v.likes), liked: false }))
+}
 
 const feed = ref(null)
 const videoEls = ref([])
@@ -87,6 +120,8 @@ const muted = ref(true)
 let observer = null
 
 onMounted(async () => {
+  // 先拉数据（后端优先，本地兜底），再等 DOM 渲染完，最后挂观察器
+  videos.value = await loadVideos()
   await nextTick()
   // 进入页面先播第一条
   const first = videoEls.value[0]
@@ -117,6 +152,13 @@ onMounted(async () => {
 onBeforeUnmount(() => {
   if (observer) observer.disconnect()
 })
+
+// 播完自动滑到下一条；最后一条播完回到第一条循环刷
+function onEnded(i) {
+  const nextIdx = (i + 1) % videos.value.length
+  const next = videoEls.value[nextIdx]
+  if (next) next.scrollIntoView({ behavior: 'smooth' })
+}
 
 // 点击视频：切换播放 / 暂停
 function togglePlay(i) {

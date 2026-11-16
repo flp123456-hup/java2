@@ -1,6 +1,6 @@
 <template>
   <!-- 首页：全屏星空，不再套用登录页的草地/云朵容器 -->
-  <HomeView v-if="mode === 'home'" :username="currentUser" @logout="onLogout" @open-admin="onOpenAdmin" @open-media="onOpenMedia" @search="onSearch" />
+  <HomeView v-if="mode === 'home'" :username="currentUser" @logout="onLogout" @open-admin="onOpenAdmin" @open-media="onOpenMedia" @open-video="onOpenVideoFromHome" @search="onSearch" />
 
   <!-- 搜索页：热度榜 / 排行榜 + 搜索结果 -->
   <SearchResults v-else-if="mode === 'search'" :keyword="searchKw" @back="onSearchBack" />
@@ -14,8 +14,8 @@
   <!-- 电视剧（原影视中心） -->
   <MediaCenter v-else-if="mode === 'media'" @close="onMediaClose" @open-short-video="onOpenShortVideo" />
 
-  <!-- 短视频：竖屏滑动信息流 -->
-  <ShortVideo v-else-if="mode === 'short-video'" @close="onShortVideoClose" />
+  <!-- 短视频：竖屏滑动信息流（首页 / 电视剧页都能进，返回来源页） -->
+  <ShortVideo v-else-if="mode === 'video'" :back-text="videoFrom === 'home' ? '返回首页' : '返回电视剧'" @close="onVideoClose" />
 
   <!-- 登录 / 注册：熊猫背景场景 -->
   <div class="page" v-else>
@@ -35,10 +35,12 @@ import SearchResults from './components/SearchResults.vue'
 import MediaCenter from './components/MediaCenter.vue'
 import ShortVideo from './components/ShortVideo.vue'
 
-// 'login' / 'register' / 'home' / 'admin-login' / 'admin' / 'search'
+// 'login' / 'register' / 'home' / 'admin-login' / 'admin' / 'search' / 'video'
 const mode = ref('login')
 const currentUser = ref('')
 const searchKw = ref('')
+// 记录短视频是从哪个页面进的（'home' 首页 / 'media' 电视剧页），关闭时返回对应页面
+const videoFrom = ref('home')
 
 function onLoginSuccess(name) {
   currentUser.value = name // 记录登录用户名
@@ -83,11 +85,19 @@ function onMediaClose() {
 }
 
 function onOpenShortVideo() {
-  mode.value = 'short-video'  // 电视剧页进入短视频
+  videoFrom.value = 'media'    // 电视剧页进入短视频
+  mode.value = 'video'
 }
 
-function onShortVideoClose() {
-  mode.value = 'media'        // 短视频返回电视剧页
+// 首页功能栏点「视频」进入短视频
+function onOpenVideoFromHome() {
+  videoFrom.value = 'home'
+  mode.value = 'video'
+}
+
+function onVideoClose() {
+  // 返回进入前的页面：从首页进就回首页，从电视剧页进就回电视剧
+  mode.value = videoFrom.value === 'media' ? 'media' : 'home'
 }
 
 function onAdminLoginSuccess() {

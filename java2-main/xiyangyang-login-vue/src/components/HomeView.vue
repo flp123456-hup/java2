@@ -13,9 +13,10 @@
 
       <button class="admin-entry" @click="$emit('open-admin')">🛠 后台管理系统</button>
 
-      <!-- 功能栏：电视剧 / 少儿 / 综艺 分类入口 -->
+      <!-- 功能栏：电视剧 / 视频 / 少儿 / 综艺 分类入口 -->
       <div class="func-bar">
         <button class="fn" @click="$emit('open-media')">📺 电视剧</button>
+        <button class="fn" @click="$emit('open-video')">🎬 视频</button>
         <button class="fn" @click="scrollTo('kids')">🧒 少儿</button>
         <button class="fn" @click="scrollTo('variety')">🎉 综艺</button>
       </div>
@@ -274,7 +275,7 @@ import DramaModal from './DramaModal.vue'
 import ActorPage from './ActorPage.vue'
 
 defineProps({ username: String })
-const emit = defineEmits(['logout', 'open-admin', 'open-media', 'search'])
+const emit = defineEmits(['logout', 'open-admin', 'open-media', 'open-video', 'search'])
 
 // 影视数据准备（Mock 兜底 / 后端拉取 / 浮萍补齐）统一放在 mediaHelpers.js
 const dramas = ref(buildInitialDramas())

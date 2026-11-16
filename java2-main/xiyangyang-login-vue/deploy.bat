@@ -3,9 +3,9 @@ chcp 65001 >nul
 setlocal
 
 :: ============ 配置路径（按需修改） ============
-set "VUE=C:\Users\36651\IdeaProjects\java2\java2-main\xiyangyang-login-vue"
-set "STATIC=C:\Users\36651\IdeaProjects\java2\java2-main\springBootTest\src\main\resources\static"
-set "CLASSES=C:\Users\36651\IdeaProjects\java2\java2-main\springBootTest\target\classes\static"
+set "VUE=D:\workSpace\java2\java2-main\xiyangyang-login-vue"
+set "STATIC=D:\workSpace\java2\java2-main\springBootTest\src\main\resources\static"
+set "CLASSES=D:\workSpace\java2\java2-main\springBootTest\target\classes\static"
 
 echo ============================================
 echo  前端一键部署：构建 Vue 并同步到 Spring Boot
