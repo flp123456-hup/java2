@@ -3,15 +3,15 @@
 
  Source Server         : localhost_3306
  Source Server Type    : MySQL
- Source Server Version : 80044 (8.0.44)
+ Source Server Version : 80039 (8.0.39)
  Source Host           : localhost:3306
  Source Schema         : xiyangyang
 
  Target Server Type    : MySQL
- Target Server Version : 80044 (8.0.44)
+ Target Server Version : 80039 (8.0.39)
  File Encoding         : 65001
 
- Date: 11/11/2026 20:37:27
+ Date: 18/11/2026 09:58:49
 */
 
 SET NAMES utf8mb4;
@@ -118,11 +118,13 @@ CREATE TABLE `danmaku`  (
   `create_time` datetime NULL DEFAULT NULL COMMENT '发送时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_video_ep`(`video_id` ASC, `episode` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '弹幕表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '弹幕表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of danmaku
 -- ----------------------------
+INSERT INTO `danmaku` VALUES (1, '9', 1, '高玉庆到此一游', '#8ad6ff', 0, '2026-11-18 09:52:55');
+INSERT INTO `danmaku` VALUES (2, '9', 1, '符丽萍嘻嘻嘻嘻', '#ffb3f0', 0, '2026-11-18 09:55:56');
 
 -- ----------------------------
 -- Table structure for drama
@@ -217,7 +219,7 @@ CREATE TABLE `login_record`  (
   `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '录入时间',
   PRIMARY KEY (`id`) USING BTREE,
   INDEX `idx_login_time`(`login_time` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 71 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户登录记录表（用于统计登录人数/次数）' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 74 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户登录记录表（用于统计登录人数/次数）' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of login_record
@@ -292,6 +294,9 @@ INSERT INTO `login_record` VALUES (67, 'xiyangyang', '2026-11-11 20:12:29', '202
 INSERT INTO `login_record` VALUES (68, 'xx', '2026-11-11 20:26:44', '2026-11-11 20:26:44');
 INSERT INTO `login_record` VALUES (69, 'xx', '2026-11-11 20:31:42', '2026-11-11 20:31:42');
 INSERT INTO `login_record` VALUES (70, 'xx', '2026-11-11 20:33:26', '2026-11-11 20:33:26');
+INSERT INTO `login_record` VALUES (71, 'xx', '2026-11-18 08:40:36', '2026-11-18 08:40:36');
+INSERT INTO `login_record` VALUES (72, 'xx', '2026-11-18 09:04:03', '2026-11-18 09:04:03');
+INSERT INTO `login_record` VALUES (73, 'xx', '2026-11-18 09:35:18', '2026-11-18 09:35:18');
 
 -- ----------------------------
 -- Table structure for media_segment
