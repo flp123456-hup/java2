@@ -9,16 +9,24 @@
 
     <!-- 顶部导航 + 搜索栏 -->
     <header class="topbar">
-      <div class="logo">🐼 <span>熊猫影视</span></div>
+      <div class="logo">
+        <img :src="pandaIcon" class="logo-ico" alt="" />
+        <span>熊猫影视</span>
+      </div>
 
       <button class="admin-entry" @click="$emit('open-admin')">🛠 后台管理系统</button>
 
-      <!-- 功能栏：电视剧 / 视频 / 少儿 / 综艺 分类入口 -->
+      <!-- 功能栏：电视剧 / 视频 / 少儿 / 综艺 / 脑力运动 分类入口 -->
       <div class="func-bar">
         <button class="fn" @click="$emit('open-media')">📺 电视剧</button>
         <button class="fn" @click="$emit('open-video')">🎬 视频</button>
-        <button class="fn" @click="scrollTo('kids')">🧒 少儿</button>
+        <button class="fn" @click="scrollTo('kids')">
+          <img :src="pandaIcon" class="fn-ico" alt="" /> 少儿
+        </button>
         <button class="fn" @click="scrollTo('variety')">🎉 综艺</button>
+        <button class="fn brain" @click="$emit('open-brain')">
+          <img :src="brainIcon" class="brain-ico" alt="" /> 脑力运动
+        </button>
       </div>
 
       <div class="search-wrap" @mouseleave="showHot = false">
@@ -273,9 +281,11 @@ import {
 } from '../mediaHelpers.js'
 import DramaModal from './DramaModal.vue'
 import ActorPage from './ActorPage.vue'
+import brainIcon from '../assets/brain-icon.jpg'
+import pandaIcon from '../assets/panda-icon.jpg'
 
 defineProps({ username: String })
-const emit = defineEmits(['logout', 'open-admin', 'open-media', 'open-video', 'search'])
+const emit = defineEmits(['logout', 'open-admin', 'open-media', 'open-video', 'open-brain', 'search'])
 
 // 影视数据准备（Mock 兜底 / 后端拉取 / 浮萍补齐）统一放在 mediaHelpers.js
 const dramas = ref(buildInitialDramas())
@@ -487,15 +497,29 @@ function shootStyle(n) {
   border-bottom: 1px solid rgba(120, 130, 255, .25);
 }
 .logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   font-size: 22px;
   font-weight: 800;
   white-space: nowrap;
+}
+.logo span {
+  font-size: 18px;
   background: linear-gradient(90deg, #7b8cff, #ff6ec4);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
-.logo span { font-size: 18px; }
+.logo-ico {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1.5px solid rgba(255,255,255,.85);
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,.25);
+}
 
 .admin-entry {
   border: 1px solid rgba(255, 158, 214, .5);
@@ -514,6 +538,15 @@ function shootStyle(n) {
 
 /* 功能栏：电视剧 / 少儿 / 综艺 分类入口 */
 .func-bar { display: flex; align-items: center; gap: 8px; }
+.fn-ico {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  object-fit: cover;
+  vertical-align: -4px;
+  border: 1px solid rgba(255,255,255,.7);
+  background: #fff;
+}
 .fn {
   padding: 7px 14px;
   border: 1px solid rgba(255,255,255,.35);
@@ -524,9 +557,26 @@ function shootStyle(n) {
   cursor: pointer;
   white-space: nowrap;
   transition: background .2s, transform .1s;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
 }
 .fn:hover { background: rgba(123,140,255,.32); }
 .fn:active { transform: scale(.97); }
+.fn.brain {
+  background: linear-gradient(135deg, rgba(123,140,255,.5), rgba(255,110,196,.5));
+  border-color: rgba(255,255,255,.55);
+  font-weight: 600;
+}
+.fn.brain:hover { background: linear-gradient(135deg, rgba(123,140,255,.75), rgba(255,110,196,.75)); }
+.fn.brain { display: inline-flex; align-items: center; gap: 6px; }
+.brain-ico {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid rgba(255,255,255,.7);
+}
 
 .search-wrap { position: relative; flex: 1; max-width: 560px; margin: 0 auto; }
 .search-box {

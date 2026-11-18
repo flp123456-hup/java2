@@ -1,6 +1,9 @@
 <template>
   <!-- 首页：全屏星空，不再套用登录页的草地/云朵容器 -->
-  <HomeView v-if="mode === 'home'" :username="currentUser" @logout="onLogout" @open-admin="onOpenAdmin" @open-media="onOpenMedia" @open-video="onOpenVideoFromHome" @search="onSearch" />
+  <HomeView v-if="mode === 'home'" :username="currentUser" @logout="onLogout" @open-admin="onOpenAdmin" @open-media="onOpenMedia" @open-video="onOpenVideoFromHome" @open-brain="onOpenBrain" @search="onSearch" />
+
+  <!-- 脑力运动：高数闯关答题 -->
+  <BrainTraining v-else-if="mode === 'brain'" @close="onBrainClose" />
 
   <!-- 搜索页：热度榜 / 排行榜 + 搜索结果 -->
   <SearchResults v-else-if="mode === 'search'" :keyword="searchKw" @back="onSearchBack" />
@@ -34,6 +37,7 @@ import AdminDashboard from './components/AdminDashboard.vue'
 import SearchResults from './components/SearchResults.vue'
 import MediaCenter from './components/MediaCenter.vue'
 import ShortVideo from './components/ShortVideo.vue'
+import BrainTraining from './components/BrainTraining.vue'
 
 // 'login' / 'register' / 'home' / 'admin-login' / 'admin' / 'search' / 'video'
 const mode = ref('login')
@@ -93,6 +97,14 @@ function onOpenShortVideo() {
 function onOpenVideoFromHome() {
   videoFrom.value = 'home'
   mode.value = 'video'
+}
+
+// ===== 脑力运动（高数闯关）=====
+function onOpenBrain() {
+  mode.value = 'brain'
+}
+function onBrainClose() {
+  mode.value = 'home'
 }
 
 function onVideoClose() {
